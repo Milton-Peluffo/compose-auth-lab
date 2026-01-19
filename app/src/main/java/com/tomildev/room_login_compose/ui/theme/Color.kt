@@ -7,3 +7,5 @@ val Gray30 = Color(0xFF666666)
 
 val White = Color(0xFFFDFDFD)
 val Black = Color(0xFF141218)
+
+val Error = Color(0xFFFF3D3D)

@@ -14,10 +14,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TextFieldPrimary(
+    modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
     value: String,
     label: String,
-    modifier: Modifier = Modifier
+    isError: Boolean = false
 ) {
     OutlinedTextField(
         value = value,
@@ -33,8 +34,9 @@ fun TextFieldPrimary(
         colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = MaterialTheme.colorScheme.onBackground,
             unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-            focusedBorderColor = MaterialTheme.colorScheme.onBackground,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outline
+            focusedBorderColor = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onBackground,
+            unfocusedBorderColor = if (isError) MaterialTheme.colorScheme.error.copy(alpha = 2f) else MaterialTheme.colorScheme.outline,
+            errorBorderColor = MaterialTheme.colorScheme.error,
         )
     )
     Spacer(Modifier.height(10.dp))

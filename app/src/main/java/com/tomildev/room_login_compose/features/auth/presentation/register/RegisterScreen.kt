@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tomildev.compose_samples.views.textFields.basic_login.components.TextFieldPrimary
 import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTextAction
+import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTextError
 import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTitle
 import com.tomildev.room_login_compose.features.auth.presentation.components.ButtomPrimary
 
@@ -47,20 +48,26 @@ fun RegisterScreen(
                 modifier = Modifier,
                 value = uiState.email,
                 onValueChange = { registerViewmodel.onEmailChange(email = it) },
-                label = "Email"
+                label = "Email",
+                isError = uiState.isEmailError
             )
             TextFieldPrimary(
                 modifier = Modifier,
                 value = uiState.password,
                 onValueChange = { registerViewmodel.onPasswordChange(password = it) },
-                label = "Password"
+                label = "Password",
+                isError = uiState.isPasswordError
             )
             TextFieldPrimary(
                 modifier = Modifier,
                 value = uiState.confirmPassword,
                 onValueChange = { registerViewmodel.onConfirmPasswordChange(confirmPassword = it)},
-                label = "Confirm password"
+                label = "Confirm password",
+                isError = uiState.isPasswordConfirmError
             )
+            uiState.errorMessage?.let { error ->
+                AuthTextError(text = error)
+            }
             Spacer(Modifier.height(20.dp))
             ButtomPrimary(
                 text = "Sign up",
@@ -71,14 +78,6 @@ fun RegisterScreen(
                 text = "I already have an account",
                 onClick = { }
             )
-
-            if(uiState.isRegistrationSuccess){
-                Text("true")
-            }
-            else {
-                Text("false")
-            }
-
         }
     }
 }

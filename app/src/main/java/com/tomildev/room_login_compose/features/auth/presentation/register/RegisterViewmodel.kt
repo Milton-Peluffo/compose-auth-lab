@@ -12,23 +12,33 @@ class RegisterViewmodel : ViewModel() {
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState: StateFlow<RegisterUiState> = _uiState.asStateFlow()
 
-
     fun onRegisterUser() {
 
-        if (isEmailValid(email = _uiState.value.email) && isPasswordMatched(
+        if (!isEmailValid(email = _uiState.value.email)
+        ) {
+            _uiState.update {
+                it.copy(
+                    errorMessage = "Invalid email format",
+                    isEmailError = true
+                )
+            }
+
+        } else if (!isPasswordValid(_uiState.value.password)) {
+            _uiState.update {
+                it.copy(
+                    errorMessage = "Password must have 8 character at least",
+                    isPasswordError = true
+                )
+            }
+        } else if (!isPasswordMatched(
                 _uiState.value.password,
                 _uiState.value.confirmPassword
             )
         ) {
             _uiState.update {
                 it.copy(
-                    isRegistrationSuccess = true
-                )
-            }
-        } else {
-            _uiState.update {
-                it.copy(
-                    isRegistrationSuccess = false
+                    errorMessage = "Password should match",
+                    isPasswordConfirmError = true
                 )
             }
         }
@@ -37,7 +47,10 @@ class RegisterViewmodel : ViewModel() {
     fun onEmailChange(email: String) {
         _uiState.update { currentState ->
             currentState.copy(
-                email = email
+                email = email,
+                errorMessage = null,
+                isEmailError = false
+
             )
         }
     }
@@ -45,7 +58,9 @@ class RegisterViewmodel : ViewModel() {
     fun onPasswordChange(password: String) {
         _uiState.update { currentState ->
             currentState.copy(
-                password = password
+                password = password,
+                errorMessage = null,
+                isPasswordError = false
             )
         }
     }
@@ -53,7 +68,10 @@ class RegisterViewmodel : ViewModel() {
     fun onConfirmPasswordChange(confirmPassword: String) {
         _uiState.update { currentState ->
             currentState.copy(
-                confirmPassword = confirmPassword
+                confirmPassword = confirmPassword,
+                errorMessage = null,
+                isPasswordConfirmError = false
+
             )
         }
     }
@@ -64,13 +82,20 @@ class RegisterViewmodel : ViewModel() {
     private fun isPasswordMatched(password: String, confirmPassword: String): Boolean =
         password == confirmPassword
 
-//    private fun isPasswordValid(password: String): Boolean = password.length >= 6
+    private fun isPasswordValid(password: String): Boolean = password.length >= 6
 }
 
 data class RegisterUiState(
+    //USER DATA
     val email: String = "",
     val password: String = "",
     val confirmPassword: String = "",
+    //VALIDATORS
     val isRegistered: Boolean = false,
     val isRegistrationSuccess: Boolean = false,
+    //ERRORS
+    val errorMessage: String? = null,
+    val isEmailError: Boolean = false,
+    val isPasswordError: Boolean = false,
+    val isPasswordConfirmError: Boolean = false,
 )
