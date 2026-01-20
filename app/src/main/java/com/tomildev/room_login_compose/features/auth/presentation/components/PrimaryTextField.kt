@@ -1,4 +1,4 @@
-package com.tomildev.compose_samples.views.textFields.basic_login.components
+package com.tomildev.room_login_compose.features.auth.presentation.components
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth

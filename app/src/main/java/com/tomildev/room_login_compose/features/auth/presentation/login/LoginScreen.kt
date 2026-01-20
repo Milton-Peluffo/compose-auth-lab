@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tomildev.compose_samples.views.textFields.basic_login.components.TextFieldPrimary
+import com.tomildev.room_login_compose.features.auth.presentation.components.TextFieldPrimary
 import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTextAction
 import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTitle
 import com.tomildev.room_login_compose.features.auth.presentation.components.ButtomPrimary

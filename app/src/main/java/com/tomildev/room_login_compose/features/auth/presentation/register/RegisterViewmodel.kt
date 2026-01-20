@@ -2,17 +2,21 @@ package com.tomildev.room_login_compose.features.auth.presentation.register
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.tomildev.room_login_compose.features.auth.domain.model.User
+import com.tomildev.room_login_compose.features.auth.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class RegisterViewmodel : ViewModel() {
+class RegisterViewmodel(private val authRepository: AuthRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState: StateFlow<RegisterUiState> = _uiState.asStateFlow()
 
-    fun onRegisterUser() {
+    fun onValidateUserFields() {
 
         if (!isEmailValid(email = _uiState.value.email)
         ) {
@@ -41,6 +45,14 @@ class RegisterViewmodel : ViewModel() {
                     isPasswordConfirmError = true
                 )
             }
+        } else {
+            onRegisterUser()
+        }
+    }
+
+    fun onRegisterUser() {
+        viewModelScope.launch {
+            authRepository.registerUser(user = User(_uiState.value.email, _uiState.value.password))
         }
     }
 
@@ -82,7 +94,7 @@ class RegisterViewmodel : ViewModel() {
     private fun isPasswordMatched(password: String, confirmPassword: String): Boolean =
         password == confirmPassword
 
-    private fun isPasswordValid(password: String): Boolean = password.length >= 6
+    private fun isPasswordValid(password: String): Boolean = password.length >= 8
 }
 
 data class RegisterUiState(
