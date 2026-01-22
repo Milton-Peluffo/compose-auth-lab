@@ -14,46 +14,58 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepository) : ViewModel() {
+class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepository) :
+    ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState: StateFlow<RegisterUiState> = _uiState.asStateFlow()
 
-    fun onValidateUserFields() {
-
-        if (!isEmailValid(email = _uiState.value.email)
-        ) {
-            _uiState.update {
-                it.copy(
-                    errorMessage = "Invalid email format",
-                    isEmailError = true
-                )
-            }
-
-        } else if (!isPasswordValid(_uiState.value.password)) {
-            _uiState.update {
-                it.copy(
-                    errorMessage = "Password must have 8 character at least",
-                    isPasswordError = true
-                )
-            }
-        } else if (!isPasswordMatched(
-                _uiState.value.password,
-                _uiState.value.confirmPassword
-            )
-        ) {
-            _uiState.update {
-                it.copy(
-                    errorMessage = "Password should match",
-                    isPasswordConfirmError = true
-                )
-            }
-        } else {
-            onRegisterUser()
+    fun onRegisterClick() {
+        if (validateFields()) {
+            registerUser()
         }
     }
 
-    fun onRegisterUser() {
+    private fun validateFields(): Boolean {
+        return when {
+            !isEmailValid(email = _uiState.value.email) -> {
+                _uiState.update {
+                    it.copy(
+                        errorMessage = "Invalid email format",
+                        isEmailError = true
+                    )
+                }
+                false
+            }
+
+            !isPasswordLengthValid(password = _uiState.value.password) -> {
+                _uiState.update {
+                    it.copy(
+                        errorMessage = "Password must have 8 character at least",
+                        isPasswordError = true
+                    )
+                }
+                false
+            }
+
+            !isPasswordMatched(
+                password = _uiState.value.password,
+                confirmPassword = _uiState.value.confirmPassword
+            ) -> {
+                _uiState.update {
+                    it.copy(
+                        errorMessage = "Password should match",
+                        isPasswordConfirmError = true
+                    )
+                }
+                false
+            }
+
+            else -> true
+        }
+    }
+
+    fun registerUser() {
         viewModelScope.launch {
             authRepository.registerUser(user = User(_uiState.value.email, _uiState.value.password))
         }
@@ -65,7 +77,6 @@ class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepo
                 email = email,
                 errorMessage = null,
                 isEmailError = false
-
             )
         }
     }
@@ -97,7 +108,7 @@ class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepo
     private fun isPasswordMatched(password: String, confirmPassword: String): Boolean =
         password == confirmPassword
 
-    private fun isPasswordValid(password: String): Boolean = password.length >= 8
+    private fun isPasswordLengthValid(password: String): Boolean = password.length >= 8
 }
 
 data class RegisterUiState(

@@ -73,7 +73,7 @@ fun RegisterScreen(
             Spacer(Modifier.height(20.dp))
             ButtomPrimary(
                 text = "Sign up",
-                onClick = { registerViewmodel.onValidateUserFields() }
+                onClick = { registerViewmodel.onRegisterClick() }
             )
             Spacer(Modifier.height(20.dp))
             AuthTextAction(
