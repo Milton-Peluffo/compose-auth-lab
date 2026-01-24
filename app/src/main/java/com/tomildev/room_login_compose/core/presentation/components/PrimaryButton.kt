@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.features.auth.presentation.components
+package com.tomildev.room_login_compose.core.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ButtomPrimary(
+fun PrimaryButton(
     modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit

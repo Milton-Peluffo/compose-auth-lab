@@ -14,15 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.tomildev.room_login_compose.core.data.local.AppDatabase
-import com.tomildev.room_login_compose.features.auth.data.repository.AuthRepositoryImpl
-import com.tomildev.room_login_compose.features.auth.presentation.components.TextFieldPrimary
-import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTextAction
-import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTextError
-import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTitle
-import com.tomildev.room_login_compose.features.auth.presentation.components.ButtomPrimary
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.tomildev.room_login_compose.core.presentation.components.PrimaryButton
+import com.tomildev.room_login_compose.core.presentation.components.PrimaryTextField
+import com.tomildev.room_login_compose.core.presentation.components.PrimaryTitle
+import com.tomildev.room_login_compose.core.presentation.components.TextError
 
 @Composable
 fun RegisterScreen(
@@ -42,25 +37,25 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AuthTitle(
+            PrimaryTitle(
                 title = "HEY THERE!",
                 subtitle = "Create your account"
             )
-            TextFieldPrimary(
+            PrimaryTextField(
                 modifier = Modifier,
                 value = uiState.email,
                 onValueChange = { registerViewmodel.onEmailChange(email = it) },
                 label = "Email",
                 isError = uiState.isEmailError
             )
-            TextFieldPrimary(
+            PrimaryTextField(
                 modifier = Modifier,
                 value = uiState.password,
                 onValueChange = { registerViewmodel.onPasswordChange(password = it) },
                 label = "Password",
                 isError = uiState.isPasswordError
             )
-            TextFieldPrimary(
+            PrimaryTextField(
                 modifier = Modifier,
                 value = uiState.confirmPassword,
                 onValueChange = { registerViewmodel.onConfirmPasswordChange(confirmPassword = it) },
@@ -68,15 +63,15 @@ fun RegisterScreen(
                 isError = uiState.isPasswordConfirmError
             )
             uiState.errorMessage?.let { error ->
-                AuthTextError(text = error)
+                TextError(text = error)
             }
             Spacer(Modifier.height(20.dp))
-            ButtomPrimary(
+            PrimaryButton(
                 text = "Sign up",
                 onClick = { registerViewmodel.onRegisterClick() }
             )
             Spacer(Modifier.height(20.dp))
-            AuthTextAction(
+            PrimaryButton(
                 text = "I already have an account",
                 onClick = { }
             )

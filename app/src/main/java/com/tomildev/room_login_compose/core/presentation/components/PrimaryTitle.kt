@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.features.auth.presentation.components
+package com.tomildev.room_login_compose.core.presentation.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun AuthTitle(
+fun PrimaryTitle(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String? = null

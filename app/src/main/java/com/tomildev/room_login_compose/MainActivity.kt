@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.tomildev.room_login_compose.features.auth.presentation.login.LoginScreen
 import com.tomildev.room_login_compose.features.auth.presentation.register.RegisterScreen
+import com.tomildev.room_login_compose.features.home.HomeScren
 import com.tomildev.room_login_compose.ui.theme.Room_login_composeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +25,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             Room_login_composeTheme {
 //                LoginScreen()
-                RegisterScreen()
+//                RegisterScreen()
+                HomeScren()
             }
         }
     }

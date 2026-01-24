@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.features.auth.presentation.components
+package com.tomildev.room_login_compose.core.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun AuthTextError(modifier: Modifier = Modifier, text: String) {
+fun TextError(modifier: Modifier = Modifier, text: String) {
 
     Text(
         modifier = modifier.fillMaxWidth(),

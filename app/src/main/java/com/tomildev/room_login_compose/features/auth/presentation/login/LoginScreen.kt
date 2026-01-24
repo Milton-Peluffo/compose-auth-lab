@@ -11,10 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tomildev.room_login_compose.features.auth.presentation.components.TextFieldPrimary
 import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTextAction
-import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTitle
-import com.tomildev.room_login_compose.features.auth.presentation.components.ButtomPrimary
+import com.tomildev.room_login_compose.core.presentation.components.PrimaryButton
+import com.tomildev.room_login_compose.core.presentation.components.PrimaryTextField
+import com.tomildev.room_login_compose.core.presentation.components.PrimaryTitle
 
 @Composable
 fun LoginScreen(
@@ -30,24 +30,24 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AuthTitle(
+            PrimaryTitle(
                 title = "WELCOME BACK!",
                 subtitle = "Log in to continue"
             )
-            TextFieldPrimary(
+            PrimaryTextField(
                 modifier = Modifier,
                 value = "",
                 onValueChange = { "" },
                 label = "Email"
             )
-            TextFieldPrimary(
+            PrimaryTextField(
                 modifier = Modifier,
                 value = "",
                 onValueChange = { "" },
                 label = "Password"
             )
             Spacer(Modifier.height(20.dp))
-            ButtomPrimary(
+            PrimaryButton(
                 text = "Login",
                 onClick = {}
             )

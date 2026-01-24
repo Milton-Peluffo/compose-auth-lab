@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.features.auth.presentation.components
+package com.tomildev.room_login_compose.core.presentation.components
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TextFieldPrimary(
+fun PrimaryTextField(
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
     value: String,
