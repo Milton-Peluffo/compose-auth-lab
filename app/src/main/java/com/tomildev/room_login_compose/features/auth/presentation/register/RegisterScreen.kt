@@ -23,7 +23,8 @@ import com.tomildev.room_login_compose.features.auth.presentation.components.Aut
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    registerViewmodel: RegisterViewmodel = hiltViewModel()
+    registerViewmodel: RegisterViewmodel = hiltViewModel(),
+    onNavigateToLogin: () -> Unit
 ) {
 
     val uiState by registerViewmodel.uiState.collectAsStateWithLifecycle()
@@ -88,7 +89,7 @@ fun RegisterScreen(
             Spacer(Modifier.height(20.dp))
             AuthTextAction(
                 text = "I already have an account",
-                onClick = { }
+                onClick = { onNavigateToLogin() }
             )
         }
     }

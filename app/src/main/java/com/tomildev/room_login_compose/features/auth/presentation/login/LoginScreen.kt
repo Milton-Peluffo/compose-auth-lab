@@ -13,12 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTextAction
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryButton
+import com.tomildev.room_login_compose.core.presentation.components.PrimaryIconButton
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryTextField
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryTitle
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
+    onNavigateToRegister: () -> Unit
 ) {
     Scaffold { innerPadding ->
 
@@ -51,6 +53,10 @@ fun LoginScreen(
                 text = "Login",
                 onClick = {}
             )
+            Spacer(Modifier.height(15.dp))
+            PrimaryIconButton(
+                text = "Create an account",
+                onClick = { onNavigateToRegister() })
             Spacer(Modifier.height(20.dp))
             AuthTextAction(
                 text = "I forgot my password",

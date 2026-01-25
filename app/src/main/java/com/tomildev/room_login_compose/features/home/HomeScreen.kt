@@ -1,5 +1,6 @@
 package com.tomildev.room_login_compose.features.home
 
+import android.provider.ContactsContract
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,7 +20,7 @@ import com.tomildev.room_login_compose.core.presentation.components.TextError
 import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTextAction
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(email: String) {
 
     Scaffold { innerPadding ->
 

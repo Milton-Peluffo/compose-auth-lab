@@ -31,5 +31,4 @@ fun AuthTextAction(
         textAlign = TextAlign.Center,
         color = MaterialTheme.colorScheme.onBackground
     )
-
 }
