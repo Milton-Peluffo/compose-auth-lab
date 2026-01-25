@@ -5,5 +5,5 @@ import com.tomildev.room_login_compose.features.auth.domain.model.User
 interface AuthRepository {
 
     suspend fun registerUser(user: User): Result<Unit>
-
+    suspend fun getUserByEmail(email: String): Result<User?>
 }

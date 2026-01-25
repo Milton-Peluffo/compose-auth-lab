@@ -9,18 +9,30 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryButton
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryIconButton
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryTextField
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryTitle
-import com.tomildev.room_login_compose.core.presentation.components.TextError
-import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTextAction
+import java.util.Locale.getDefault
 
 @Composable
-fun HomeScreen(email: String) {
+fun HomeScreen(
+    email: String,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getUserData(email)
+    }
 
     Scaffold { innerPadding ->
 
@@ -32,31 +44,32 @@ fun HomeScreen(email: String) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val userName: String = uiState.name.uppercase(getDefault())
             PrimaryTitle(
-                title = "HI AGAIN ",
+                title = "HI AGAIN $userName",
                 subtitle = "My information"
             )
             PrimaryTextField(
                 modifier = Modifier,
-                value = "",
+                value = uiState.name,
                 onValueChange = { },
                 label = "Name",
             )
             PrimaryTextField(
                 modifier = Modifier,
-                value = "",
+                value = uiState.phone,
                 onValueChange = { },
                 label = "Phone",
             )
             PrimaryTextField(
                 modifier = Modifier,
-                value = "",
+                value = uiState.email,
                 onValueChange = { },
                 label = "Email",
             )
             PrimaryTextField(
                 modifier = Modifier,
-                value = "",
+                value = uiState.password,
                 onValueChange = { },
                 label = "Password",
             )

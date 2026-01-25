@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,10 +25,17 @@ import com.tomildev.room_login_compose.features.auth.presentation.components.Aut
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     registerViewmodel: RegisterViewmodel = hiltViewModel(),
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToHome: (String) -> Unit
 ) {
 
     val uiState by registerViewmodel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.isRegistrationSuccess) {
+        if (uiState.isRegistrationSuccess) {
+            onNavigateToHome(uiState.email)
+        }
+    }
 
     Scaffold { innerPadding ->
 

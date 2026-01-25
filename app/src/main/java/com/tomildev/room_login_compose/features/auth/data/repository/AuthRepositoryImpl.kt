@@ -22,4 +22,24 @@ class AuthRepositoryImpl @Inject constructor(private val userDao: UserDao) : Aut
             Result.failure(e)
         }
     }
+
+    override suspend fun getUserByEmail(email: String): Result<User?> {
+        return try {
+            val entity = userDao.getUserByEmail(email)
+            if (entity != null) {
+                val user = User(
+                    name = entity.name,
+                    phone = entity.phone,
+                    email = entity.email,
+                    password = entity.password
+                )
+                Result.success(user)
+            } else {
+                Result.success(null)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }

@@ -96,6 +96,9 @@ class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepo
                     _uiState.value.password
                 )
             )
+            _uiState.update { currentState ->
+                currentState.copy(isRegistrationSuccess = true)
+            }
         }
     }
 

@@ -28,8 +28,9 @@ fun NavigationRoot(
         composable<NavRoute.Register> {
             RegisterScreen(onNavigateToLogin = {
                 navController.navigate(NavRoute.Login)
-            }
-            )
+            }, onNavigateToHome = { email ->
+                navController.navigate(NavRoute.Home(email))
+            })
         }
 
         composable<NavRoute.Home> { backStackEntry ->
