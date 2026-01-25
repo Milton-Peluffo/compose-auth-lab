@@ -31,6 +31,50 @@ fun HomeScreen() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            PrimaryTitle(
+                title = "HI AGAIN ",
+                subtitle = "My information"
+            )
+            PrimaryTextField(
+                modifier = Modifier,
+                value = "",
+                onValueChange = { },
+                label = "Name",
+            )
+            PrimaryTextField(
+                modifier = Modifier,
+                value = "",
+                onValueChange = { },
+                label = "Phone",
+            )
+            PrimaryTextField(
+                modifier = Modifier,
+                value = "",
+                onValueChange = { },
+                label = "Email",
+            )
+            PrimaryTextField(
+                modifier = Modifier,
+                value = "",
+                onValueChange = { },
+                label = "Password",
+            )
+            PrimaryTextField(
+                modifier = Modifier,
+                value = "",
+                onValueChange = { },
+                label = "Confirm password",
+            )
+//            uiState.errorMessage?.let { error ->
+//                TextError(text = error)
+//            }
+            Spacer(Modifier.height(20.dp))
+            PrimaryButton(
+                text = "Edit my information",
+                onClick = { }
+            )
+            Spacer(Modifier.height(20.dp))
+            PrimaryIconButton(text = "Log out", onClick = {})
+        }
     }
-
-    }}
+}
