@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.tomildev.room_login_compose.core.data.session.SessionManager
 import com.tomildev.room_login_compose.features.auth.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,7 +22,12 @@ class HomeViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun logOut() {
-        sessionManager.logout()
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            delay(1500)
+            sessionManager.logout()
+            _uiState.update { it.copy(isLoading = false, isLogoutSuccess = true) }
+        }
     }
 
     fun getUserData(email: String) {
@@ -47,4 +53,6 @@ data class HomeUiState(
     val phone: String = "",
     val email: String = "",
     val password: String = "",
+    val isLoading: Boolean = false,
+    val isLogoutSuccess: Boolean = false,
 )

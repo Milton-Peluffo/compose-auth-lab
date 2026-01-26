@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SessionManager @Inject constructor(
-    @ApplicationContext private val context: Context //QUE ES ESO DE CONTEXT?
+    @ApplicationContext private val context: Context
 ) {
 
     private val prefs = context.getSharedPreferences("user_session", Context.MODE_PRIVATE)

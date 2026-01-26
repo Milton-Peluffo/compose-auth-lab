@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tomildev.room_login_compose.core.presentation.components.OutlinedPrimaryButton
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryButton
-import com.tomildev.room_login_compose.core.presentation.components.PrimaryIconButton
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryTextField
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryTitle
 import java.util.Locale.getDefault
@@ -32,6 +32,12 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         homeViewModel.getUserData(email)
+    }
+
+    LaunchedEffect(uiState.isLogoutSuccess) {
+        if (uiState.isLogoutSuccess) {
+            onNavigateToLogin()
+        }
     }
 
     Scaffold { innerPadding ->
@@ -88,10 +94,10 @@ fun HomeScreen(
                 onClick = { }
             )
             Spacer(Modifier.height(20.dp))
-            PrimaryIconButton(
+            OutlinedPrimaryButton(
                 text = "Log out",
+                isLoading = uiState.isLoading,
                 onClick = {
-                    onNavigateToLogin()
                     homeViewModel.logOut()
                 })
         }
