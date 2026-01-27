@@ -83,6 +83,16 @@ class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepo
                 false
             }
 
+            !_uiState.value.isCheckBoxChecked -> {
+                _uiState.update {
+                    it.copy(
+                        errorMessage = "You must accept the Terms and Conditions to continue",
+                        isTermsAndConditionsError = true
+                    )
+                }
+                false
+            }
+
             else -> true
         }
     }
@@ -156,9 +166,13 @@ class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepo
         }
     }
 
-    fun onCheckedChange(isCheckBoxChecked: Boolean){
+    fun onCheckedChange(isCheckBoxChecked: Boolean) {
         _uiState.update { currentState ->
-            currentState.copy(isCheckBoxChecked = isCheckBoxChecked)
+            currentState.copy(
+                isCheckBoxChecked = isCheckBoxChecked,
+                errorMessage = null,
+                isTermsAndConditionsError = false
+            )
         }
     }
 
@@ -192,4 +206,5 @@ data class RegisterUiState(
     val isEmailError: Boolean = false,
     val isPasswordError: Boolean = false,
     val isPasswordConfirmError: Boolean = false,
+    val isTermsAndConditionsError: Boolean = false,
 )
