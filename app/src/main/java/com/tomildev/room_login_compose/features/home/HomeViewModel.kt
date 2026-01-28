@@ -2,6 +2,7 @@ package com.tomildev.room_login_compose.features.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tomildev.room_login_compose.core.domain.repository.UserRepository
 import com.tomildev.room_login_compose.core.data.session.SessionManager
 import com.tomildev.room_login_compose.features.auth.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository,
     private val sessionManager: SessionManager
 ) : ViewModel() {
 
@@ -32,7 +33,7 @@ class HomeViewModel @Inject constructor(
 
     fun getUserData(email: String) {
         viewModelScope.launch {
-            authRepository.getUserByEmail(email).onSuccess { user ->
+            userRepository.getUserByEmail(email).onSuccess { user ->
                 user?.let { data ->
                     _uiState.update {
                         it.copy(

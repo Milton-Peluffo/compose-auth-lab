@@ -2,8 +2,10 @@ package com.tomildev.room_login_compose.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.tomildev.room_login_compose.core.data.local.AppDatabase
-import com.tomildev.room_login_compose.features.auth.data.local.dao.UserDao
+import com.tomildev.room_login_compose.core.data.local.db.AppDatabase
+import com.tomildev.room_login_compose.core.data.dao.UserDao
+import com.tomildev.room_login_compose.core.data.repository.UserRepositoryImpl
+import com.tomildev.room_login_compose.core.domain.repository.UserRepository
 import com.tomildev.room_login_compose.features.auth.data.repository.AuthRepositoryImpl
 import com.tomildev.room_login_compose.features.auth.domain.repository.AuthRepository
 import dagger.Module
@@ -35,5 +37,11 @@ object AppModule {
     @Singleton
     fun provideAuthRepository(userDao: UserDao): AuthRepository {
         return AuthRepositoryImpl(userDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(userDao: UserDao): UserRepository {
+        return UserRepositoryImpl(userDao)
     }
 }

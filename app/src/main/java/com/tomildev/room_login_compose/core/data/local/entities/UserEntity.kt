@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.features.auth.data.local.entities
+package com.tomildev.room_login_compose.core.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

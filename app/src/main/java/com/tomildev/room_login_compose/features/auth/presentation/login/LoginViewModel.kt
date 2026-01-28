@@ -4,6 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomildev.room_login_compose.core.data.session.SessionManager
+import com.tomildev.room_login_compose.core.domain.repository.UserRepository
 import com.tomildev.room_login_compose.features.auth.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository,
     private val sessionManager: SessionManager
 ) : ViewModel() {
 
@@ -61,7 +62,7 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            val result = authRepository.getUserByEmail(_uiState.value.email)
+            val result = userRepository.getUserByEmail(_uiState.value.email)
 
             result.onSuccess { user ->
                 if (user != null && user.password == _uiState.value.password) {

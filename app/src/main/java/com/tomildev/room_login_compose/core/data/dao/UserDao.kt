@@ -1,9 +1,9 @@
-package com.tomildev.room_login_compose.features.auth.data.local.dao
+package com.tomildev.room_login_compose.core.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.tomildev.room_login_compose.features.auth.data.local.entities.UserEntity
+import com.tomildev.room_login_compose.core.data.local.entities.UserEntity
 
 @Dao
 interface UserDao {
