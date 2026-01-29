@@ -1,2 +1,94 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.tomildev.room_login_compose.features.settings.presentation
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.tomildev.room_login_compose.core.presentation.components.PrimarySubtitle
+import com.tomildev.room_login_compose.core.presentation.components.SecondaryTitle
+import com.tomildev.room_login_compose.features.settings.presentation.components.BackButton
+import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsItem
+import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsItemContainer
+import com.tomildev.room_login_compose.features.settings.presentation.components.UserProfileHeader
+
+@Composable
+fun SettingsScreen(modifier: Modifier = Modifier) {
+
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                navigationIcon = { BackButton(onClick = {}) },
+                title = {
+                    SecondaryTitle(title = "Settings")
+                },
+                windowInsets = TopAppBarDefaults.windowInsets
+            )
+        }
+
+    ) { innerPadding ->
+
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(20.dp)
+        ) {
+            Spacer(modifier = Modifier.height(10.dp))
+            UserProfileHeader(
+                modifier = Modifier.fillMaxWidth(),
+                userName = "Milton",
+                userEmail = "milton@gmail.com"
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            PrimarySubtitle(text = "Other settings")
+            Spacer(modifier = Modifier.height(15.dp))
+            SettingsItemContainer(
+                settingsItem = {
+                    SettingsItem(
+                        leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_person,
+                        text = "Profile details",
+                        trailingIcon = com.tomildev.room_login_compose.R.drawable.ic_arrow_right,
+                        contentDescription = "Profile details"
+                    )
+                    SettingsItem(
+                        leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_lock,
+                        text = "Password",
+                        trailingIcon = com.tomildev.room_login_compose.R.drawable.ic_arrow_right,
+                        contentDescription = "Password"
+                    )
+                    SettingsItem(
+                        leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_moon,
+                        text = "Dark mode",
+                        trailingIcon = com.tomildev.room_login_compose.R.drawable.ic_arrow_right,
+                        contentDescription = "Dark mode",
+                        isToggleable = true
+                    )
+                }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            SettingsItemContainer(
+                settingsItem = {
+                    SettingsItem(
+                        leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_bin,
+                        text = "Delete my account",
+                        trailingIcon = com.tomildev.room_login_compose.R.drawable.ic_arrow_right,
+                        contentDescription = "Delete my account",
+                        isWarningColor = true,
+                        hasTrailingIcon = false
+                    )
+                }
+            )
+        }
+    }
+}

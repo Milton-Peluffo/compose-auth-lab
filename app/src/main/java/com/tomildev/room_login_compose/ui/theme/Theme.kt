@@ -16,6 +16,8 @@ private val DarkColorScheme = darkColorScheme(
     onPrimary = Black,
     background = Black,
     onBackground = White,
+    surfaceVariant = Gray30,
+    onSurfaceVariant = White,
     outline = Gray80,
     error = Error
 )
@@ -25,6 +27,8 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = White,
     background = White,
     onBackground = Black,
+    surfaceVariant = Gray30,
+    onSurfaceVariant = Black,
     outline = Gray30,
     error = Error
 )
