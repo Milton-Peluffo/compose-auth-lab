@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -18,8 +19,10 @@ import androidx.compose.ui.unit.dp
 import com.tomildev.room_login_compose.core.presentation.components.PrimarySubtitle
 import com.tomildev.room_login_compose.core.presentation.components.SecondaryTitle
 import com.tomildev.room_login_compose.features.settings.presentation.components.BackButton
-import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsItem
+import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsActionItem
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsItemContainer
+import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsNavigationItem
+import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsToggleItem
 import com.tomildev.room_login_compose.features.settings.presentation.components.UserProfileHeader
 
 @Composable
@@ -28,6 +31,10 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                modifier = Modifier.padding(horizontal = 15.dp),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background
+                ),
                 navigationIcon = { BackButton(onClick = {}) },
                 title = {
                     SecondaryTitle(title = "Settings")
@@ -54,38 +61,37 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
             PrimarySubtitle(text = "Other settings")
             Spacer(modifier = Modifier.height(15.dp))
             SettingsItemContainer(
-                settingsItem = {
-                    SettingsItem(
+                content = {
+                    SettingsNavigationItem(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_person,
                         text = "Profile details",
-                        trailingIcon = com.tomildev.room_login_compose.R.drawable.ic_arrow_right,
-                        contentDescription = "Profile details"
+                        contentDescription = "Profile details",
+                        onClick = {}
                     )
-                    SettingsItem(
+                    SettingsNavigationItem(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_lock,
                         text = "Password",
-                        trailingIcon = com.tomildev.room_login_compose.R.drawable.ic_arrow_right,
-                        contentDescription = "Password"
+                        contentDescription = "Password",
+                        onClick = {}
                     )
-                    SettingsItem(
+                    SettingsToggleItem(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_moon,
                         text = "Dark mode",
-                        trailingIcon = com.tomildev.room_login_compose.R.drawable.ic_arrow_right,
-                        contentDescription = "Dark mode",
-                        isToggleable = true
+                        checked = true,
+                        showDivider = false,
+                        onCheckedChange = {},
                     )
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))
             SettingsItemContainer(
-                settingsItem = {
-                    SettingsItem(
+                content = {
+                    SettingsActionItem(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_bin,
                         text = "Delete my account",
-                        trailingIcon = com.tomildev.room_login_compose.R.drawable.ic_arrow_right,
-                        contentDescription = "Delete my account",
-                        isWarningColor = true,
-                        hasTrailingIcon = false
+                        isWarning = true,
+                        showDivider = false,
+                        onClick = {}
                     )
                 }
             )

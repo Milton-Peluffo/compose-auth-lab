@@ -1,9 +1,9 @@
 package com.tomildev.room_login_compose.features.settings.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,21 +27,27 @@ fun UserProfileHeader(modifier: Modifier, userName: String, userEmail: String) {
             .fillMaxWidth()
             .height(70.dp)
             .clip(shape = RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .border(
+                1.dp,
+                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                shape = RoundedCornerShape(10.dp)
+            ),
         contentAlignment = Alignment.Center
     ) {
-        Column(modifier = modifier.padding(horizontal = 25.dp)) {
+
+        Column(modifier = modifier.padding(horizontal = 15.dp)) {
             Text(
                 text = userName,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.ExtraBold,
+                fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onBackground
             )
             Text(
                 text = userEmail,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.ExtraBold,
+                fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
             )

@@ -20,7 +20,7 @@ fun PrimarySubtitle(modifier: Modifier = Modifier, text: String) {
         modifier = Modifier.fillMaxWidth(),
         text = text,
         fontSize = 17.sp,
-        fontWeight = FontWeight.ExtraBold,
+        fontWeight = FontWeight.SemiBold,
         textAlign = TextAlign.Start,
         color = MaterialTheme.colorScheme.onBackground
     )

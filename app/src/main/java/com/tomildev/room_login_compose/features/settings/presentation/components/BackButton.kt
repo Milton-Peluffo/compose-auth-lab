@@ -27,6 +27,7 @@ fun BackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         Icon(
             modifier = Modifier
                 .size(30.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
             painter = painterResource(R.drawable.ic_arrow_left),
             contentDescription = "Go back"
         )
