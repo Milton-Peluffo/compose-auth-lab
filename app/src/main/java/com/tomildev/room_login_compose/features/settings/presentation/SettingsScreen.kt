@@ -32,7 +32,8 @@ import com.tomildev.room_login_compose.features.settings.presentation.components
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToLogin: () -> Unit
 ) {
 
     val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
@@ -93,7 +94,10 @@ fun SettingsScreen(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_log_out,
                         text = "Log out",
                         showDivider = false,
-                        onClick = {}
+                        onClick = {
+                            settingsViewModel.logOut()
+                            onNavigateToLogin()
+                        }
                     )
                 }
             )

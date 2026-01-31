@@ -7,5 +7,6 @@ interface UserRepository {
     suspend fun getUserByEmail(email: String): Result<User?>
     suspend fun getUserById(id: Int): Result<User?>
     suspend fun saveUserSession(userId: Int)
+    suspend fun closeUserSession()
     fun getCurrentUser(): Flow<User?>
 }

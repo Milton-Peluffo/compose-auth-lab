@@ -51,6 +51,9 @@ fun NavigationRoot(
             SettingsScreen(
                 onNavigateToHome = {
                     navController.popBackStack()
+                },
+                onNavigateToLogin = {
+                    navController.navigate(NavRoute.Login)
                 }
             )
         }

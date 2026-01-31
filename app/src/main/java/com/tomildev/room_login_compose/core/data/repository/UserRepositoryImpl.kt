@@ -54,4 +54,7 @@ class UserRepositoryImpl @Inject constructor(
         sessionManager.saveSession(userId)
     }
 
+    override suspend fun closeUserSession() {
+        sessionManager.logout()
+    }
 }

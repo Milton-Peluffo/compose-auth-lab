@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import androidx.core.content.edit
 
 @Singleton
 class SessionManager @Inject constructor(@ApplicationContext context: Context) {
@@ -15,7 +16,7 @@ class SessionManager @Inject constructor(@ApplicationContext context: Context) {
     }
 
     fun saveSession(userId: Int) {
-        prefs.edit().putInt(USER_ID, userId).apply()
+        prefs.edit { putInt(USER_ID, userId) }
     }
 
     fun getUserId(): Int {
@@ -23,6 +24,6 @@ class SessionManager @Inject constructor(@ApplicationContext context: Context) {
     }
 
     fun logout() {
-        prefs.edit().clear().apply()
+        prefs.edit { clear() }
     }
 }
