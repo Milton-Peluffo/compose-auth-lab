@@ -53,7 +53,12 @@ fun NavigationRoot(
                     navController.popBackStack()
                 },
                 onNavigateToLogin = {
-                    navController.navigate(NavRoute.Login)
+                    navController.navigate(NavRoute.Login) {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 }
             )
         }
