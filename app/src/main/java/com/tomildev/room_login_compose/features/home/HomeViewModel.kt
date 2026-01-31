@@ -3,10 +3,7 @@ package com.tomildev.room_login_compose.features.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomildev.room_login_compose.core.domain.repository.UserRepository
-import com.tomildev.room_login_compose.core.data.session.SessionManager
-import com.tomildev.room_login_compose.features.auth.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -16,31 +13,22 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val sessionManager: SessionManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun logOut() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            delay(1500)
-            sessionManager.logout()
-            _uiState.update { it.copy(isLoading = false, isLogoutSuccess = true) }
-        }
+    init {
+        fetchCurrentUser()
     }
 
-    fun getUserData(email: String) {
+    private fun fetchCurrentUser() {
         viewModelScope.launch {
-            userRepository.getUserByEmail(email).onSuccess { user ->
+            userRepository.getCurrentUser().collect { user ->
                 user?.let { data ->
-                    _uiState.update {
-                        it.copy(
-                            name = data.name,
-                            phone = data.phone,
-                            email = data.email,
-                            password = data.password,
+                    _uiState.update { homeUiState ->
+                        homeUiState.copy(
+                            name = data.name
                         )
                     }
                 }
@@ -51,9 +39,4 @@ class HomeViewModel @Inject constructor(
 
 data class HomeUiState(
     val name: String = "",
-    val phone: String = "",
-    val email: String = "",
-    val password: String = "",
-    val isLoading: Boolean = false,
-    val isLogoutSuccess: Boolean = false,
 )

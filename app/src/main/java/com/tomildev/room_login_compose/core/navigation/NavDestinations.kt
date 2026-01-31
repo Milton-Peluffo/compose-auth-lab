@@ -11,12 +11,8 @@ sealed interface NavRoute {
     data object Register : NavRoute
 
     @Serializable
-    data class Home(
-        val email: String
-    ) : NavRoute
+    data object Home : NavRoute
 
     @Serializable
-    data class Settings(
-        val email: String
-    ) : NavRoute
+    data object Settings : NavRoute
 }

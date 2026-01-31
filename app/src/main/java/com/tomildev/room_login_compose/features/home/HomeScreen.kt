@@ -4,9 +4,7 @@ package com.tomildev.room_login_compose.features.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -17,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,33 +23,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.room_login_compose.R
-import com.tomildev.room_login_compose.core.presentation.components.OutlinedPrimaryButton
-import com.tomildev.room_login_compose.core.presentation.components.PrimaryButton
-import com.tomildev.room_login_compose.core.presentation.components.PrimaryTextField
 import com.tomildev.room_login_compose.core.presentation.components.PrimaryTitle
-import com.tomildev.room_login_compose.core.presentation.components.SecondaryTitle
-import com.tomildev.room_login_compose.features.settings.presentation.components.BackButton
 import java.util.Locale.getDefault
 
 @Composable
 fun HomeScreen(
-    email: String,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    onNavigateToLogin: () -> Unit,
     onNavigateToSettings: () -> Unit,
 ) {
 
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(Unit) {
-        homeViewModel.getUserData(email)
-    }
-
-    LaunchedEffect(uiState.isLogoutSuccess) {
-        if (uiState.isLogoutSuccess) {
-            onNavigateToLogin()
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -84,62 +64,10 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            val userName: String = uiState.name.uppercase(getDefault())
+            val userName = uiState.name.ifEmpty { "..." }.uppercase(getDefault())
             PrimaryTitle(
                 title = "HI AGAIN $userName",
-                subtitle = "My information"
             )
-            PrimaryTextField(
-                modifier = Modifier,
-                value = uiState.name,
-                onValueChange = { },
-                label = "Name",
-            )
-            Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
-                modifier = Modifier,
-                value = uiState.phone,
-                onValueChange = { },
-                label = "Phone",
-            )
-            Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
-                modifier = Modifier,
-                value = uiState.email,
-                onValueChange = { },
-                label = "Email",
-            )
-            Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
-                modifier = Modifier,
-                value = uiState.password,
-                onValueChange = { },
-                label = "Password",
-                isPasswordField = true
-            )
-            Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
-                modifier = Modifier,
-                value = "",
-                onValueChange = { },
-                label = "Confirm password",
-                isPasswordField = true
-            )
-//            uiState.errorMessage?.let { error ->
-//                TextError(text = error)
-//            }
-            Spacer(Modifier.height(20.dp))
-            PrimaryButton(
-                text = "Edit my information",
-                onClick = { }
-            )
-            Spacer(Modifier.height(20.dp))
-            OutlinedPrimaryButton(
-                text = "Log out",
-                isLoading = uiState.isLoading,
-                onClick = {
-                    homeViewModel.logOut()
-                })
         }
     }
 }

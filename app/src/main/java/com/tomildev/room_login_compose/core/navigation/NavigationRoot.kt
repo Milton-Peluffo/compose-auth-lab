@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.tomildev.room_login_compose.features.auth.presentation.login.LoginScreen
 import com.tomildev.room_login_compose.features.auth.presentation.register.RegisterScreen
 import com.tomildev.room_login_compose.features.home.HomeScreen
@@ -26,8 +25,8 @@ fun NavigationRoot(
                 onNavigateToRegister = {
                     navController.navigate(NavRoute.Register)
                 },
-                onNavigateToHome = { email ->
-                    navController.navigate(NavRoute.Home(email))
+                onNavigateToHome = {
+                    navController.navigate(NavRoute.Home)
                 }
             )
         }
@@ -35,28 +34,21 @@ fun NavigationRoot(
         composable<NavRoute.Register> {
             RegisterScreen(onNavigateToLogin = {
                 navController.navigate(NavRoute.Login)
-            }, onNavigateToHome = { email ->
-                navController.navigate(NavRoute.Home(email))
+            }, onNavigateToHome = {
+                navController.navigate(NavRoute.Home)
             })
         }
 
-        composable<NavRoute.Home> { backStackEntry ->
-            val args = backStackEntry.toRoute<NavRoute.Home>()
+        composable<NavRoute.Home> {
             HomeScreen(
-                email = args.email,
-                onNavigateToLogin = {
-                    navController.navigate(NavRoute.Login)
-                },
                 onNavigateToSettings = {
-                    navController.navigate(NavRoute.Settings(args.email))
+                    navController.navigate(NavRoute.Settings)
                 }
             )
         }
 
-        composable<NavRoute.Settings> { backStackEntry ->
-            val args = backStackEntry.toRoute<NavRoute.Settings>()
+        composable<NavRoute.Settings> {
             SettingsScreen(
-                email = args.email,
                 onNavigateToHome = {
                     navController.popBackStack()
                 }

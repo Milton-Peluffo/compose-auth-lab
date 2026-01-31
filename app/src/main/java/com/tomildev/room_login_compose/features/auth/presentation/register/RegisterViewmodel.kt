@@ -102,10 +102,10 @@ class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepo
             _uiState.update { it.copy(isLoading = true) }
             authRepository.registerUser(
                 user = User(
-                    _uiState.value.name,
-                    _uiState.value.phone,
-                    _uiState.value.email,
-                    _uiState.value.password
+                    name = _uiState.value.name,
+                    phone = _uiState.value.phone,
+                    email = _uiState.value.email,
+                    password = _uiState.value.password
                 )
             )
             _uiState.update { currentState ->

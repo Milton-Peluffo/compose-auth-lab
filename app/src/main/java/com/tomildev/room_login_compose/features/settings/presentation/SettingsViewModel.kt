@@ -18,10 +18,13 @@ class SettingsViewModel @Inject constructor(private val userRepository: UserRepo
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
+    init {
+        fetchCurrentUser()
+    }
 
-    fun getUserData(userEmail: String) {
+    fun fetchCurrentUser() {
         viewModelScope.launch {
-            userRepository.getUserByEmail(userEmail).onSuccess { user ->
+            userRepository.getCurrentUser().collect { user ->
                 user?.let { data ->
                     _uiState.update { settingsUiState ->
                         settingsUiState.copy(
@@ -34,9 +37,18 @@ class SettingsViewModel @Inject constructor(private val userRepository: UserRepo
         }
     }
 
+//    fun logOut() {
+//        viewModelScope.launch {
+//            _uiState.update { it.copy(isLoading = true) }
+//            delay(1500)
+//
+//            _uiState.update { it.copy(isLoading = false, isLogoutSuccess = true) }
+//        }
+//    }
+
 }
 
 data class SettingsUiState(
     val name: String = "",
-    val email: String = ""
+    val email: String = "",
 )

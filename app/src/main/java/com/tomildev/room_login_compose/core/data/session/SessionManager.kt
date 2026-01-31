@@ -6,18 +6,20 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SessionManager @Inject constructor(
-    @ApplicationContext private val context: Context
-) {
+class SessionManager @Inject constructor(@ApplicationContext context: Context) {
 
     private val prefs = context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
 
-    fun saveSession(email: String) {
-        prefs.edit().putString("user_email", email).apply()
+    companion object {
+        const val USER_ID = "user_id"
     }
 
-    fun getSession(): String? {
-        return prefs.getString("user_email", null)
+    fun saveSession(userId: Int) {
+        prefs.edit().putInt(USER_ID, userId).apply()
+    }
+
+    fun getUserId(): Int {
+        return prefs.getInt(USER_ID, -1)
     }
 
     fun logout() {
