@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -154,6 +155,33 @@ fun SettingsActionItem(
         isWarning = isWarning,
         showDivider = showDivider,
         trailingContent = null
+    )
+}
+
+@Composable
+fun SettingsLoadingActionItem(
+    leadingIcon: Int,
+    text: String,
+    isWarning: Boolean = false,
+    isLoading: Boolean = false,
+    showDivider: Boolean = true,
+    onClick: () -> Unit
+) {
+    SettingsItemBase(
+        leadingIcon = leadingIcon,
+        text = text,
+        onClick = onClick,
+        isWarning = isWarning,
+        showDivider = showDivider,
+        trailingContent = {
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                    strokeWidth = 2.dp
+                )
+            }
+        }
     )
 }
 

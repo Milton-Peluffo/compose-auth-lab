@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ import com.tomildev.room_login_compose.core.presentation.components.SecondaryTit
 import com.tomildev.room_login_compose.features.settings.presentation.components.BackButton
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsActionItem
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsItemContainer
+import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsLoadingActionItem
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsNavigationItem
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsToggleItem
 import com.tomildev.room_login_compose.features.settings.presentation.components.UserProfileHeader
@@ -37,6 +39,15 @@ fun SettingsScreen(
 ) {
 
     val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        settingsViewModel.events.collect { event ->
+            when (event) {
+                is SettingsUiEvent.NavigateToLogin ->
+                    onNavigateToLogin()
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -90,13 +101,13 @@ fun SettingsScreen(
                         checked = true,
                         onCheckedChange = {},
                     )
-                    SettingsActionItem(
+                    SettingsLoadingActionItem(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_log_out,
                         text = "Log out",
                         showDivider = false,
+                        isLoading = uiState.isLoading,
                         onClick = {
                             settingsViewModel.logOut()
-                            onNavigateToLogin()
                         }
                     )
                 }
