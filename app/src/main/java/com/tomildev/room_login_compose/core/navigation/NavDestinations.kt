@@ -16,5 +16,7 @@ sealed interface NavRoute {
     ) : NavRoute
 
     @Serializable
-    data object Settings : NavRoute
+    data class Settings(
+        val email: String
+    ) : NavRoute
 }

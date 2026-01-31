@@ -14,8 +14,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.room_login_compose.core.presentation.components.PrimarySubtitle
 import com.tomildev.room_login_compose.core.presentation.components.SecondaryTitle
 import com.tomildev.room_login_compose.features.settings.presentation.components.BackButton
@@ -28,8 +32,16 @@ import com.tomildev.room_login_compose.features.settings.presentation.components
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    email: String,
     onNavigateToHome: () -> Unit
 ) {
+
+    val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        settingsViewModel.getUserData(email)
+    }
 
     Scaffold(
         topBar = {
@@ -57,8 +69,8 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(10.dp))
             UserProfileHeader(
                 modifier = Modifier.fillMaxWidth(),
-                userName = "Milton",
-                userEmail = "milton@gmail.com"
+                userName = uiState.name,
+                userEmail = uiState.email
             )
             Spacer(modifier = Modifier.height(20.dp))
             PrimarySubtitle(text = "Other settings")

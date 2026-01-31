@@ -48,13 +48,15 @@ fun NavigationRoot(
                     navController.navigate(NavRoute.Login)
                 },
                 onNavigateToSettings = {
-                    navController.navigate(NavRoute.Settings)
+                    navController.navigate(NavRoute.Settings(args.email))
                 }
             )
         }
 
-        composable<NavRoute.Settings> {
+        composable<NavRoute.Settings> { backStackEntry ->
+            val args = backStackEntry.toRoute<NavRoute.Settings>()
             SettingsScreen(
+                email = args.email,
                 onNavigateToHome = {
                     navController.popBackStack()
                 }
