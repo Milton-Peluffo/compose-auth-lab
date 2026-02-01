@@ -22,6 +22,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.room_login_compose.core.presentation.components.PrimarySubtitle
 import com.tomildev.room_login_compose.core.presentation.components.SecondaryTitle
+import com.tomildev.room_login_compose.core.presentation.components.dialogs.Dialogs
 import com.tomildev.room_login_compose.features.settings.presentation.components.BackButton
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsActionItem
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsItemContainer
@@ -107,7 +108,7 @@ fun SettingsScreen(
                         showDivider = false,
                         isLoading = uiState.isLoading,
                         onClick = {
-                            settingsViewModel.logOut()
+                            settingsViewModel.onLogoutClick()
                         }
                     )
                 }
@@ -124,6 +125,12 @@ fun SettingsScreen(
                     )
                 }
             )
+            if (uiState.showLogoutDialog) {
+                Dialogs.LogOut(
+                    onConfirm = { settingsViewModel.onConfirmLogoutDialog() },
+                    onDismiss = { settingsViewModel.onDismissLogoutDialog() }
+                )
+            }
         }
     }
 }

@@ -44,7 +44,7 @@ class SettingsViewModel @Inject constructor(private val userRepository: UserRepo
         }
     }
 
-    fun logOut() {
+    fun clearSession() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             userRepository.closeUserSession()
@@ -52,6 +52,19 @@ class SettingsViewModel @Inject constructor(private val userRepository: UserRepo
             _uiState.update { it.copy(isLoading = false) }
             _eventChannel.send(SettingsUiEvent.NavigateToLogin)
         }
+    }
+
+    fun onLogoutClick() {
+        _uiState.update { it.copy(showLogoutDialog = true) }
+    }
+
+    fun onDismissLogoutDialog() {
+        _uiState.update { it.copy(showLogoutDialog = false) }
+    }
+
+    fun onConfirmLogoutDialog() {
+        _uiState.update { it.copy(showLogoutDialog = false) }
+        clearSession()
     }
 }
 
@@ -63,4 +76,6 @@ data class SettingsUiState(
     val name: String = "",
     val email: String = "",
     val isLoading: Boolean = false,
+    val showLogoutDialog: Boolean = false,
+    val showDeleteAccountDialog: Boolean = false,
 )
