@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.core.presentation.components
+package com.tomildev.room_login_compose.core.presentation.components.dialogs
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ConfirmationDialog(
+fun ConfirmationDialogBase(
     modifier: Modifier = Modifier,
     title: String,
     message: String,
@@ -29,7 +29,7 @@ fun ConfirmationDialog(
 
     AlertDialog(
         modifier = modifier,
-        onDismissRequest = { },
+        onDismissRequest = { onDismiss() },
         title = {
             Text(
                 modifier = Modifier.fillMaxWidth(),

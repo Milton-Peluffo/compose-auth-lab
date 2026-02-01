@@ -20,10 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tomildev.room_login_compose.core.presentation.components.ConfirmationDialog
 import com.tomildev.room_login_compose.core.presentation.components.PrimarySubtitle
 import com.tomildev.room_login_compose.core.presentation.components.SecondaryTitle
-import com.tomildev.room_login_compose.core.presentation.debug.SandboxScreen
 import com.tomildev.room_login_compose.features.settings.presentation.components.BackButton
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsActionItem
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsItemContainer
