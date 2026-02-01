@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.tomildev.room_login_compose.core.data.session.SessionManager
 import com.tomildev.room_login_compose.core.navigation.NavRoute
 import com.tomildev.room_login_compose.core.navigation.NavigationRoot
+import com.tomildev.room_login_compose.core.presentation.debug.SandboxScreen
 import com.tomildev.room_login_compose.ui.theme.Room_login_composeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -35,6 +36,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 NavigationRoot(navController = navController, startDestination = startRoute)
+//                SandboxScreen()
             }
         }
     }
