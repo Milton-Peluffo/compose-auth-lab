@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     suspend fun getUserByEmail(email: String): Result<User?>
     suspend fun getUserById(id: Int): Result<User?>
+    suspend fun deleteUserById(): Result<Unit>
     suspend fun saveUserSession(userId: Int)
     suspend fun closeUserSession()
     fun getCurrentUser(): Flow<User?>

@@ -24,7 +24,6 @@ import com.tomildev.room_login_compose.core.presentation.components.PrimarySubti
 import com.tomildev.room_login_compose.core.presentation.components.SecondaryTitle
 import com.tomildev.room_login_compose.core.presentation.components.dialogs.Dialogs
 import com.tomildev.room_login_compose.features.settings.presentation.components.BackButton
-import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsActionItem
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsItemContainer
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsLoadingActionItem
 import com.tomildev.room_login_compose.features.settings.presentation.components.SettingsNavigationItem
@@ -106,7 +105,7 @@ fun SettingsScreen(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_log_out,
                         text = "Log out",
                         showDivider = false,
-                        isLoading = uiState.isLoading,
+                        isLoading = uiState.loadingState is LoadingState.LoggingOut,
                         onClick = {
                             settingsViewModel.onLogoutClick()
                         }
@@ -116,12 +115,13 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(20.dp))
             SettingsItemContainer(
                 content = {
-                    SettingsActionItem(
+                    SettingsLoadingActionItem(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_bin,
                         text = "Delete my account",
                         isWarning = true,
                         showDivider = false,
-                        onClick = {}
+                        isLoading = uiState.loadingState is LoadingState.DeletingAccount,
+                        onClick = { settingsViewModel.onDeleteAccountClick() }
                     )
                 }
             )
@@ -129,6 +129,13 @@ fun SettingsScreen(
                 Dialogs.LogOut(
                     onConfirm = { settingsViewModel.onConfirmLogoutDialog() },
                     onDismiss = { settingsViewModel.onDismissLogoutDialog() }
+                )
+            }
+
+            if (uiState.showDeleteAccountDialog) {
+                Dialogs.DeleteAccount(
+                    onConfirm = { settingsViewModel.onConfirmDeleteAccountDialog() },
+                    onDismiss = { settingsViewModel.onDismissDeleteAccountDialog() }
                 )
             }
         }

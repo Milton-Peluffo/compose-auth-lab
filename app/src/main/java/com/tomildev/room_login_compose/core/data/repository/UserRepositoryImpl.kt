@@ -57,4 +57,18 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun closeUserSession() {
         sessionManager.logout()
     }
+
+    override suspend fun deleteUserById(): Result<Unit> {
+        val userId = sessionManager.getUserId()
+        if (userId != -1) {
+            return try {
+                userDao.deleteUserById(userId)
+                sessionManager.logout()
+                Result.success(Unit)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+        return Result.failure(Exception("User not found"))
+    }
 }

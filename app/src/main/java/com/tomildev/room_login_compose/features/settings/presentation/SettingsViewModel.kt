@@ -46,11 +46,25 @@ class SettingsViewModel @Inject constructor(private val userRepository: UserRepo
 
     fun clearSession() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            _uiState.update { it.copy(loadingState = LoadingState.LoggingOut) }
             userRepository.closeUserSession()
-            delay(1500)
-            _uiState.update { it.copy(isLoading = false) }
+            delay(1200)
+            _uiState.update { it.copy(loadingState = LoadingState.None) }
             _eventChannel.send(SettingsUiEvent.NavigateToLogin)
+        }
+    }
+
+    fun deleteAccount() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(loadingState = LoadingState.DeletingAccount) }
+            delay(2200)
+            val result = userRepository.deleteUserById()
+            _uiState.update { it.copy(loadingState = LoadingState.None) }
+            result.onSuccess {
+                _eventChannel.send(SettingsUiEvent.NavigateToLogin)
+            }.onFailure {
+
+            }
         }
     }
 
@@ -66,16 +80,34 @@ class SettingsViewModel @Inject constructor(private val userRepository: UserRepo
         _uiState.update { it.copy(showLogoutDialog = false) }
         clearSession()
     }
+
+    fun onDeleteAccountClick() {
+        _uiState.update { it.copy(showDeleteAccountDialog = true) }
+    }
+
+    fun onDismissDeleteAccountDialog() {
+        _uiState.update { it.copy(showDeleteAccountDialog = false) }
+    }
+
+    fun onConfirmDeleteAccountDialog() {
+        _uiState.update { it.copy(showDeleteAccountDialog = false) }
+        deleteAccount()
+    }
+}
+data class SettingsUiState(
+    val name: String = "",
+    val email: String = "",
+    val loadingState: LoadingState = LoadingState.None,
+    val showLogoutDialog: Boolean = false,
+    val showDeleteAccountDialog: Boolean = false,
+)
+
+sealed class LoadingState {
+    object None : LoadingState()
+    object LoggingOut : LoadingState()
+    object DeletingAccount : LoadingState()
 }
 
 sealed class SettingsUiEvent {
     data object NavigateToLogin : SettingsUiEvent()
 }
-
-data class SettingsUiState(
-    val name: String = "",
-    val email: String = "",
-    val isLoading: Boolean = false,
-    val showLogoutDialog: Boolean = false,
-    val showDeleteAccountDialog: Boolean = false,
-)

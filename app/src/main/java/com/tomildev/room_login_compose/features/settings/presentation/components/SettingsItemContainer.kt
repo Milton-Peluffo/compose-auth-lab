@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -63,7 +64,7 @@ private fun SettingsItemBase(
     isWarning: Boolean = false,
     showDivider: Boolean = true,
     onClick: (() -> Unit)? = null,
-    trailingContent: @Composable (() -> Unit)? = null
+    trailingContent: @Composable ((color: Color) -> Unit)? = null
 ) {
 
     val color =
@@ -71,7 +72,7 @@ private fun SettingsItemBase(
     val rippleColor =
         if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
 
-    Column() {
+    Column {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -101,7 +102,7 @@ private fun SettingsItemBase(
                 textAlign = TextAlign.Start,
                 color = color
             )
-            trailingContent?.invoke()
+            trailingContent?.invoke(color)
         }
         if (showDivider) {
             HorizontalDivider(
@@ -173,11 +174,11 @@ fun SettingsLoadingActionItem(
         onClick = onClick,
         isWarning = isWarning,
         showDivider = showDivider,
-        trailingContent = {
+        trailingContent = { color ->
             if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = color,
                     strokeWidth = 2.dp
                 )
             }
