@@ -94,6 +94,7 @@ class SettingsViewModel @Inject constructor(private val userRepository: UserRepo
         deleteAccount()
     }
 }
+
 data class SettingsUiState(
     val name: String = "",
     val email: String = "",
