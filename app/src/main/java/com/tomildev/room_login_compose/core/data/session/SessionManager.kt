@@ -4,26 +4,48 @@ import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
-import androidx.core.content.edit
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.IOException
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "userSession")
 
 @Singleton
-class SessionManager @Inject constructor(@ApplicationContext context: Context) {
-
-    private val prefs = context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
+class SessionManager @Inject constructor(@ApplicationContext private val context: Context) {
 
     companion object {
-        const val USER_ID = "user_id"
+        private val USER_ID_KEY = intPreferencesKey("user_id")
     }
 
-    fun saveSession(userId: Int) {
-        prefs.edit { putInt(USER_ID, userId) }
+    val userId: Flow<Int> = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            preferences[USER_ID_KEY] ?: -1
+        }
+
+    suspend fun saveSession(userId: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[USER_ID_KEY] = userId
+        }
     }
 
-    fun getUserId(): Int {
-        return prefs.getInt(USER_ID, -1)
-    }
-
-    fun logout() {
-        prefs.edit { clear() }
+    suspend fun logOut() {
+        context.dataStore.edit { preferences ->
+            preferences.clear()
+        }
     }
 }

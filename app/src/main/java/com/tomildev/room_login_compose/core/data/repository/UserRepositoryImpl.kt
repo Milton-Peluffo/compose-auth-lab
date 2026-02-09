@@ -6,6 +6,7 @@ import com.tomildev.room_login_compose.core.data.session.SessionManager
 import com.tomildev.room_login_compose.core.domain.model.User
 import com.tomildev.room_login_compose.core.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -41,12 +42,13 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override fun getCurrentUser(): Flow<User?> = flow {
-        val userId = sessionManager.getUserId()
-        if (userId != -1) {
-            val entity = userDao.getUserById(userId)
-            emit(entity?.toDomain())
-        } else {
-            emit(null)
+        sessionManager.userId.collect { id ->
+            if (id != -1) {
+                val entity = userDao.getUserById(id)
+                emit(entity?.toDomain())
+            } else {
+                emit(null)
+            }
         }
     }
 
@@ -55,15 +57,15 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun closeUserSession() {
-        sessionManager.logout()
+        sessionManager.logOut()
     }
 
     override suspend fun deleteUserById(): Result<Unit> {
-        val userId = sessionManager.getUserId()
+        val userId = sessionManager.userId.first()
         if (userId != -1) {
             return try {
                 userDao.deleteUserById(userId)
-                sessionManager.logout()
+                sessionManager.logOut()
                 Result.success(Unit)
             } catch (e: Exception) {
                 Result.failure(e)
