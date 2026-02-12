@@ -7,6 +7,7 @@ import javax.inject.Singleton
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -22,24 +23,19 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class UserPreferences @Inject constructor(@ApplicationContext private val context: Context) {
 
     companion object {
-        private val USER_ID_KEY = intPreferencesKey("user_id")
+        private val USER_ID = intPreferencesKey("user_id")
     }
 
+    //-------- SESSION --------
     val userId: Flow<Int> = context.dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
-        }
+        .handleErrors()
         .map { preferences ->
-            preferences[USER_ID_KEY] ?: -1
+            preferences[USER_ID] ?: -1
         }
 
     suspend fun saveSession(userId: Int) {
         context.dataStore.edit { preferences ->
-            preferences[USER_ID_KEY] = userId
+            preferences[USER_ID] = userId
         }
     }
 
@@ -48,4 +44,13 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
             preferences.clear()
         }
     }
+
+    private fun Flow<Preferences>.handleErrors(): Flow<Preferences> = this.catch { exception ->
+        if (exception is IOException) {
+            emit(emptyPreferences())
+        } else {
+            throw exception
+        }
+    }
+
 }
