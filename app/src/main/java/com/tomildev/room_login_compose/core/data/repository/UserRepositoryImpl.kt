@@ -2,7 +2,7 @@ package com.tomildev.room_login_compose.core.data.repository
 
 import com.tomildev.room_login_compose.core.data.dao.UserDao
 import com.tomildev.room_login_compose.core.data.local.entities.UserEntity
-import com.tomildev.room_login_compose.core.data.session.SessionManager
+import com.tomildev.room_login_compose.core.data.preferences.UserPreferences
 import com.tomildev.room_login_compose.core.domain.model.User
 import com.tomildev.room_login_compose.core.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
-    private val sessionManager: SessionManager
+    private val userPreferences: UserPreferences
 ) : UserRepository {
 
     private fun UserEntity.toDomain() = User(
@@ -42,7 +42,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override fun getCurrentUser(): Flow<User?> = flow {
-        sessionManager.userId.collect { id ->
+        userPreferences.userId.collect { id ->
             if (id != -1) {
                 val entity = userDao.getUserById(id)
                 emit(entity?.toDomain())
@@ -53,19 +53,19 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveUserSession(userId: Int) {
-        sessionManager.saveSession(userId)
+        userPreferences.saveSession(userId)
     }
 
     override suspend fun closeUserSession() {
-        sessionManager.logOut()
+        userPreferences.logOut()
     }
 
     override suspend fun deleteUserById(): Result<Unit> {
-        val userId = sessionManager.userId.first()
+        val userId = userPreferences.userId.first()
         if (userId != -1) {
             return try {
                 userDao.deleteUserById(userId)
-                sessionManager.logOut()
+                userPreferences.logOut()
                 Result.success(Unit)
             } catch (e: Exception) {
                 Result.failure(e)

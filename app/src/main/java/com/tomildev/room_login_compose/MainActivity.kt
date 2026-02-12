@@ -7,20 +7,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
-import com.tomildev.room_login_compose.core.data.session.SessionManager
+import com.tomildev.room_login_compose.core.data.preferences.UserPreferences
 import com.tomildev.room_login_compose.core.navigation.NavRoute
 import com.tomildev.room_login_compose.core.navigation.NavigationRoot
-import com.tomildev.room_login_compose.core.presentation.debug.SandboxScreen
 import com.tomildev.room_login_compose.ui.theme.Room_login_composeTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var sessionManager: SessionManager
+    lateinit var userPreferences: UserPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Room_login_composeTheme {
 
-                val userId by sessionManager.userId.collectAsState(initial = null)
+                val userId by userPreferences.userId.collectAsState(initial = null)
 
                 if (userId != null) {
                     val startRoute = if (userId != -1) {

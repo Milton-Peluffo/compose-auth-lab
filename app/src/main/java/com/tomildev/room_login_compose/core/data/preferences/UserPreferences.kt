@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.core.data.session
+package com.tomildev.room_login_compose.core.data.preferences
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -16,10 +16,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "userSession")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app_preferences")
 
 @Singleton
-class SessionManager @Inject constructor(@ApplicationContext private val context: Context) {
+class UserPreferences @Inject constructor(@ApplicationContext private val context: Context) {
 
     companion object {
         private val USER_ID_KEY = intPreferencesKey("user_id")
