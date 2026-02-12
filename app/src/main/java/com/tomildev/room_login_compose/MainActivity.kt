@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
@@ -24,7 +25,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Room_login_composeTheme {
+
+            val isDarkTheme by userPreferences.isDarkMode.collectAsState(initial = false)
+
+            Room_login_composeTheme(darkTheme = isDarkTheme) {
 
                 val userId by userPreferences.userId.collectAsState(initial = null)
 
@@ -38,6 +42,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
 
                     NavigationRoot(navController = navController, startDestination = startRoute)
+
 //                SandboxScreen()
                 }
             }

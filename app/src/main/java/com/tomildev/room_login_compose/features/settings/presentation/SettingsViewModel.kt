@@ -68,6 +68,17 @@ class SettingsViewModel @Inject constructor(private val userRepository: UserRepo
         }
     }
 
+    //--------- THEME -----------
+
+    val isDarkTheme = userRepository.isDarkThemeEnabled()
+
+    fun onThemeChanged(isEnabled: Boolean) {
+
+        viewModelScope.launch {
+            userRepository.toggleTheme(isEnabled)
+        }
+    }
+
     fun onLogoutClick() {
         _uiState.update { it.copy(showLogoutDialog = true) }
     }

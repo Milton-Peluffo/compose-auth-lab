@@ -10,4 +10,8 @@ interface UserRepository {
     suspend fun saveUserSession(userId: Int)
     suspend fun closeUserSession()
     fun getCurrentUser(): Flow<User?>
+
+    //------ THEME -------
+    fun isDarkThemeEnabled(): Flow<Boolean>
+    suspend fun toggleTheme(isEnabled: Boolean)
 }

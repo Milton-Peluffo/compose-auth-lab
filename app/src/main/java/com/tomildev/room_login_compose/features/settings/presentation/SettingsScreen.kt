@@ -39,6 +39,7 @@ fun SettingsScreen(
 ) {
 
     val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
+    val isDarkTheme by settingsViewModel.isDarkTheme.collectAsStateWithLifecycle(initialValue = false)
 
     LaunchedEffect(Unit) {
         settingsViewModel.events.collect { event ->
@@ -98,8 +99,8 @@ fun SettingsScreen(
                     SettingsToggleItem(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_moon,
                         text = "Dark mode",
-                        checked = true,
-                        onCheckedChange = {},
+                        checked = isDarkTheme,
+                        onCheckedChange = { newValue -> settingsViewModel.onThemeChanged(newValue) },
                     )
                     SettingsLoadingActionItem(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_log_out,

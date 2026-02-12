@@ -52,6 +52,15 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    //------ THEME -------
+
+    override fun isDarkThemeEnabled(): Flow<Boolean> = userPreferences.isDarkMode
+    override suspend fun toggleTheme(isEnabled: Boolean) {
+        userPreferences.toggleDarkMode(isDark = isEnabled)
+    }
+
+    //------ USER SESSION -------
+
     override suspend fun saveUserSession(userId: Int) {
         userPreferences.saveSession(userId)
     }

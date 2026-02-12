@@ -24,6 +24,7 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
 
     private object PreferencesKeys {
         val USER_ID = intPreferencesKey("user_id")
+        val DARK_MODE = booleanPreferencesKey("dark_mode")
     }
 
     //-------- SESSION --------
@@ -45,6 +46,18 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
         }
     }
 
+    //-------- CONFIGURATION SECTION --------
+    val isDarkMode: Flow<Boolean> = context.dataStore.data
+        .handleErrors()
+        .map { preferences ->
+            preferences[PreferencesKeys.DARK_MODE] ?: false
+        }
+
+    suspend fun toggleDarkMode(isDark: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.DARK_MODE] = isDark
+        }
+    }
 
     private fun Flow<Preferences>.handleErrors(): Flow<Preferences> = this.catch { exception ->
         if (exception is IOException) {
