@@ -22,20 +22,20 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 @Singleton
 class UserPreferences @Inject constructor(@ApplicationContext private val context: Context) {
 
-    companion object {
-        private val USER_ID = intPreferencesKey("user_id")
+    private object PreferencesKeys {
+        val USER_ID = intPreferencesKey("user_id")
     }
 
     //-------- SESSION --------
     val userId: Flow<Int> = context.dataStore.data
         .handleErrors()
         .map { preferences ->
-            preferences[USER_ID] ?: -1
+            preferences[PreferencesKeys.USER_ID] ?: -1
         }
 
     suspend fun saveSession(userId: Int) {
         context.dataStore.edit { preferences ->
-            preferences[USER_ID] = userId
+            preferences[PreferencesKeys.USER_ID] = userId
         }
     }
 
@@ -45,6 +45,7 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
         }
     }
 
+
     private fun Flow<Preferences>.handleErrors(): Flow<Preferences> = this.catch { exception ->
         if (exception is IOException) {
             emit(emptyPreferences())
@@ -52,5 +53,4 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
             throw exception
         }
     }
-
 }
