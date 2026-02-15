@@ -49,10 +49,10 @@ fun SettingsScreen(
                     onNavigateToLogin()
 
                 is SettingsUiEvent.NavigateToAccountInfo ->
-                    onNavigateToAccountInfo
+                    onNavigateToAccountInfo()
 
                 is SettingsUiEvent.NavigateToAccountPassword ->
-                    onNavigateToAccountPassword
+                    onNavigateToAccountPassword()
             }
         }
     }
