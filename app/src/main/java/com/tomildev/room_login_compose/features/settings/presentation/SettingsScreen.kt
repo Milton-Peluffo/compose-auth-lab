@@ -2,7 +2,6 @@
 
 package com.tomildev.room_login_compose.features.settings.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
