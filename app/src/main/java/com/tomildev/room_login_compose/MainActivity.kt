@@ -1,12 +1,16 @@
 package com.tomildev.room_login_compose
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalView
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.tomildev.room_login_compose.core.data.preferences.UserPreferences
 import com.tomildev.room_login_compose.core.navigation.NavRoute
@@ -15,6 +19,7 @@ import com.tomildev.room_login_compose.ui.theme.Room_login_composeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
