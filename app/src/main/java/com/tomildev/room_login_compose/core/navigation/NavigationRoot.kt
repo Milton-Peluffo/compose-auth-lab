@@ -62,5 +62,13 @@ fun NavigationRoot(
                 }
             )
         }
+
+        composable<NavRoute.AccountInfo>{
+
+        }
+
+        composable<NavRoute.AccountPassword>{
+
+        }
     }
 }
