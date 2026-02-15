@@ -8,6 +8,7 @@ import com.tomildev.room_login_compose.features.auth.presentation.login.LoginScr
 import com.tomildev.room_login_compose.features.auth.presentation.register.RegisterScreen
 import com.tomildev.room_login_compose.features.home.HomeScreen
 import com.tomildev.room_login_compose.features.settings.presentation.SettingsScreen
+import com.tomildev.room_login_compose.features.settings.profile_info.presentation.ProfileInfoScreen
 
 @Composable
 fun NavigationRoot(
@@ -70,7 +71,7 @@ fun NavigationRoot(
         }
 
         composable<NavRoute.AccountInfo> {
-
+            ProfileInfoScreen()
         }
 
         composable<NavRoute.AccountPassword> {
