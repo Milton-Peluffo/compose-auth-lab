@@ -59,15 +59,21 @@ fun NavigationRoot(
                         }
                         launchSingleTop = true
                     }
+                },
+                onNavigateToAccountInfo = {
+                    navController.navigate(NavRoute.AccountInfo)
+                },
+                onNavigateToAccountPassword = {
+                    navController.navigate(NavRoute.AccountPassword)
                 }
             )
         }
 
-        composable<NavRoute.AccountInfo>{
+        composable<NavRoute.AccountInfo> {
 
         }
 
-        composable<NavRoute.AccountPassword>{
+        composable<NavRoute.AccountPassword> {
 
         }
     }

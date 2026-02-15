@@ -78,6 +78,18 @@ class SettingsViewModel @Inject constructor(private val userRepository: UserRepo
         }
     }
 
+    fun onAccountInfoClick() {
+        viewModelScope.launch {
+            _eventChannel.send(SettingsUiEvent.NavigateToAccountInfo)
+        }
+    }
+
+    fun onAccountPasswordClick() {
+        viewModelScope.launch {
+            _eventChannel.send(SettingsUiEvent.NavigateToAccountPassword)
+        }
+    }
+
     fun onLogoutClick() {
         _uiState.update { it.copy(showLogoutDialog = true) }
     }
@@ -121,4 +133,6 @@ sealed class LoadingState {
 
 sealed class SettingsUiEvent {
     data object NavigateToLogin : SettingsUiEvent()
+    data object NavigateToAccountInfo : SettingsUiEvent()
+    data object NavigateToAccountPassword : SettingsUiEvent()
 }
