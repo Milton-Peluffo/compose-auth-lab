@@ -77,18 +77,19 @@ fun SettingsScreen(
             UserProfileHeader(
                 modifier = Modifier.fillMaxWidth(),
                 userName = uiState.name,
-                userEmail = uiState.email
+                userEmail = uiState.email,
+                onclick = {}
             )
             Spacer(modifier = Modifier.height(20.dp))
             PrimarySubtitle(text = "Other settings")
             Spacer(modifier = Modifier.height(15.dp))
             SettingsItemContainer(
                 content = {
-                    SettingsNavigationItem(
-                        leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_person,
-                        text = "Profile details",
-                        contentDescription = "Profile details",
-                        onClick = {}
+                    SettingsToggleItem(
+                        leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_moon,
+                        text = "Dark mode",
+                        checked = isDarkTheme,
+                        onCheckedChange = { newValue -> settingsViewModel.onThemeChanged(newValue) },
                     )
                     SettingsNavigationItem(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_lock,
@@ -96,11 +97,11 @@ fun SettingsScreen(
                         contentDescription = "Password",
                         onClick = {}
                     )
-                    SettingsToggleItem(
-                        leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_moon,
-                        text = "Dark mode",
-                        checked = isDarkTheme,
-                        onCheckedChange = { newValue -> settingsViewModel.onThemeChanged(newValue) },
+                    SettingsNavigationItem(
+                        leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_data,
+                        text = "Data controls",
+                        contentDescription = "Profile details",
+                        onClick = {}
                     )
                     SettingsLoadingActionItem(
                         leadingIcon = com.tomildev.room_login_compose.R.drawable.ic_log_out,
