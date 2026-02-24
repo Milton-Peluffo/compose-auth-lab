@@ -16,11 +16,10 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     private fun UserEntity.toDomain() = User(
-        id = id,
+        uid = uid,
         name = name,
-        phone = phone,
         email = email,
-        password = password
+        createdAt = createdAt
     )
 
     override suspend fun getUserByEmail(email: String): Result<User?> {
