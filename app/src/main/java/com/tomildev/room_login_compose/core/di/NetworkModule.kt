@@ -36,7 +36,7 @@ object NetworkModule {
             .addInterceptor(logging)
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
-                    .addHeader("apikey", BuildConfig.SUPABASE_URL)
+                    .addHeader("apikey", BuildConfig.SUPABASE_ANON_KEY)
                     .addHeader("Authorization", "Bearer ${BuildConfig.SUPABASE_ANON_KEY}")
                     .addHeader("Content-Type", "application/json")
                     .addHeader("Prefer", "return=representation")
