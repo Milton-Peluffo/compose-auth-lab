@@ -18,9 +18,7 @@ class UserRepositoryImpl @Inject constructor(
     private fun UserEntity.toDomain() = User(
         id = id,
         name = name,
-        phone = phone,
         email = email,
-        password = password
     )
 
     override suspend fun getUserByEmail(email: String): Result<User?> {

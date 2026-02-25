@@ -56,27 +56,27 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun userLogin() {
-
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            val result = userRepository.getUserByEmail(_uiState.value.email)
-
-            result.onSuccess { user ->
-                if (user != null && user.password == _uiState.value.password) {
-                    delay(2500)
-                    userRepository.saveUserSession(user.id)
-                    _uiState.update { it.copy(isLoginSuccess = true) }
-
-                } else {
-                    _uiState.update {
-                        it.copy(errorMessage = "Email or password incorrect")
-                    }
-                }
-            }.onFailure {
-                _uiState.update { it.copy(errorMessage = "An error occurred") }
-            }
-            _uiState.update { it.copy(isLoading = false) }
-        }
+//
+//        viewModelScope.launch {
+//            _uiState.update { it.copy(isLoading = true) }
+//            val result = userRepository.getUserByEmail(_uiState.value.email)
+//
+//            result.onSuccess { user ->
+//                if (user != null && user.password == _uiState.value.password) {
+//                    delay(2500)
+//                    userRepository.saveUserSession(user.id)
+//                    _uiState.update { it.copy(isLoginSuccess = true) }
+//
+//                } else {
+//                    _uiState.update {
+//                        it.copy(errorMessage = "Email or password incorrect")
+//                    }
+//                }
+//            }.onFailure {
+//                _uiState.update { it.copy(errorMessage = "An error occurred") }
+//            }
+//            _uiState.update { it.copy(isLoading = false) }
+//        }
     }
 
     fun onEmailChange(email: String) {

@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
 
                 if (userId != null) {
                     val startRoute = if (userId != -1) {
-                        NavRoute.Settings
+                        NavRoute.Home
                     } else {
                         NavRoute.Login
                     }

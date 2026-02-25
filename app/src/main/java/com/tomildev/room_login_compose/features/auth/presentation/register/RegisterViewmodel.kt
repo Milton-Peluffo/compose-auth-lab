@@ -40,16 +40,6 @@ class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepo
                 false
             }
 
-            !isPhoneLengthValid(phone = _uiState.value.phone) -> {
-                _uiState.update {
-                    it.copy(
-                        errorMessage = "Phone must have 10 characters",
-                        isPhoneError = true
-                    )
-                }
-                false
-            }
-
             !isEmailValid(email = _uiState.value.email) -> {
                 _uiState.update {
                     it.copy(
@@ -102,11 +92,11 @@ class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepo
             _uiState.update { it.copy(isLoading = true) }
             authRepository.registerUser(
                 user = User(
+                    id = "",
                     name = _uiState.value.name,
-                    phone = _uiState.value.phone,
-                    email = _uiState.value.email,
-                    password = _uiState.value.password
-                )
+                    email = _uiState.value.email
+                ),
+                password = _uiState.value.password
             )
             _uiState.update { currentState ->
                 delay(2500)
@@ -122,16 +112,6 @@ class RegisterViewmodel @Inject constructor(private val authRepository: AuthRepo
                 name = name,
                 errorMessage = null,
                 isNameError = false
-            )
-        }
-    }
-
-    fun onPhoneChange(phone: String) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                phone = phone,
-                errorMessage = null,
-                isPhoneError = false
             )
         }
     }

@@ -11,12 +11,12 @@ interface UserDao {
     @Insert
     suspend fun insertUser(user: UserEntity)
 
-    @Query("SELECT * FROM users WHERE uid = :uid")
+    @Query("SELECT * FROM users WHERE id = :uid")
     suspend fun getUserById(uid: Int): UserEntity?
 
     @Query("SELECT * FROM users WHERE email = :email")
     suspend fun getUserByEmail(email: String): UserEntity?
 
-    @Query("DELETE FROM users WHERE uid = :uid")
+    @Query("DELETE FROM users WHERE id = :uid")
     suspend fun deleteUserById(uid: Int)
 }

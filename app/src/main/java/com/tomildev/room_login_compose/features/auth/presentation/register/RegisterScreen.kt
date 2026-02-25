@@ -65,14 +65,6 @@ fun RegisterScreen(
             Spacer(Modifier.height(5.dp))
             PrimaryTextField(
                 modifier = Modifier,
-                value = uiState.phone,
-                onValueChange = { registerViewmodel.onPhoneChange(phone = it) },
-                label = "Phone",
-                isError = uiState.isPhoneError
-            )
-            Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
-                modifier = Modifier,
                 value = uiState.email,
                 onValueChange = { registerViewmodel.onEmailChange(email = it) },
                 label = "Email",
