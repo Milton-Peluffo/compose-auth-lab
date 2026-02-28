@@ -43,68 +43,11 @@ class RegisterViewmodel @Inject constructor(
                 }
             }
         }
-
     }
 
-//    private fun validateFields(): Boolean {
-//        return when {
-//
-//            !isNameLengthValid(name = _uiState.value.name) -> {
-//                _uiState.update {
-//                    it.copy(
-//                        errorMessage = "Name must have 3 characters at least",
-//                        isNameError = true
-//                    )
-//                }
-//                false
-//            }
-//
-//            !isEmailValid(email = _uiState.value.email) -> {
-//                _uiState.update {
-//                    it.copy(
-//                        errorMessage = "Invalid email format",
-//                        isEmailError = true
-//                    )
-//                }
-//                false
-//            }
-//
-//            !isPasswordLengthValid(password = _uiState.value.password) -> {
-//                _uiState.update {
-//                    it.copy(
-//                        errorMessage = "Password must have 8 character at least",
-//                        isPasswordError = true
-//                    )
-//                }
-//                false
-//            }
-//
-//            !isPasswordMatched(
-//                password = _uiState.value.password,
-//                confirmPassword = _uiState.value.confirmPassword
-//            ) -> {
-//                _uiState.update {
-//                    it.copy(
-//                        errorMessage = "Password should match",
-//                        isPasswordConfirmError = true
-//                    )
-//                }
-//                false
-//            }
-//
-//            !_uiState.value.isCheckBoxChecked -> {
-//                _uiState.update {
-//                    it.copy(
-//                        errorMessage = "You must accept the Terms and Conditions to continue",
-//                        isTermsAndConditionsError = true
-//                    )
-//                }
-//                false
-//            }
-//
-//            else -> true
-//        }
-//    }
+    private fun validateFields(): Boolean {
+
+    }
 
     fun registerUser() {
         viewModelScope.launch {

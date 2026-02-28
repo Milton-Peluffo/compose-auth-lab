@@ -8,7 +8,7 @@ class ValidatePassword @Inject constructor() {
 
     fun execute(password: String): ValidationResult {
 
-        val passwordRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])")
+        val passwordRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$")
 
         if (!passwordRegex.matches(password)) {
             return ValidationResult.Error(
