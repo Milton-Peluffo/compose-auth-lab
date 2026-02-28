@@ -3,7 +3,7 @@ package com.tomildev.room_login_compose.core.common.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.tomildev.room_login_compose.R
-import com.tomildev.room_login_compose.core.domain.model.ValidationError
+import com.tomildev.room_login_compose.core.domain.model.user.ValidationError
 
 @Composable
 fun ValidationError.asString(): String {

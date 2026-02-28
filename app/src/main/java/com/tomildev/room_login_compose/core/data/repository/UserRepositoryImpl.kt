@@ -3,7 +3,7 @@ package com.tomildev.room_login_compose.core.data.repository
 import com.tomildev.room_login_compose.core.data.dao.UserDao
 import com.tomildev.room_login_compose.core.data.local.entities.UserEntity
 import com.tomildev.room_login_compose.core.data.preferences.UserPreferences
-import com.tomildev.room_login_compose.core.domain.model.User
+import com.tomildev.room_login_compose.core.domain.model.user.User
 import com.tomildev.room_login_compose.core.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

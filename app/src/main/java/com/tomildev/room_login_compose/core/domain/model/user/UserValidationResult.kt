@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.core.domain.model
+package com.tomildev.room_login_compose.core.domain.model.user
 
 sealed class ValidationResult {
     object Success : ValidationResult()
@@ -8,5 +8,7 @@ sealed class ValidationResult {
 sealed class ValidationError {
     object EmptyField : ValidationError()
     object TooShort : ValidationError()
-    object InvalidFormat : ValidationError()
+    object InvalidName : ValidationError()
+    object InvalidEmail : ValidationError()
+    object InvalidPassword : ValidationError()
 }

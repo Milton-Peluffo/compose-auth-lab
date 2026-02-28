@@ -1,7 +1,7 @@
 package com.tomildev.room_login_compose.core.domain.use_case.user
 
-import com.tomildev.room_login_compose.core.domain.model.ValidationError
-import com.tomildev.room_login_compose.core.domain.model.ValidationResult
+import com.tomildev.room_login_compose.core.domain.model.user.ValidationError
+import com.tomildev.room_login_compose.core.domain.model.user.ValidationResult
 import javax.inject.Inject
 
 class ValidatePassword @Inject constructor() {
@@ -12,7 +12,7 @@ class ValidatePassword @Inject constructor() {
 
         if (!passwordRegex.matches(password)) {
             return ValidationResult.Error(
-                error = ValidationError.InvalidFormat
+                error = ValidationError.InvalidPassword
             )
         }
 

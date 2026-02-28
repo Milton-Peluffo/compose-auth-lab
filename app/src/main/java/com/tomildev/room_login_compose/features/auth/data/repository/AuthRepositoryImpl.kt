@@ -1,8 +1,7 @@
 package com.tomildev.room_login_compose.features.auth.data.repository
 
 import com.tomildev.room_login_compose.core.data.dao.UserDao
-import com.tomildev.room_login_compose.core.data.local.entities.UserEntity
-import com.tomildev.room_login_compose.core.domain.model.User
+import com.tomildev.room_login_compose.core.domain.model.user.User
 import com.tomildev.room_login_compose.features.auth.data.remote.dto.ProfileDto
 import com.tomildev.room_login_compose.features.auth.data.remote.dto.SignUpRequestDto
 import com.tomildev.room_login_compose.features.auth.data.remote.service.AuthService

@@ -1,6 +1,6 @@
 package com.tomildev.room_login_compose.core.domain.repository
 
-import com.tomildev.room_login_compose.core.domain.model.User
+import com.tomildev.room_login_compose.core.domain.model.user.User
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {

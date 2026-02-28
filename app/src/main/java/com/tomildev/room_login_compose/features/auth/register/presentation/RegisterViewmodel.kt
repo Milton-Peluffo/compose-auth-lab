@@ -2,9 +2,9 @@ package com.tomildev.room_login_compose.features.auth.register.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tomildev.room_login_compose.core.domain.model.User
-import com.tomildev.room_login_compose.core.domain.model.ValidationError
-import com.tomildev.room_login_compose.core.domain.model.ValidationResult
+import com.tomildev.room_login_compose.core.domain.model.user.User
+import com.tomildev.room_login_compose.core.domain.model.user.ValidationError
+import com.tomildev.room_login_compose.core.domain.model.user.ValidationResult
 import com.tomildev.room_login_compose.core.domain.use_case.user.UserUseCases
 import com.tomildev.room_login_compose.features.auth.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

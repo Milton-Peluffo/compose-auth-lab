@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.core.domain.model
+package com.tomildev.room_login_compose.core.domain.model.user
 
 data class User(
     val id: String,
