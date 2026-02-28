@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.core.presentation.components
+package com.tomildev.room_login_compose.core.common.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import com.tomildev.room_login_compose.R
 
 @Composable
 fun PrimaryTextField(
@@ -50,9 +51,9 @@ fun PrimaryTextField(
 
                 IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                     val iconId = if (isPasswordVisible) {
-                        com.tomildev.room_login_compose.R.drawable.ic_eye_visibility_tue
+                        R.drawable.ic_eye_visibility_tue
                     } else {
-                        com.tomildev.room_login_compose.R.drawable.ic_eye_visibility_false
+                        R.drawable.ic_eye_visibility_false
                     }
                     Icon(
                         painter = painterResource(id = iconId),

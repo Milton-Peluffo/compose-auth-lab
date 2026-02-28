@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.core.presentation.debug
+package com.tomildev.room_login_compose.core.common.presentation.debug
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.core.presentation.components
+package com.tomildev.room_login_compose.core.common.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

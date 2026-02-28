@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.room_login_compose.R
-import com.tomildev.room_login_compose.core.presentation.components.PrimaryTitle
+import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTitle
 import java.util.Locale.getDefault
 
 @Composable
