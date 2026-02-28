@@ -8,6 +8,11 @@ class ValidateConfirmPassword @Inject constructor() {
 
     fun execute(password: String, confirmPassword: String): UserValidationResult {
 
+        if (confirmPassword.isBlank())
+            UserValidationResult.Error(
+                error = UserValidationError.EmptyField
+            )
+
         if (password != confirmPassword) {
             return UserValidationResult.Error(
                 error = UserValidationError.PasswordDoNotMatch

@@ -10,6 +10,11 @@ class ValidateEmail @Inject constructor() {
 
         val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
 
+        if (email.isBlank())
+            UserValidationResult.Error(
+                error = UserValidationError.EmptyField
+            )
+
         if (!emailRegex.matches(email)) {
             return UserValidationResult.Error(
                 error = UserValidationError.InvalidEmail
