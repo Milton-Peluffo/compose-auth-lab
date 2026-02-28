@@ -12,4 +12,5 @@ sealed class UserValidationError {
     object InvalidName : UserValidationError()
     object InvalidEmail : UserValidationError()
     object InvalidPassword : UserValidationError()
+    object PasswordDoNotMatch : UserValidationError()
 }

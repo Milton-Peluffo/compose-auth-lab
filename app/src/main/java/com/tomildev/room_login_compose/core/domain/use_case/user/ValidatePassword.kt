@@ -10,9 +10,9 @@ class ValidatePassword @Inject constructor() {
 
         val passwordRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$")
 
-        if (!passwordRegex.matches(password)) {
+        if (password.isBlank()) {
             return UserValidationResult.Error(
-                error = UserValidationError.InvalidPassword
+                error = UserValidationError.EmptyField
             )
         }
 
@@ -22,9 +22,9 @@ class ValidatePassword @Inject constructor() {
             )
         }
 
-        if (password.isBlank()) {
+        if (!passwordRegex.matches(password)) {
             return UserValidationResult.Error(
-                error = UserValidationError.EmptyField
+                error = UserValidationError.InvalidPassword
             )
         }
 
