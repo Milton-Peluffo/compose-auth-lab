@@ -2,7 +2,6 @@ package com.tomildev.room_login_compose.features.auth.register.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tomildev.room_login_compose.core.common.presentation.asString
 import com.tomildev.room_login_compose.core.domain.model.user.User
 import com.tomildev.room_login_compose.core.domain.model.user.UserValidationError
 import com.tomildev.room_login_compose.core.domain.model.user.UserValidationResult
@@ -16,6 +15,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+/**
+ * ViewModel responsible for managing the user registration process.
+ *
+ * It centralizes the UI state through [RegisterUiState] and orchestrates
+ * input validation via [UserUseCases] before proceeding with account
+ * creation in [AuthRepository].
+ */
 
 @HiltViewModel
 class RegisterViewmodel @Inject constructor(
@@ -65,7 +72,7 @@ class RegisterViewmodel @Inject constructor(
                 isEmailError = emailResult is UserValidationResult.Error,
                 isPasswordError = passwordResult is UserValidationResult.Error,
                 isPasswordConfirmError = passwordConfirmResult is UserValidationResult.Error,
-                )
+            )
         }
         return !hasError
     }
