@@ -67,7 +67,7 @@ class RegisterViewmodel @Inject constructor(
                 isPasswordConfirmError = passwordConfirmResult is UserValidationResult.Error,
                 )
         }
-        return !hasError && _uiState.value.isCheckBoxChecked
+        return !hasError
     }
 
     fun registerUser() {
@@ -128,16 +128,6 @@ class RegisterViewmodel @Inject constructor(
             )
         }
     }
-
-    fun onCheckedChange(isCheckBoxChecked: Boolean) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                isCheckBoxChecked = isCheckBoxChecked,
-                errorMessage = null,
-                isTermsAndConditionsError = false
-            )
-        }
-    }
 }
 
 data class RegisterUiState(
@@ -150,7 +140,6 @@ data class RegisterUiState(
     val isRegistered: Boolean = false,
     val isRegistrationSuccess: Boolean = false,
     val isLoading: Boolean = false,
-    val isCheckBoxChecked: Boolean = false,
     //ERRORS
     val errorMessage: String? = null,
     val isNameError: Boolean = false,
@@ -161,5 +150,4 @@ data class RegisterUiState(
     val passwordError: UserValidationError? = null,
     val passwordConfirmError: UserValidationError? = null,
     val isPasswordConfirmError: Boolean = false,
-    val isTermsAndConditionsError: Boolean = false,
 )

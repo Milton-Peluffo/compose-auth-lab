@@ -101,15 +101,6 @@ fun RegisterScreen(
             if (uiState.isPasswordConfirmError){
                 TextError(text = uiState.passwordConfirmError!!.asString())
             }
-            Spacer(Modifier.height(5.dp))
-            AuthCheckBox(
-                checked = uiState.isCheckBoxChecked,
-                onCheckedChange = { registerViewmodel.onCheckedChange(isCheckBoxChecked = it) },
-                text = "I agree to Terms and Privacy Policy "
-            )
-            if (uiState.isTermsAndConditionsError){
-                TextError(text = uiState.passwordConfirmError!!.asString())
-            }
             Spacer(Modifier.height(25.dp))
             PrimaryButton(
                 text = "Sign Up",
