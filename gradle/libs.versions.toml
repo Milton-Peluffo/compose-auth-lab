@@ -1,22 +1,25 @@
 [versions]
-agp = "8.13.2"
-kotlin = "2.0.21"
+agp = "9.0.0"
+kotlin = "2.3.20"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
-activityCompose = "1.9.3"
-composeBom = "2024.09.00"
+activityCompose = "1.10.0"
+composeBom = "2026.03.00"
+lottieCompose = "6.7.1"
 room = "2.8.4"
-lifecycle = "2.8.7"
-ksp = "2.0.21-1.0.27"
-hilt = "2.51.1"
+lifecycle = "2.10.0"
+ksp = "2.3.6"
+hilt = "2.59.2"
 hilt-navigation = "1.3.0"
-navigation-compose = "2.8.0"
-kotlinx-serialization = "1.6.3"
+navigation-compose = "2.9.7"
+kotlinx-serialization = "1.8.0"
 datastore-preferences = "1.2.0"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
+supabase = "3.4.1"
+ktor = "3.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,6 +40,11 @@ androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 
+#SUPABASE
+supabase-auth = { group = "io.github.jan-tennert.supabase", name = "auth-kt", version.ref = "supabase" }
+ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+
 #ROOM
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
@@ -55,6 +63,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences" }
 
 #RETROFIT
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }

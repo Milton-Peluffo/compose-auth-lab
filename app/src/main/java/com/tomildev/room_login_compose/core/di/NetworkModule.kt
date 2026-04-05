@@ -1,7 +1,6 @@
 package com.tomildev.room_login_compose.core.di
 
 import com.tomildev.room_login_compose.BuildConfig
-import com.tomildev.room_login_compose.features.auth.data.remote.service.AuthService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,11 +54,5 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideAuthService(retrofit: Retrofit): AuthService {
-        return retrofit.create(AuthService::class.java)
     }
 }

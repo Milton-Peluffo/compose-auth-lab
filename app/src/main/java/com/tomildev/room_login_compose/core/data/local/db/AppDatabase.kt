@@ -7,7 +7,8 @@ import com.tomildev.room_login_compose.core.data.local.entities.UserEntity
 
 @Database(
     entities = [UserEntity::class],
-    version = 2
+    version = 2,
+    exportSchema = false
 )
 
 abstract class AppDatabase : RoomDatabase() {

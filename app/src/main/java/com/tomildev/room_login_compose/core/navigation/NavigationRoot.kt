@@ -5,7 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.tomildev.room_login_compose.features.auth.login.presentation.LoginScreen
-import com.tomildev.room_login_compose.features.auth.register.presentation.RegisterScreen
+import com.tomildev.room_login_compose.features.auth.otp.presentation.OtpScreen
+import com.tomildev.room_login_compose.features.auth.signup.presentation.SignUpScreen
 import com.tomildev.room_login_compose.features.home.HomeScreen
 import com.tomildev.room_login_compose.features.settings.presentation.SettingsScreen
 
@@ -23,7 +24,7 @@ fun NavigationRoot(
         composable<NavRoute.Login> {
             LoginScreen(
                 onNavigateToRegister = {
-                    navController.navigate(NavRoute.Register)
+                    navController.navigate(NavRoute.SignUp)
                 },
                 onNavigateToHome = {
                     navController.navigate(NavRoute.Home)
@@ -31,11 +32,21 @@ fun NavigationRoot(
             )
         }
 
-        composable<NavRoute.Register> {
-            RegisterScreen(onNavigateToLogin = {
+        composable<NavRoute.SignUp> {
+            SignUpScreen(onNavigateToLogin = {
                 navController.navigate(NavRoute.Login)
+            }, onNavigateToOtp = { email ->
+                navController.navigate(NavRoute.Otp(email = email))
+            })
+        }
+
+        composable<NavRoute.Otp> {
+            OtpScreen(onNavigateBack = {
+                navController.popBackStack()
             }, onNavigateToHome = {
-                navController.navigate(NavRoute.Home)
+                navController.navigate(NavRoute.Home) {
+                    popUpTo(NavRoute.SignUp) { inclusive = true }
+                }
             })
         }
 

@@ -17,12 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.room_login_compose.core.common.presentation.components.OutlinedPrimaryButton
-import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryButton
+import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.PrimarySubtitle
 import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTextField
 import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTitle
 import com.tomildev.room_login_compose.core.common.presentation.components.TextError
-import com.tomildev.room_login_compose.features.auth.presentation.components.AuthTextAction
+import com.tomildev.room_login_compose.features.common.presentation.components.AuthTextAction
 
 @Composable
 fun LoginScreen(

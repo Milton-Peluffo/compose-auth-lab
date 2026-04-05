@@ -4,17 +4,19 @@ import android.content.Context
 import androidx.room.Room
 import com.tomildev.room_login_compose.core.data.dao.UserDao
 import com.tomildev.room_login_compose.core.data.local.db.AppDatabase
-import com.tomildev.room_login_compose.core.data.repository.UserRepositoryImpl
 import com.tomildev.room_login_compose.core.data.preferences.UserPreferences
+import com.tomildev.room_login_compose.core.data.repository.UserRepositoryImpl
 import com.tomildev.room_login_compose.core.domain.repository.UserRepository
-import com.tomildev.room_login_compose.features.auth.data.remote.service.AuthService
-import com.tomildev.room_login_compose.features.auth.data.repository.AuthRepositoryImpl
-import com.tomildev.room_login_compose.features.auth.domain.repository.AuthRepository
+import com.tomildev.room_login_compose.features.auth.otp.data.OtpRepositoryImpl
+import com.tomildev.room_login_compose.features.auth.otp.domain.OtpRepository
+import com.tomildev.room_login_compose.features.auth.signup.data.SignUpRepositoryImpl
+import com.tomildev.room_login_compose.features.auth.signup.domain.SignUpRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.jan.supabase.SupabaseClient
 import javax.inject.Singleton
 
 @Module
@@ -29,7 +31,7 @@ object AppModule {
             context,
             AppDatabase::class.java,
             "user_database"
-        ).fallbackToDestructiveMigration(false).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides
@@ -37,8 +39,14 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(userDao: UserDao, authService: AuthService): AuthRepository {
-        return AuthRepositoryImpl(userDao, authService)
+    fun provideSignUpRepository(supabaseClient: SupabaseClient): SignUpRepository {
+        return SignUpRepositoryImpl(supabaseClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOtpRepository(supabaseClient: SupabaseClient): OtpRepository {
+        return OtpRepositoryImpl(supabaseClient)
     }
 
     @Provides

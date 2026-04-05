@@ -8,7 +8,10 @@ sealed interface NavRoute {
     data object Login : NavRoute
 
     @Serializable
-    data object Register : NavRoute
+    data object SignUp : NavRoute
+
+    @Serializable
+    data class Otp(val email: String) : NavRoute
 
     @Serializable
     data object Home : NavRoute
