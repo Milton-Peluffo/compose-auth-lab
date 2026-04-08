@@ -38,6 +38,6 @@
     <string name="otp_code_resent_success">Verification code sent successfully!</string>
 
     <!-- Error messages -->
-    <string name="otp_network_invalid_code_error">Invalid verification code</string>
+    <string name="otp_network_invalid_code_error">Verification code expired or invalid</string>
 
 </resources>

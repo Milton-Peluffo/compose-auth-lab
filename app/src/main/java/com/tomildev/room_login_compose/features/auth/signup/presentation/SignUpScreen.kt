@@ -21,17 +21,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.PrimarySubtitle
 import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTextField
 import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTitle
 import com.tomildev.room_login_compose.core.common.presentation.components.TextError
+import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackBars
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackbarType
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackbarVisualsCustom
 import com.tomildev.room_login_compose.core.common.presentation.mapper.toUiText
 import com.tomildev.room_login_compose.features.common.presentation.components.AuthTextAction
 import com.tomildev.room_login_compose.features.common.presentation.components.RegistrationSuccessDialog
+import com.tomildev.room_login_compose.ui.theme.Dimens
 
 @Composable
 fun SignUpScreen(
@@ -74,7 +75,7 @@ fun SignUpScreen(
     Scaffold(
         snackbarHost = {
             SnackbarHost(
-                modifier = Modifier.padding(vertical = 20.dp),
+                modifier = Modifier.padding(vertical = Dimens.SnackbarBottomPadding),
                 hostState = snackbarHostState
             ) { data ->
                 val customVisuals = data.visuals as? SnackbarVisualsCustom

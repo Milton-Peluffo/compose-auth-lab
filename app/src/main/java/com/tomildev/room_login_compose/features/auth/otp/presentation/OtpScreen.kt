@@ -105,7 +105,9 @@ fun OtpScreen(
     val otpFormContent = @Composable {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(if (isLandScape) 4.dp else 0.dp)
+            verticalArrangement = Arrangement.spacedBy(
+                if (isLandScape) Dimens.SpacingTiny else 0.dp
+            )
         ) {
             Box(
                 modifier = Modifier.fillMaxWidth(),
@@ -192,7 +194,7 @@ fun OtpScreen(
     Scaffold(
         snackbarHost = {
             SnackbarHost(
-                modifier = Modifier.padding(vertical = 20.dp),
+                modifier = Modifier.padding(vertical = Dimens.SnackbarBottomPadding),
                 hostState = snackbarHostState
             ) { data ->
                 val customVisuals = data.visuals as? SnackbarVisualsCustom

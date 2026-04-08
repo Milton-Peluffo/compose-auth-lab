@@ -54,12 +54,9 @@ class OtpRepositoryImpl @Inject constructor(
                 when {
                     message.contains("Unable to resolve host") -> DataError.Network.NoInternet
                     message.contains("timeout") || message.contains("timed out") -> DataError.Network.Timeout
+                    message.contains("otp_expired") -> DataError.Network.InvalidOtp
                     else -> DataError.Network.NoInternet
                 }
-            }
-
-            is UnauthorizedRestException -> {
-                DataError.Network.InvalidOtp
             }
 
             is RestException -> {

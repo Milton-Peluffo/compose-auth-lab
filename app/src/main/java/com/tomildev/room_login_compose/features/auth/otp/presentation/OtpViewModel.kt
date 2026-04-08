@@ -94,7 +94,6 @@ class OtpViewModel @Inject constructor(
                         DataError.Network.Timeout -> {
                             _uiEvents.send(OtpUiEvent.Warning(result.error))
                         }
-
                         DataError.Network.InvalidOtp,
                         DataError.Network.ServiceUnavailable -> {
                             _uiEvents.send(OtpUiEvent.Error(result.error))

@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
                     } else {
 //                        NavRoute.Otp
                         NavRoute.SignUp
+                        NavRoute.Login
                     }
 
                     val navController = rememberNavController()
