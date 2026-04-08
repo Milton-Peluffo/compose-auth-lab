@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun PrimaryTitle(
     modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Start,
     title: String,
     subtitle: String? = null
 ) {
@@ -32,8 +33,8 @@ fun PrimaryTitle(
             Text(
                 text = title,
                 fontSize = 35.sp,
-                fontWeight = FontWeight.ExtraBold,
-                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = textAlign,
                 color = MaterialTheme.colorScheme.onBackground
             )
         }

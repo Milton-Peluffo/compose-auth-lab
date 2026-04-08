@@ -1,10 +1,9 @@
-package com.tomildev.room_login_compose.features.auth.login.presentation
+package com.tomildev.room_login_compose.features.auth.signin.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -12,27 +11,28 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tomildev.room_login_compose.core.common.presentation.components.OutlinedPrimaryButton
-import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
-import com.tomildev.room_login_compose.core.common.presentation.components.PrimarySubtitle
-import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTextField
 import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTitle
 import com.tomildev.room_login_compose.core.common.presentation.components.TextError
-import com.tomildev.room_login_compose.features.common.presentation.components.AuthTextAction
+import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
+import com.tomildev.room_login_compose.core.common.presentation.components.spacers.VerticalSpacer
+import com.tomildev.room_login_compose.core.common.presentation.components.textfields.PrimaryTextField
+import com.tomildev.room_login_compose.features.auth.common.components.AuthHorizontalDivider
+import com.tomildev.room_login_compose.features.auth.common.components.AuthTextAction
+import com.tomildev.room_login_compose.features.auth.common.components.social.SocialAuthButtons
+import com.tomildev.room_login_compose.ui.theme.Dimens
 
 @Composable
-fun LoginScreen(
+fun SignInScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = hiltViewModel(),
+    signInViewModel: SignInViewModel = hiltViewModel(),
     onNavigateToRegister: () -> Unit,
     onNavigateToHome: (String) -> Unit
 ) {
 
-    val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by signInViewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.isLoginSuccess) {
         if (uiState.isLoginSuccess) {
@@ -51,46 +51,50 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             PrimaryTitle(
-                title = "WELCOME BACK!",
-                subtitle = "Log in to continue"
+                modifier = Modifier.fillMaxWidth(),
+                title = "Hey,Welcome Back!",
             )
-            PrimarySubtitle(text = "Email")
             PrimaryTextField(
                 modifier = Modifier,
                 value = uiState.email,
-                onValueChange = { loginViewModel.onEmailChange(email = it) },
+                onValueChange = { signInViewModel.onEmailChange(email = it) },
                 label = "Email",
                 isError = uiState.isEmailError
             )
-            Spacer(Modifier.height(5.dp))
-            PrimarySubtitle(text = "Password")
+            VerticalSpacer(height = Dimens.SpacingMedium)
             PrimaryTextField(
                 modifier = Modifier,
                 value = uiState.password,
-                onValueChange = { loginViewModel.onPasswordChange(password = it) },
+                onValueChange = { signInViewModel.onPasswordChange(password = it) },
                 label = "Password",
                 isError = uiState.isPasswordError,
                 isPasswordField = true
             )
-            Spacer(Modifier.height(10.dp))
+            VerticalSpacer(height = Dimens.SpacingMedium)
             AuthTextAction(
-                text = "Forget Password?",
+                text = "Forgot Password?",
                 onClick = { },
-                textAlign = TextAlign.End
+                horizontalArrangement = Arrangement.End
             )
             uiState.errorMessage?.let { error ->
                 TextError(text = error)
             }
-            Spacer(Modifier.height(30.dp))
+            VerticalSpacer(height = Dimens.SpacingLarge)
             PrimaryButton(
-                text = "Login",
+                text = "Sign in",
                 isLoading = uiState.isLoading,
-                onClick = { loginViewModel.onLoginClick() }
+                onClick = { signInViewModel.onLoginClick() }
             )
-            Spacer(Modifier.height(15.dp))
-            OutlinedPrimaryButton(
-                text = "Create an account",
-                onClick = { onNavigateToRegister() })
+            VerticalSpacer(height = Dimens.SpacingExtraLarge)
+            AuthHorizontalDivider(text = "or")
+            VerticalSpacer(height = Dimens.SpacingLarge)
+            SocialAuthButtons.Google(onClick = {})
+            VerticalSpacer(height = Dimens.SpacingLarge)
+            AuthTextAction(
+                text = "Don't Have an account",
+                actionText = "Sign up",
+                onClick = { onNavigateToRegister() },
+            )
         }
     }
 }

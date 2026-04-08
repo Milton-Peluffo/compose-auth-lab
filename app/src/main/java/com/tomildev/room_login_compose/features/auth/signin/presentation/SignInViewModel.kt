@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.features.auth.login.presentation
+package com.tomildev.room_login_compose.features.auth.signin.presentation
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
+class SignInViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) : ViewModel() {
 

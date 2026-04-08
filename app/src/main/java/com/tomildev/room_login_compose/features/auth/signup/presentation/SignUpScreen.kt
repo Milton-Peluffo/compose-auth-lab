@@ -22,15 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.room_login_compose.core.common.presentation.components.PrimarySubtitle
-import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTextField
 import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTitle
 import com.tomildev.room_login_compose.core.common.presentation.components.TextError
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackBars
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackbarType
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackbarVisualsCustom
+import com.tomildev.room_login_compose.core.common.presentation.components.textfields.OutlinedTextField
 import com.tomildev.room_login_compose.core.common.presentation.mapper.toUiText
-import com.tomildev.room_login_compose.features.common.presentation.components.AuthTextAction
+import com.tomildev.room_login_compose.features.auth.common.components.AuthTextAction
 import com.tomildev.room_login_compose.features.common.presentation.components.RegistrationSuccessDialog
 import com.tomildev.room_login_compose.ui.theme.Dimens
 
@@ -122,7 +122,7 @@ fun SignUpScreen(
                 subtitle = "Create your account"
             )
             PrimarySubtitle(text = "Fill fields below to get started")
-            PrimaryTextField(
+            OutlinedTextField(
                 modifier = Modifier,
                 value = uiState.name,
                 onValueChange = { registerViewmodel.onNameChange(name = it) },
@@ -133,7 +133,7 @@ fun SignUpScreen(
                 TextError(text = uiState.nameError!!.toUiText().asString())
             }
             Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
+            OutlinedTextField(
                 modifier = Modifier,
                 value = uiState.email,
                 onValueChange = { registerViewmodel.onEmailChange(email = it) },
@@ -144,7 +144,7 @@ fun SignUpScreen(
                 TextError(text = uiState.emailError!!.toUiText().asString())
             }
             Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
+            OutlinedTextField(
                 modifier = Modifier,
                 value = uiState.password,
                 onValueChange = { registerViewmodel.onPasswordChange(password = it) },
@@ -156,7 +156,7 @@ fun SignUpScreen(
                 TextError(text = uiState.passwordError!!.toUiText().asString())
             }
             Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
+            OutlinedTextField(
                 modifier = Modifier,
                 value = uiState.confirmPassword,
                 onValueChange = { registerViewmodel.onConfirmPasswordChange(confirmPassword = it) },
