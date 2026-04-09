@@ -35,13 +35,14 @@ fun AuthTextAction(
         Texts.Body(
             text = text,
             textAlign = textAlign,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.primary,
+            isSecondary = true
         )
         HorizontalSpacer(Dimens.SpacingTiny)
         Texts.Body(
             text = actionText,
             textAlign = textAlign,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
         )
     }
 }

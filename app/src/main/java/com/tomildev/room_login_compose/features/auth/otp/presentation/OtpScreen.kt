@@ -39,7 +39,7 @@ import com.tomildev.room_login_compose.core.common.presentation.mapper.toUiText
 import com.tomildev.room_login_compose.core.domain.model.error.DataError
 import com.tomildev.room_login_compose.features.auth.otp.presentation.components.CustomNumericKeyboard
 import com.tomildev.room_login_compose.features.auth.otp.presentation.components.InputDigitBox
-import com.tomildev.room_login_compose.features.settings.presentation.components.BackButton
+import com.tomildev.room_login_compose.core.common.presentation.components.buttons.BackButton
 import com.tomildev.room_login_compose.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
             val systemTheme = isSystemInDarkTheme()
             val isDarkTheme by userPreferences.isDarkMode.collectAsState(initial = systemTheme)
 
-            Room_login_composeTheme(darkTheme = true) {
+            Room_login_composeTheme(darkTheme = false) {
 
                 val userId by userPreferences.userId.collectAsState(initial = null)
 
@@ -40,7 +40,8 @@ class MainActivity : ComponentActivity() {
                     } else {
 //                        NavRoute.Otp
                         NavRoute.SignUp
-                        NavRoute.Login
+//                        NavRoute.Login
+                        NavRoute.Settings
                     }
 
                     val navController = rememberNavController()

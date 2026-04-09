@@ -18,7 +18,7 @@ import com.tomildev.room_login_compose.core.common.presentation.components.Prima
 import com.tomildev.room_login_compose.core.common.presentation.components.TextError
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.spacers.VerticalSpacer
-import com.tomildev.room_login_compose.core.common.presentation.components.textfields.PrimaryTextField
+import com.tomildev.room_login_compose.core.common.presentation.components.textfields.TextFields
 import com.tomildev.room_login_compose.features.auth.common.components.AuthHorizontalDivider
 import com.tomildev.room_login_compose.features.auth.common.components.AuthTextAction
 import com.tomildev.room_login_compose.features.auth.common.components.social.SocialAuthButtons
@@ -54,7 +54,7 @@ fun SignInScreen(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Hey,Welcome Back!",
             )
-            PrimaryTextField(
+            TextFields.Email(
                 modifier = Modifier,
                 value = uiState.email,
                 onValueChange = { signInViewModel.onEmailChange(email = it) },
@@ -62,7 +62,7 @@ fun SignInScreen(
                 isError = uiState.isEmailError
             )
             VerticalSpacer(height = Dimens.SpacingMedium)
-            PrimaryTextField(
+            TextFields.Password(
                 modifier = Modifier,
                 value = uiState.password,
                 onValueChange = { signInViewModel.onPasswordChange(password = it) },
@@ -91,7 +91,7 @@ fun SignInScreen(
             SocialAuthButtons.Google(onClick = {})
             VerticalSpacer(height = Dimens.SpacingLarge)
             AuthTextAction(
-                text = "Don't Have an account",
+                text = "Don't have an account?",
                 actionText = "Sign up",
                 onClick = { onNavigateToRegister() },
             )

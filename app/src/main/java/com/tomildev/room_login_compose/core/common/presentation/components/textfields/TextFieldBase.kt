@@ -15,19 +15,21 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.tomildev.room_login_compose.R
 
 @Composable
-fun PrimaryTextField(
+fun TextFieldBase(
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
     value: String,
     label: String,
     isError: Boolean = false,
-    enabled: Boolean = true,
+    leadingIcon: Painter,
+    contentDescription: String? = null,
     isPasswordField: Boolean = false
 ) {
 
@@ -35,7 +37,6 @@ fun PrimaryTextField(
 
     TextField(
         value = value,
-        enabled = enabled,
         onValueChange = onValueChange,
         isError = isError,
         label = { Text(text = label) },
@@ -46,6 +47,13 @@ fun PrimaryTextField(
             PasswordVisualTransformation()
         } else {
             VisualTransformation.None
+        },
+
+        leadingIcon = {
+            Icon(
+                painter = leadingIcon,
+                contentDescription = contentDescription
+            )
         },
 
         trailingIcon = {
@@ -65,10 +73,10 @@ fun PrimaryTextField(
         },
 
         colors =  TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.surface,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-            disabledContainerColor = MaterialTheme.colorScheme.surface,
-            errorContainerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.5f),
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            errorContainerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.3f),
             errorLabelColor = MaterialTheme.colorScheme.primary,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
