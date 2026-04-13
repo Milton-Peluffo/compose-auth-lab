@@ -21,14 +21,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTitle
-import com.tomildev.room_login_compose.core.common.presentation.components.TextError
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackBars
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackbarType
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackbarVisualsCustom
 import com.tomildev.room_login_compose.core.common.presentation.components.spacers.VerticalSpacer
 import com.tomildev.room_login_compose.core.common.presentation.components.textfields.TextFields
+import com.tomildev.room_login_compose.core.common.presentation.components.texts.TextError
+import com.tomildev.room_login_compose.core.common.presentation.components.texts.Texts
 import com.tomildev.room_login_compose.core.common.presentation.mapper.toUiText
 import com.tomildev.room_login_compose.features.auth.common.components.AuthHorizontalDivider
 import com.tomildev.room_login_compose.features.auth.common.components.AuthTextAction
@@ -118,10 +118,11 @@ fun SignUpScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PrimaryTitle(
+            Texts.Headline(
                 modifier = Modifier.fillMaxWidth(),
-                title = "Let's get Started",
+                text = "Let's get \nStarted",
             )
+            VerticalSpacer(height = Dimens.SpacingExtraLarge)
             TextFields.Name(
                 modifier = Modifier,
                 value = uiState.name,

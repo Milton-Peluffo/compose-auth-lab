@@ -72,9 +72,11 @@ fun TextFieldBase(
             }
         },
 
-        colors =  TextFieldDefaults.colors(
+        colors = TextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
             disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             errorContainerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.3f),
             errorLabelColor = MaterialTheme.colorScheme.primary,

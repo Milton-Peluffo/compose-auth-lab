@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTitle
-import com.tomildev.room_login_compose.core.common.presentation.components.TextError
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.spacers.VerticalSpacer
 import com.tomildev.room_login_compose.core.common.presentation.components.textfields.TextFields
+import com.tomildev.room_login_compose.core.common.presentation.components.texts.TextError
+import com.tomildev.room_login_compose.core.common.presentation.components.texts.Texts
 import com.tomildev.room_login_compose.core.common.presentation.mapper.toUiText
 import com.tomildev.room_login_compose.features.auth.common.components.AuthHorizontalDivider
 import com.tomildev.room_login_compose.features.auth.common.components.AuthTextAction
@@ -50,10 +50,11 @@ fun SignInScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PrimaryTitle(
+            Texts.Headline(
                 modifier = Modifier.fillMaxWidth(),
-                title = "Hey,Welcome Back!",
+                text = "Hey,\nWelcome\nBack",
             )
+            VerticalSpacer(height = Dimens.SpacingExtraLarge)
             TextFields.Email(
                 modifier = Modifier,
                 value = uiState.email,

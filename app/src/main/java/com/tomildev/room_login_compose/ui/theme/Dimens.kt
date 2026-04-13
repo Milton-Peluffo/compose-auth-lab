@@ -7,7 +7,7 @@ object Dimens {
     val ScreenHorizontalPadding = 20.dp
     val SnackbarBottomPadding = 20.dp
     val SpacingTiny = 4.dp
-    val SpacingSmall = 8.dp
+    val SpacingSmall = 10.dp
     val SpacingMedium = 16.dp
     val SpacingLarge = 24.dp
     val SpacingExtraLarge = 32.dp
