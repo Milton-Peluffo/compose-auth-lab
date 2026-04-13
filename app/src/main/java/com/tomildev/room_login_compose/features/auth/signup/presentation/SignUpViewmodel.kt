@@ -29,7 +29,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class RegisterViewmodel @Inject constructor(
+class SignUpViewmodel @Inject constructor(
     private val signUpRepository: SignUpRepository,
     private val userUseCases: UserUseCases
 ) : ViewModel() {
@@ -75,6 +75,7 @@ class RegisterViewmodel @Inject constructor(
             updateErrorState(passwordConfirmError = passwordConfirmResult.error)
             return false
         }
+
         updateErrorState()
         return true
     }
@@ -163,6 +164,11 @@ class RegisterViewmodel @Inject constructor(
                 errorMessage = null,
             )
         }
+        if (password == _uiState.value.confirmPassword) {
+            _uiState.update { it.copy(isPasswordMatch = true) }
+        } else {
+            _uiState.update { it.copy(isPasswordMatch = false) }
+        }
     }
 
     fun onConfirmPasswordChange(confirmPassword: String) {
@@ -172,6 +178,11 @@ class RegisterViewmodel @Inject constructor(
                 passwordConfirmError = null,
                 errorMessage = null,
             )
+        }
+        if (confirmPassword == _uiState.value.password) {
+            _uiState.update { it.copy(isPasswordMatch = true) }
+        } else {
+            _uiState.update { it.copy(isPasswordMatch = false) }
         }
     }
 }
