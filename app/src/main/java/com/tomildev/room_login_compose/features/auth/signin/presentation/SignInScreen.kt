@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +18,7 @@ import com.tomildev.room_login_compose.core.common.presentation.components.TextE
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.spacers.VerticalSpacer
 import com.tomildev.room_login_compose.core.common.presentation.components.textfields.TextFields
+import com.tomildev.room_login_compose.core.common.presentation.mapper.toUiText
 import com.tomildev.room_login_compose.features.auth.common.components.AuthHorizontalDivider
 import com.tomildev.room_login_compose.features.auth.common.components.AuthTextAction
 import com.tomildev.room_login_compose.features.auth.common.components.social.SocialAuthButtons
@@ -34,11 +34,11 @@ fun SignInScreen(
 
     val uiState by signInViewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState.isLoginSuccess) {
-        if (uiState.isLoginSuccess) {
-            onNavigateToHome(uiState.email)
-        }
-    }
+//    LaunchedEffect(uiState.isLoginSuccess) {
+//        if (uiState.isLoginSuccess) {
+//            onNavigateToHome(uiState.email)
+//        }
+//    }
 
     Scaffold { innerPadding ->
 
@@ -59,26 +59,28 @@ fun SignInScreen(
                 value = uiState.email,
                 onValueChange = { signInViewModel.onEmailChange(email = it) },
                 label = "Email",
-                isError = uiState.isEmailError
+                isError = uiState.emailError != null
             )
+            if (uiState.emailError != null) {
+                TextError(text = uiState.emailError!!.toUiText().asString())
+            }
             VerticalSpacer(height = Dimens.SpacingMedium)
             TextFields.Password(
                 modifier = Modifier,
                 value = uiState.password,
                 onValueChange = { signInViewModel.onPasswordChange(password = it) },
                 label = "Password",
-                isError = uiState.isPasswordError,
-                isPasswordField = true
+                isError = uiState.passwordError != null
             )
+            if (uiState.passwordError != null) {
+                TextError(text = uiState.passwordError!!.toUiText().asString())
+            }
             VerticalSpacer(height = Dimens.SpacingMedium)
             AuthTextAction(
                 text = "Forgot Password?",
                 onClick = { },
                 horizontalArrangement = Arrangement.End
             )
-            uiState.errorMessage?.let { error ->
-                TextError(text = error)
-            }
             VerticalSpacer(height = Dimens.SpacingLarge)
             PrimaryButton(
                 text = "Sign in",
