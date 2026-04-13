@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
@@ -46,10 +45,11 @@ fun SignInScreen(
             modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = Dimens.ScreenHorizontalPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            VerticalSpacer(Dimens.ScreenPaddingTop)
             Texts.Headline(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Hey,\nWelcome\nBack",
@@ -59,7 +59,6 @@ fun SignInScreen(
                 modifier = Modifier,
                 value = uiState.email,
                 onValueChange = { signInViewModel.onEmailChange(email = it) },
-                label = "Email",
                 isError = uiState.emailError != null
             )
             if (uiState.emailError != null) {
@@ -70,7 +69,6 @@ fun SignInScreen(
                 modifier = Modifier,
                 value = uiState.password,
                 onValueChange = { signInViewModel.onPasswordChange(password = it) },
-                label = "Password",
                 isError = uiState.passwordError != null
             )
             if (uiState.passwordError != null) {

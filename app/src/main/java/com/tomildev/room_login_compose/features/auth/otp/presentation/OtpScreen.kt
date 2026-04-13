@@ -252,7 +252,7 @@ fun OtpScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Top
                 ) {
-                    VerticalSpacer(Dimens.ScreenPadding)
+                    VerticalSpacer(Dimens.ScreenPaddingTop)
                     otpFormContent()
                     VerticalSpacer(Dimens.SpacingLarge)
                     keyboardContent()

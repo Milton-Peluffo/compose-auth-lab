@@ -114,10 +114,11 @@ fun SignUpScreen(
             modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = Dimens.ScreenHorizontalPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            VerticalSpacer(Dimens.ScreenPaddingTop)
             Texts.Headline(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Let's get \nStarted",
@@ -127,7 +128,6 @@ fun SignUpScreen(
                 modifier = Modifier,
                 value = uiState.name,
                 onValueChange = { signUpViewmodel.onNameChange(name = it) },
-                label = "Name",
                 isError = uiState.nameError != null
             )
             if (uiState.nameError != null) {
@@ -138,7 +138,6 @@ fun SignUpScreen(
                 modifier = Modifier,
                 value = uiState.email,
                 onValueChange = { signUpViewmodel.onEmailChange(email = it) },
-                label = "Email",
                 isError = uiState.emailError != null
             )
             if (uiState.emailError != null) {
@@ -149,7 +148,6 @@ fun SignUpScreen(
                 modifier = Modifier,
                 value = uiState.password,
                 onValueChange = { signUpViewmodel.onPasswordChange(password = it) },
-                label = "Password",
                 isError = uiState.passwordError != null
             )
             if (uiState.passwordError != null) {
@@ -160,7 +158,6 @@ fun SignUpScreen(
                 modifier = Modifier,
                 value = uiState.confirmPassword,
                 onValueChange = { signUpViewmodel.onConfirmPasswordChange(confirmPassword = it) },
-                label = "Confirm password",
                 isError = uiState.passwordConfirmError != null,
                 isPasswordMatch = uiState.isPasswordMatch
             )

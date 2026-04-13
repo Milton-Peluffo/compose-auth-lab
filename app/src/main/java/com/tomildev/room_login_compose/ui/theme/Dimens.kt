@@ -3,7 +3,7 @@ package com.tomildev.room_login_compose.ui.theme
 import androidx.compose.ui.unit.dp
 
 object Dimens {
-    val ScreenPadding = 30.dp
+    val ScreenPaddingTop = 30.dp
     val ScreenHorizontalPadding = 20.dp
     val SnackbarBottomPadding = 20.dp
     val SpacingTiny = 4.dp
