@@ -33,16 +33,20 @@ fun AuthTextAction(
         horizontalArrangement = horizontalArrangement
     ) {
         Texts.Body(
+            modifier = Modifier,
             text = text,
             textAlign = textAlign,
             color = MaterialTheme.colorScheme.primary,
             isSecondary = true
         )
-        HorizontalSpacer(Dimens.SpacingTiny)
-        Texts.Body(
-            text = actionText,
-            textAlign = textAlign,
-            color = MaterialTheme.colorScheme.primary,
-        )
+        if (actionText.isNotEmpty()) {
+            HorizontalSpacer(Dimens.SpacingTiny)
+            Texts.Body(
+                modifier = Modifier,
+                text = actionText,
+                textAlign = textAlign,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
     }
 }

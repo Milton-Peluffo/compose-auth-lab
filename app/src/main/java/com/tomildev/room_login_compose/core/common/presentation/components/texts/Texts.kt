@@ -15,9 +15,9 @@ object Texts {
         textAlign: TextAlign = TextAlign.Start
     ) {
         AppText(
+            modifier = modifier,
             text = text,
             style = MaterialTheme.typography.headlineLarge,
-            modifier = modifier,
             textAlign = textAlign
         )
     }
@@ -31,11 +31,11 @@ object Texts {
         textAlign: TextAlign = TextAlign.Start
     ) {
         AppText(
+            modifier = modifier,
             text = text,
             color = color,
             style = MaterialTheme.typography.titleLarge,
             alpha = if (isSecondary!!) 0.6f else 1f,
-            modifier = modifier,
             textAlign = textAlign
         )
     }
@@ -49,11 +49,11 @@ object Texts {
         textAlign: TextAlign = TextAlign.Start
     ) {
         AppText(
+            modifier = modifier,
             text = text,
             color = color,
             style = MaterialTheme.typography.titleMedium,
             alpha = if (isSecondary) 0.6f else 1f,
-            modifier = modifier,
             textAlign = textAlign
         )
     }
@@ -67,11 +67,11 @@ object Texts {
         textAlign: TextAlign = TextAlign.Start
     ) {
         AppText(
+            modifier = modifier,
             text = text,
             color = color,
             style = MaterialTheme.typography.bodyMedium,
             alpha = if (isSecondary) 0.6f else 1f,
-            modifier = modifier,
             textAlign = textAlign
         )
     }
@@ -84,10 +84,10 @@ object Texts {
         textAlign: TextAlign = TextAlign.Center
     ) {
         AppText(
+            modifier = modifier,
             text = text,
             style = MaterialTheme.typography.labelLarge,
             color = color,
-            modifier = modifier,
             textAlign = textAlign
         )
     }

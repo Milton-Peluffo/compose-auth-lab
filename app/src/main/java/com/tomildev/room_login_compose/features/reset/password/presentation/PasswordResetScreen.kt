@@ -11,7 +11,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.BackButton
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.spacers.VerticalSpacer
@@ -29,7 +28,7 @@ fun PasswordResetScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.padding( horizontal = Dimens.ScreenHorizontalPadding),
+                modifier = Modifier.padding(horizontal = Dimens.ScreenHorizontalPadding),
                 title = {},
                 navigationIcon = { BackButton(onClick = { onNavigateToSignIn() }) },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -51,6 +50,12 @@ fun PasswordResetScreen(
             Texts.Headline(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Create,\nNew password",
+            )
+            VerticalSpacer(height = Dimens.SpacingExtraLarge)
+            Texts.Body(
+                modifier = modifier.fillMaxWidth(),
+                text = "Your new password must be different\nfrom the previously used password",
+                isSecondary = true,
             )
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
             TextFields.Password(
