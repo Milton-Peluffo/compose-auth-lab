@@ -2,42 +2,29 @@
     <string name="app_name">Trakii</string>
 
     <!-- ========================== COMMON ========================== -->
-    <string name="error_empty_field">This field cannot be empty</string>
-    <string name="error_user_name_too_short"> Username must have 3 characters at least </string>
-    <string name="error_user_name_invalid"> Username must have only letters, numbers and underscores </string>
-    <string name="error_email_invalid">Invalid email format</string>
-    <string name="error_password_too_short">Password must have 8 characters at least</string>
-    <string name="error_password_format">Password needs uppercase, lowercase and a special character</string>
-    <string name="error_confirm_password_match"> Passwords should match </string>
+    <!-- Common texts -->
+    <string name="common_btn_confirm">Confirm</string>
+    <string name="common_btn_cancel">Cancel</string>
 
-    <!-- Network errors -->
-    <string name="error_network_no_internet_error">No internet connection</string>
-    <string name="error_network_timeout_error">Request timed out</string>
-    <string name="error_network_email_already_exists_error">This email is already registered</string>
-    <string name="error_network_unknown_error">An unknown error occurred</string>
-    <string name="error_network_service_unavailable_error">Application service unavailable</string>
+    <!-- Common user text field -->
+    <string name="common_user_label_name">Name</string>
+    <string name="common_user_label_email">Email</string>
+    <string name="common_user_label_password">Password</string>
+    <string name="common_user_label_confirm_password">Confirm Password</string>
 
-    <!--  ========================== REGISTER SCREEN  ========================== -->
-    <string name="register_title">HEY THERE!</string>
-    <string name="register_subtitle">Create your account</string>
-    <string name="register_label_name">Name</string>
-    <string name="register_label_password">Password</string>
-    <string name="register_btn_signup">Sign Up</string>
-    <string name="register_text_action">Already Have Account? Log In</string>
+    <!-- Common Domain errors -->
+    <string name="common_error_empty_field">This field cannot be empty</string>
+    <string name="common_error_user_name_too_short">Username must have 3 characters at least</string>
+    <string name="common_error_user_name_invalid">Username must have only letters, numbers and underscores</string>
+    <string name="common_error_email_invalid">Invalid email format</string>
+    <string name="common_error_password_too_short">Password must have 8 characters at least</string>
+    <string name="common_error_password_format">Password needs uppercase, lowercase and a special character</string>
+    <string name="common_error_password_match">Passwords should match</string>
 
-    <!-- Success messages -->
-    <string name="register_network_success_title">Account created successfully!</string>
-    <string name="register_network_success_description">Please check your email to verify your account</string>
-
-    <!-- Error messages -->
-    <string name="login_network_invalid_credentials_error">Invalid email or password</string>
-
-    <!-- ========================== OTP SCREEN ========================== -->
-
-    <!-- Success messages -->
-    <string name="otp_code_resent_success">Verification code sent successfully!</string>
-
-    <!-- Error messages -->
-    <string name="otp_network_invalid_code_error">Verification code expired or invalid</string>
-
+    <!-- Common Network errors -->
+    <string name="common_error_network_no_internet">No internet connection</string>
+    <string name="common_error_network_timeout">Request timed out</string>
+    <string name="common_error_network_email_exists">This email is already registered</string>
+    <string name="common_error_network_unknown">An unknown error occurred</string>
+    <string name="common_error_network_service_unavailable">Application service unavailable</string>
 </resources>

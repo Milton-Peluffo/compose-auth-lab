@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.tomildev.room_login_compose.R
 
 object TextFields {
@@ -16,7 +17,7 @@ object TextFields {
         modifier: Modifier = Modifier,
         onValueChange: (String) -> Unit,
         value: String,
-        label: String = "Name",
+        label: String = stringResource(R.string.common_user_label_name),
         isError: Boolean = false,
         leadingIcon: Painter = painterResource(id = R.drawable.ic_user),
         contentDescription: String = "User name text field",
@@ -37,7 +38,7 @@ object TextFields {
         modifier: Modifier = Modifier,
         onValueChange: (String) -> Unit,
         value: String,
-        label: String = "Email",
+        label: String = stringResource(R.string.common_user_label_email),
         isError: Boolean = false,
         leadingIcon: Painter = painterResource(id = R.drawable.ic_email),
         contentDescription: String = "Email text field",
@@ -58,7 +59,7 @@ object TextFields {
         modifier: Modifier = Modifier,
         onValueChange: (String) -> Unit,
         value: String,
-        label: String = "Password",
+        label: String = stringResource(R.string.common_user_label_password),
         isError: Boolean = false,
         leadingIcon: Painter = painterResource(id = R.drawable.ic_lock_outlined),
         contentDescription: String = "Password text field",
@@ -81,7 +82,7 @@ object TextFields {
         modifier: Modifier = Modifier,
         onValueChange: (String) -> Unit,
         value: String,
-        label: String = "Confirm Password",
+        label: String = stringResource(R.string.common_user_label_confirm_password),
         isError: Boolean = false,
         contentDescription: String = "Password confirmation text field",
         isPasswordField: Boolean = true,
