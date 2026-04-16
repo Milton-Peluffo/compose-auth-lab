@@ -24,6 +24,7 @@
     <string name="auth_shared_otp_title">Verify \nYour Email</string>
     <string name="auth_shared_otp_subtitle">Enter the code we have sent to</string>
     <string name="auth_shared_otp_btn_resend_code">Resend Code</string>
+    <string name="auth_shared_otp_resend_code_in">Resend code in</string>
     <string name="auth_shared_otp_btn_verify">Verify</string>
     <!-- Success messages -->
     <string name="auth_shared_otp_code_resent_success">Verification code sent successfully</string>

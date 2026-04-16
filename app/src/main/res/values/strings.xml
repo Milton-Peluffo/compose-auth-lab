@@ -10,7 +10,11 @@
     <string name="common_user_label_name">Name</string>
     <string name="common_user_label_email">Email</string>
     <string name="common_user_label_password">Password</string>
-    <string name="common_user_label_confirm_password">Confirm Password</string>
+    <string name="common_user_label_confirm_password">Confirm Password</string>\
+
+    <!-- Accessibility -->
+    <string name="a11y_show_password">Show password</string>
+    <string name="a11y_hide_password">Hide password</string>
 
     <!-- Common Domain errors -->
     <string name="common_error_empty_field">This field cannot be empty</string>

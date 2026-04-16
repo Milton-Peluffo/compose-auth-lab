@@ -12,6 +12,10 @@
     <string name="common_user_label_password">Contraseña</string>
     <string name="common_user_label_confirm_password">Confirmar contraseña</string>
 
+    <!-- Accessibility -->
+    <string name="a11y_show_password">Mostrar contraseña</string>
+    <string name="a11y_hide_password">Ocultar contraseña</string>
+
     <!-- Common Domain errors -->
     <string name="common_error_empty_field">Este campo no puede estar vacio</string>
     <string name="common_error_user_name_too_short">El nombre de usuario debe tener al menos 3 caracteres</string>

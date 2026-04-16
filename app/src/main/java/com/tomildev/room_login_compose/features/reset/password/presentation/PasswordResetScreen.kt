@@ -11,6 +11,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.tomildev.room_login_compose.R
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.BackButton
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.spacers.VerticalSpacer
@@ -49,12 +51,12 @@ fun PasswordResetScreen(
             VerticalSpacer(Dimens.ScreenPaddingTop)
             Texts.Headline(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Create,\nNew password",
+                text = stringResource(R.string.auth_shared_password_reset_title),
             )
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
             Texts.Body(
                 modifier = modifier.fillMaxWidth(),
-                text = "Your new password must be different\nfrom the previously used password",
+                text = stringResource(R.string.auth_shared_password_reset_subtitle),
                 isSecondary = true,
             )
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
@@ -79,7 +81,7 @@ fun PasswordResetScreen(
 //            }
             VerticalSpacer(height = Dimens.SpacingLarge)
             PrimaryButton(
-                text = "Confirm",
+                text = stringResource(R.string.common_btn_confirm),
                 isLoading = false,
                 onClick = { }
             )

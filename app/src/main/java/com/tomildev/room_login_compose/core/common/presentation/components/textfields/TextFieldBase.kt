@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.tomildev.room_login_compose.R
@@ -29,7 +30,6 @@ fun TextFieldBase(
     label: String,
     isError: Boolean = false,
     leadingIcon: Painter,
-    contentDescription: String? = null,
     isPasswordField: Boolean = false
 ) {
 
@@ -52,7 +52,7 @@ fun TextFieldBase(
         leadingIcon = {
             Icon(
                 painter = leadingIcon,
-                contentDescription = contentDescription
+                contentDescription = null
             )
         },
 
@@ -66,7 +66,11 @@ fun TextFieldBase(
                     }
                     Icon(
                         painter = painterResource(id = iconId),
-                        contentDescription = if (isPasswordVisible) "Hide password" else "Show password"
+                        contentDescription =
+                            if (isPasswordVisible)
+                                stringResource(R.string.a11y_hide_password)
+                            else
+                                stringResource(R.string.a11y_hide_password)
                     )
                 }
             }

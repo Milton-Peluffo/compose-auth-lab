@@ -18,9 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tomildev.room_login_compose.R
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackBars
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackbarType
@@ -121,7 +123,7 @@ fun SignUpScreen(
             VerticalSpacer(Dimens.ScreenPaddingTop)
             Texts.Headline(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Let's get \nStarted",
+                text = stringResource(R.string.auth_signup_title),
             )
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
             TextFields.Name(
@@ -166,18 +168,18 @@ fun SignUpScreen(
             }
             Spacer(Modifier.height(25.dp))
             PrimaryButton(
-                text = "Sign Up",
+                text = stringResource(R.string.auth_signup_btn_signup),
                 isLoading = uiState.isLoading,
                 onClick = { signUpViewmodel.onRegisterClick() }
             )
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
-            AuthHorizontalDivider(text = "or")
+            AuthHorizontalDivider()
             VerticalSpacer(height = Dimens.SpacingLarge)
             SocialAuthButtons.Google(onClick = {})
             VerticalSpacer(height = Dimens.SpacingLarge)
             AuthTextAction(
-                text = "Already have an account?",
-                actionText = "Sign in",
+                text = stringResource(R.string.auth_signup_already_have_account),
+                actionText = stringResource(R.string.auth_signup_btn_sign_in),
                 onClick = { onNavigateToLogin() },
             )
         }

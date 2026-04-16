@@ -11,7 +11,6 @@ object TextFields {
 
 
     //----------------------- USER TEXT FIELDS -----------------------
-
     @Composable
     fun Name(
         modifier: Modifier = Modifier,
@@ -20,7 +19,6 @@ object TextFields {
         label: String = stringResource(R.string.common_user_label_name),
         isError: Boolean = false,
         leadingIcon: Painter = painterResource(id = R.drawable.ic_user),
-        contentDescription: String = "User name text field",
     ) {
         TextFieldBase(
             modifier = modifier,
@@ -29,7 +27,6 @@ object TextFields {
             label = label,
             isError = isError,
             leadingIcon = leadingIcon,
-            contentDescription = contentDescription,
         )
     }
 
@@ -41,7 +38,6 @@ object TextFields {
         label: String = stringResource(R.string.common_user_label_email),
         isError: Boolean = false,
         leadingIcon: Painter = painterResource(id = R.drawable.ic_email),
-        contentDescription: String = "Email text field",
     ) {
         TextFieldBase(
             modifier = modifier,
@@ -50,7 +46,6 @@ object TextFields {
             label = label,
             isError = isError,
             leadingIcon = leadingIcon,
-            contentDescription = contentDescription,
         )
     }
 
@@ -62,7 +57,6 @@ object TextFields {
         label: String = stringResource(R.string.common_user_label_password),
         isError: Boolean = false,
         leadingIcon: Painter = painterResource(id = R.drawable.ic_lock_outlined),
-        contentDescription: String = "Password text field",
         isPasswordField: Boolean = true
     ) {
         TextFieldBase(
@@ -72,7 +66,6 @@ object TextFields {
             label = label,
             isError = isError,
             leadingIcon = leadingIcon,
-            contentDescription = contentDescription,
             isPasswordField = isPasswordField
         )
     }
@@ -84,7 +77,6 @@ object TextFields {
         value: String,
         label: String = stringResource(R.string.common_user_label_confirm_password),
         isError: Boolean = false,
-        contentDescription: String = "Password confirmation text field",
         isPasswordField: Boolean = true,
         isPasswordMatch: Boolean = false
     ) {
@@ -102,7 +94,6 @@ object TextFields {
             label = label,
             isError = isError,
             leadingIcon = leadingIcon,
-            contentDescription = contentDescription,
             isPasswordField = isPasswordField
         )
     }

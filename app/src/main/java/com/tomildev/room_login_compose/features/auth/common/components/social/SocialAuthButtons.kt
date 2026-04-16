@@ -22,7 +22,6 @@ object SocialAuthButtons {
             onClick = onClick,
             enabled = enabled,
             icon = painterResource(id = R.drawable.ic_google),
-            contentDescription = "Continue with Google",
             isLoading = isLoading
         )
     }

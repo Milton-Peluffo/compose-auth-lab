@@ -118,10 +118,6 @@ class OtpViewModel @Inject constructor(
         val currentState = _uiState.value
         if (currentState.code.length < 6) return
 
-        println("DEBUG_OTP: Intentando verificar...")
-        println("DEBUG_OTP: Email: '${currentState.email}'")
-        println("DEBUG_OTP: Código: '${currentState.code}'")
-
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, networkError = null) }
 

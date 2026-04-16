@@ -7,8 +7,6 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.exceptions.HttpRequestException
-import io.github.jan.supabase.exceptions.RestException
-import io.github.jan.supabase.exceptions.UnauthorizedRestException
 import javax.inject.Inject
 
 class OtpRepositoryImpl @Inject constructor(
@@ -57,10 +55,6 @@ class OtpRepositoryImpl @Inject constructor(
                     message.contains("otp_expired") -> DataError.Network.InvalidOtp
                     else -> DataError.Network.NoInternet
                 }
-            }
-
-            is RestException -> {
-                DataError.Network.ServiceUnavailable
             }
 
             else -> DataError.Network.Unknown

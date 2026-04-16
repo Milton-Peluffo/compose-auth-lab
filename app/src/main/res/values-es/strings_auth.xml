@@ -5,25 +5,26 @@
     <string name="auth_btn_google">Continuar con Google</string>
 
     <!-- ========================== SIGN IN SCREEN ========================== -->
-    <string name="auth_signin_title">Hey,\nBienvenido\nDe nuevo</string>
+    <string name="auth_signin_title">Hey,\nQué bueno verte\nde nuevo</string>
     <string name="auth_signin_btn">Iniciar sesión</string>
     <string name="auth_signin_btn_forgot_password">Olvidaste tu contraseña?</string>
     <string name="auth_signin_dont_have_account">No tienes una cuenta?</string>
-    <string name="auth_signin_btn_sign_up">Registrate"</string>
+    <string name="auth_signin_btn_sign_up">Registrate</string>
     <!-- Error messages -->
     <string name="auth_signin_network_error_invalid_credentials">Correo o contraseña invalidos</string>
 
     <!-- ========================== SIGN UP SCREEN ========================== -->
-    <string name="auth_signup_title">Vamos a\nEmpezar</string>
+    <string name="auth_signup_title">Vamos a crear\ntu cuenta</string>
     <string name="auth_signup_btn_signup">Registrarse</string>
     <string name="auth_signup_already_have_account">Ya tienes una cuenta?</string>
-    <string name="auth_signup_btn_sign_in">Iniciar sesión"</string>
+    <string name="auth_signup_btn_sign_in">Iniciar sesión</string>
     <!-- Success messages -->
 
     <!-- ========================== OTP SCREEN ========================== -->
     <string name="auth_shared_otp_title">Verifica \nTu correo</string>
     <string name="auth_shared_otp_subtitle">Ingresa el codigo que enviamos a</string>
     <string name="auth_shared_otp_btn_resend_code">Reenviar codigo</string>
+    <string name="auth_shared_otp_resend_code_in">Reenviar codigo en</string>
     <string name="auth_shared_otp_btn_verify">Verificar</string>
     <!-- Success messages -->
     <string name="auth_shared_otp_code_resent_success">Codigo de verificacion enviado correctamente</string>

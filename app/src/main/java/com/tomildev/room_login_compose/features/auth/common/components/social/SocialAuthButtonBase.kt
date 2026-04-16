@@ -24,7 +24,6 @@ fun SocialAuthButtonBase(
     onClick: () -> Unit,
     enabled: Boolean = true,
     icon: Painter,
-    contentDescription: String? = null,
     isLoading: Boolean = false
 ) {
 
@@ -41,7 +40,7 @@ fun SocialAuthButtonBase(
             disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         )
     ) {
-        Icon(painter = icon, contentDescription = contentDescription, tint = Color.Unspecified)
+        Icon(painter = icon, contentDescription = null, tint = Color.Unspecified)
         HorizontalSpacer(Dimens.SpacingMedium)
         if (isLoading) {
             CircularProgressIndicator(

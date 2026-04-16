@@ -24,10 +24,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tomildev.room_login_compose.R
+import com.tomildev.room_login_compose.core.common.presentation.components.buttons.BackButton
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackBars
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackbarType
@@ -36,10 +39,10 @@ import com.tomildev.room_login_compose.core.common.presentation.components.space
 import com.tomildev.room_login_compose.core.common.presentation.components.spacers.VerticalSpacer
 import com.tomildev.room_login_compose.core.common.presentation.components.texts.Texts
 import com.tomildev.room_login_compose.core.common.presentation.mapper.toUiText
+import com.tomildev.room_login_compose.core.common.presentation.util.UiText
 import com.tomildev.room_login_compose.core.domain.model.error.DataError
 import com.tomildev.room_login_compose.features.auth.otp.presentation.components.CustomNumericKeyboard
 import com.tomildev.room_login_compose.features.auth.otp.presentation.components.InputDigitBox
-import com.tomildev.room_login_compose.core.common.presentation.components.buttons.BackButton
 import com.tomildev.room_login_compose.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,10 +93,11 @@ fun OtpScreen(
                 }
 
                 OtpUiEvent.CodeResent -> {
+                    val successMessage =
+                        UiText.StringResource(R.string.auth_shared_otp_code_resent_success)
                     snackbarHostState.showSnackbar(
                         SnackbarVisualsCustom(
-                            //Temporal
-                            message = "Code resent Successfully",
+                            message = successMessage.asString(context),
                             type = SnackbarType.Success
                         )
                     )
@@ -119,13 +123,13 @@ fun OtpScreen(
                 )
 
                 Texts.Headline(
-                    text = "Code verification",
+                    text = stringResource(R.string.auth_shared_otp_title),
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
             VerticalSpacer(verticalGap)
             Texts.TitleMedium(
-                text = "Enter the code we've sent to",
+                text = stringResource(R.string.auth_shared_otp_subtitle),
                 isSecondary = true,
                 textAlign = TextAlign.Center
             )
@@ -159,12 +163,12 @@ fun OtpScreen(
 
             if (uiState.timer == 0) {
                 TextButton(onClick = { otpViewModel.resendOtp() }) {
-                    Texts.TitleMedium(text = "Resend code")
+                    Texts.TitleMedium(text = stringResource(R.string.auth_shared_otp_btn_resend_code))
                 }
             } else {
                 TextButton(onClick = {}, enabled = false) {
                     Texts.TitleMedium(
-                        text = "Resend code in ${uiState.timer}s",
+                        text = stringResource(R.string.auth_shared_otp_resend_code_in) + " ${uiState.timer}s",
                         isSecondary = true
                     )
                 }
@@ -173,7 +177,7 @@ fun OtpScreen(
             VerticalSpacer(verticalGap)
             PrimaryButton(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Verify",
+                text = stringResource(R.string.auth_shared_otp_btn_verify),
                 onClick = { otpViewModel.verifyOtp() },
                 enabled = uiState.isVerifyEnable,
                 isLoading = uiState.isLoading,
