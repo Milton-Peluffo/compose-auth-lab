@@ -75,6 +75,6 @@ fun ConfirmationDialogBase(
                 )
             }
         },
-        containerColor = MaterialTheme.colorScheme.surfaceVariant
+        containerColor = MaterialTheme.colorScheme.surface
     )
 }

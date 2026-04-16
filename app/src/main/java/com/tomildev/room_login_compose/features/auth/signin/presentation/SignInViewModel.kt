@@ -1,22 +1,27 @@
-package com.tomildev.room_login_compose.features.auth.login.presentation
+package com.tomildev.room_login_compose.features.auth.signin.presentation
 
-import android.util.Patterns
 import androidx.lifecycle.ViewModel
-import com.tomildev.room_login_compose.core.domain.repository.UserRepository
+import androidx.lifecycle.viewModelScope
+import com.tomildev.room_login_compose.core.data.preferences.UserPreferences
+import com.tomildev.room_login_compose.core.domain.model.user.UserValidationError
+import com.tomildev.room_login_compose.core.domain.model.user.UserValidationResult
+import com.tomildev.room_login_compose.core.domain.use_case.user.UserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val userRepository: UserRepository,
+class SignInViewModel @Inject constructor(
+    private val userUseCases: UserUseCases,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(LoginUiState())
-    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(SignInUiState())
+    val uiState: StateFlow<SignInUiState> = _uiState.asStateFlow()
 
 
     fun onLoginClick() {
@@ -26,29 +31,33 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun validateFields(): Boolean {
-        return when {
+        val state = _uiState.value
 
-            !isEmailValid(email = _uiState.value.email) -> {
-                _uiState.update {
-                    it.copy(
-                        errorMessage = "Invalid email format",
-                        isEmailError = true
-                    )
-                }
-                false
-            }
+        val emailResult = userUseCases.validateEmail.execute(email = state.email)
+        if (emailResult is UserValidationResult.Error) {
+            updateErrorState(emailError = emailResult.error)
+            return false
+        }
 
-            !isPasswordLengthValid(password = _uiState.value.password) -> {
-                _uiState.update {
-                    it.copy(
-                        errorMessage = "Password must have 8 character at least",
-                        isPasswordError = true
-                    )
-                }
-                false
-            }
+        val passwordResult = userUseCases.validatePassword.execute(password = state.password)
+        if (passwordResult is UserValidationResult.Error) {
+            updateErrorState(passwordError = passwordResult.error)
+            return false
+        }
 
-            else -> true
+        updateErrorState()
+        return true
+    }
+
+    private fun updateErrorState(
+        emailError: UserValidationError? = null,
+        passwordError: UserValidationError? = null,
+    ) {
+        _uiState.update {
+            it.copy(
+                emailError = emailError,
+                passwordError = passwordError,
+            )
         }
     }
 
@@ -80,8 +89,8 @@ class LoginViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 email = email,
+                emailError = null,
                 errorMessage = null,
-                isEmailError = false
             )
         }
     }
@@ -90,28 +99,9 @@ class LoginViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 password = password,
+                passwordError = null,
                 errorMessage = null,
-                isPasswordError = false
             )
         }
     }
-
-    private fun isEmailValid(email: String): Boolean =
-        Patterns.EMAIL_ADDRESS.matcher(email).matches()
-
-    private fun isPasswordLengthValid(password: String): Boolean = password.length >= 8
-
 }
-
-data class LoginUiState(
-    //USER DATA
-    val email: String = "",
-    val password: String = "",
-    //VALIDATORS
-    val isLoading: Boolean = false,
-    val isLoginSuccess: Boolean = false,
-    //ERRORS
-    val errorMessage: String? = null,
-    val isEmailError: Boolean = false,
-    val isPasswordError: Boolean = false,
-)

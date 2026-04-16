@@ -38,8 +38,8 @@ class MainActivity : ComponentActivity() {
                     val startRoute = if (userId != -1) {
                         NavRoute.Home
                     } else {
-//                        NavRoute.Otp
-                        NavRoute.SignUp
+                        NavRoute.SignIn
+                        NavRoute.Settings
                     }
 
                     val navController = rememberNavController()

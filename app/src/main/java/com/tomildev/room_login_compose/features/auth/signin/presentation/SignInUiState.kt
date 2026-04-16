@@ -1,25 +1,19 @@
-package com.tomildev.room_login_compose.features.auth.signup.presentation
+package com.tomildev.room_login_compose.features.auth.signin.presentation
 
 import com.tomildev.room_login_compose.core.domain.model.error.DataError
 import com.tomildev.room_login_compose.core.domain.model.user.UserValidationError
 
-data class SignUpUiState(
+data class SignInUiState(
     //USER DATA
-    val name: String = "",
     val email: String = "",
     val password: String = "",
-    val confirmPassword: String = "",
 
     // STATES / VALIDATORS
-    val showSuccessDialog: Boolean = false,
     val isLoading: Boolean = false,
-    val isPasswordMatch: Boolean = false,
 
     //ERRORS
     val networkError: DataError? = null,
     val errorMessage: String? = null,
-    val nameError: UserValidationError? = null,
     val emailError: UserValidationError? = null,
     val passwordError: UserValidationError? = null,
-    val passwordConfirmError: UserValidationError? = null,
 )

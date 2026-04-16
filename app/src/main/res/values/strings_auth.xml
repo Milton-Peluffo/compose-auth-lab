@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ========================== AUTH COMMON ========================== -->
+    <string name="auth_divider_or">or</string>
+    <string name="auth_btn_google">Continue with Google</string>
+
+    <!-- ========================== SIGN IN SCREEN ========================== -->
+    <string name="auth_signin_title">Hey,\nWelcome\nBack</string>
+    <string name="auth_signin_btn">Sign in</string>
+    <string name="auth_signin_btn_forgot_password">Forgot Password?</string>
+    <string name="auth_signin_dont_have_account">Don\'t have an account?</string>
+    <string name="auth_signin_btn_sign_up">Sign up</string>
+    <!-- Error messages -->
+    <string name="auth_signin_network_error_invalid_credentials">Invalid email or password</string>
+
+    <!-- ========================== SIGN UP SCREEN ========================== -->
+    <string name="auth_signup_title">Let\'s get\nStarted</string>
+    <string name="auth_signup_btn_signup">Sign up</string>
+    <string name="auth_signup_already_have_account">Already have an account?</string>
+    <string name="auth_signup_btn_sign_in">Sign in</string>
+    <!-- Success messages -->
+
+    <!-- ========================== OTP SCREEN ========================== -->
+    <string name="auth_shared_otp_title">Verify \nYour Email</string>
+    <string name="auth_shared_otp_subtitle">Enter the code we have sent to</string>
+    <string name="auth_shared_otp_btn_resend_code">Resend Code</string>
+    <string name="auth_shared_otp_resend_code_in">Resend code in</string>
+    <string name="auth_shared_otp_btn_verify">Verify</string>
+    <!-- Success messages -->
+    <string name="auth_shared_otp_code_resent_success">Verification code sent successfully</string>
+    <!-- Error messages -->
+    <string name="auth_shared_otp_error_network_invalid_code">Verification code expired or invalid</string>
+
+    <!-- ========================== PASSWORD RESET SCREEN ========================== -->
+    <string name="auth_shared_password_reset_title">Create \nNew Password</string>
+    <string name="auth_shared_password_reset_subtitle">Your new password must be different
+    from the previously used password</string>
+    <!-- Success messages -->
+    <string name="auth_shared_password_reset_success">Password reset successfully</string>
+</resources>

@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.core.common.presentation.components
+package com.tomildev.room_login_compose.core.common.presentation.components.buttons
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxWidth

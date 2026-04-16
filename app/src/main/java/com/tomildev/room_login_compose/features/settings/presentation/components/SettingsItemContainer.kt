@@ -44,7 +44,7 @@ fun SettingsItemContainer(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(MaterialTheme.colorScheme.surface)
             .border(
                 1.dp,
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
@@ -68,7 +68,7 @@ private fun SettingsItemBase(
 ) {
 
     val color =
-        if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+        if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
     val rippleColor =
         if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
 

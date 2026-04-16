@@ -4,16 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.tomildev.room_login_compose.features.auth.login.presentation.LoginScreen
 import com.tomildev.room_login_compose.features.auth.otp.presentation.OtpScreen
+import com.tomildev.room_login_compose.features.auth.signin.presentation.SignInScreen
 import com.tomildev.room_login_compose.features.auth.signup.presentation.SignUpScreen
 import com.tomildev.room_login_compose.features.home.HomeScreen
+import com.tomildev.room_login_compose.features.reset.password.presentation.PasswordResetScreen
 import com.tomildev.room_login_compose.features.settings.presentation.SettingsScreen
 
 @Composable
 fun NavigationRoot(
     navController: NavHostController,
-    startDestination: Any = NavRoute.Login
+    startDestination: Any = NavRoute.SignIn
 ) {
 
     NavHost(
@@ -21,8 +22,8 @@ fun NavigationRoot(
         startDestination = startDestination
     ) {
 
-        composable<NavRoute.Login> {
-            LoginScreen(
+        composable<NavRoute.SignIn> {
+            SignInScreen(
                 onNavigateToRegister = {
                     navController.navigate(NavRoute.SignUp)
                 },
@@ -34,7 +35,7 @@ fun NavigationRoot(
 
         composable<NavRoute.SignUp> {
             SignUpScreen(onNavigateToLogin = {
-                navController.navigate(NavRoute.Login)
+                navController.navigate(NavRoute.SignIn)
             }, onNavigateToOtp = { email ->
                 navController.navigate(NavRoute.Otp(email = email))
             })
@@ -47,6 +48,12 @@ fun NavigationRoot(
                 navController.navigate(NavRoute.Home) {
                     popUpTo(NavRoute.SignUp) { inclusive = true }
                 }
+            })
+        }
+
+        composable<NavRoute.PasswordReset> {
+            PasswordResetScreen(onNavigateToSignIn = {
+                navController.navigate(NavRoute.SignIn)
             })
         }
 
@@ -64,7 +71,7 @@ fun NavigationRoot(
                     navController.popBackStack()
                 },
                 onNavigateToLogin = {
-                    navController.navigate(NavRoute.Login) {
+                    navController.navigate(NavRoute.SignIn) {
                         popUpTo(0) {
                             inclusive = true
                         }

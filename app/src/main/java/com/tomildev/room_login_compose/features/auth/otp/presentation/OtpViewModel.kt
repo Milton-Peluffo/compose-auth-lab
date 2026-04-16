@@ -94,7 +94,6 @@ class OtpViewModel @Inject constructor(
                         DataError.Network.Timeout -> {
                             _uiEvents.send(OtpUiEvent.Warning(result.error))
                         }
-
                         DataError.Network.InvalidOtp,
                         DataError.Network.ServiceUnavailable -> {
                             _uiEvents.send(OtpUiEvent.Error(result.error))
@@ -118,10 +117,6 @@ class OtpViewModel @Inject constructor(
     fun verifyOtp() {
         val currentState = _uiState.value
         if (currentState.code.length < 6) return
-
-        println("DEBUG_OTP: Intentando verificar...")
-        println("DEBUG_OTP: Email: '${currentState.email}'")
-        println("DEBUG_OTP: Código: '${currentState.code}'")
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, networkError = null) }

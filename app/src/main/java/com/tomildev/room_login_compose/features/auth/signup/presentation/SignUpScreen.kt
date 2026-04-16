@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -17,36 +18,39 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tomildev.room_login_compose.R
 import com.tomildev.room_login_compose.core.common.presentation.components.buttons.PrimaryButton
-import com.tomildev.room_login_compose.core.common.presentation.components.PrimarySubtitle
-import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTextField
-import com.tomildev.room_login_compose.core.common.presentation.components.PrimaryTitle
-import com.tomildev.room_login_compose.core.common.presentation.components.TextError
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackBars
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackbarType
 import com.tomildev.room_login_compose.core.common.presentation.components.snackbars.SnackbarVisualsCustom
+import com.tomildev.room_login_compose.core.common.presentation.components.spacers.VerticalSpacer
+import com.tomildev.room_login_compose.core.common.presentation.components.textfields.TextFields
+import com.tomildev.room_login_compose.core.common.presentation.components.texts.TextError
+import com.tomildev.room_login_compose.core.common.presentation.components.texts.Texts
 import com.tomildev.room_login_compose.core.common.presentation.mapper.toUiText
-import com.tomildev.room_login_compose.features.common.presentation.components.AuthTextAction
-import com.tomildev.room_login_compose.features.common.presentation.components.RegistrationSuccessDialog
+import com.tomildev.room_login_compose.features.auth.common.components.AuthHorizontalDivider
+import com.tomildev.room_login_compose.features.auth.common.components.AuthTextAction
+import com.tomildev.room_login_compose.features.auth.common.components.social.SocialAuthButtons
+import com.tomildev.room_login_compose.ui.theme.Dimens
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
-    registerViewmodel: RegisterViewmodel = hiltViewModel(),
+    signUpViewmodel: SignUpViewmodel = hiltViewModel(),
     onNavigateToLogin: () -> Unit,
     onNavigateToOtp: (String) -> Unit
 ) {
 
-    val uiState by registerViewmodel.uiState.collectAsStateWithLifecycle()
+    val uiState by signUpViewmodel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
-        registerViewmodel.uiEvents.collect { uiEvent ->
+        signUpViewmodel.uiEvents.collect { uiEvent ->
             when (uiEvent) {
                 is SignUpUiEvent.NavigateToOtp -> {
                     onNavigateToOtp(uiEvent.email)
@@ -74,7 +78,7 @@ fun SignUpScreen(
     Scaffold(
         snackbarHost = {
             SnackbarHost(
-                modifier = Modifier.padding(vertical = 20.dp),
+                modifier = Modifier.padding(vertical = Dimens.SnackbarBottomPadding),
                 hostState = snackbarHostState
             ) { data ->
                 val customVisuals = data.visuals as? SnackbarVisualsCustom
@@ -112,81 +116,72 @@ fun SignUpScreen(
             modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = Dimens.ScreenHorizontalPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PrimaryTitle(
-                title = "HEY THERE!",
-                subtitle = "Create your account"
+            VerticalSpacer(Dimens.ScreenPaddingTop)
+            Texts.Headline(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.auth_signup_title),
             )
-            PrimarySubtitle(text = "Fill fields below to get started")
-            PrimaryTextField(
+            VerticalSpacer(height = Dimens.SpacingExtraLarge)
+            TextFields.Name(
                 modifier = Modifier,
                 value = uiState.name,
-                onValueChange = { registerViewmodel.onNameChange(name = it) },
-                label = "Name",
+                onValueChange = { signUpViewmodel.onNameChange(name = it) },
                 isError = uiState.nameError != null
             )
             if (uiState.nameError != null) {
                 TextError(text = uiState.nameError!!.toUiText().asString())
             }
-            Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
+            VerticalSpacer(height = Dimens.SpacingMedium)
+            TextFields.Email(
                 modifier = Modifier,
                 value = uiState.email,
-                onValueChange = { registerViewmodel.onEmailChange(email = it) },
-                label = "Email",
+                onValueChange = { signUpViewmodel.onEmailChange(email = it) },
                 isError = uiState.emailError != null
             )
             if (uiState.emailError != null) {
                 TextError(text = uiState.emailError!!.toUiText().asString())
             }
-            Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
+            VerticalSpacer(height = Dimens.SpacingMedium)
+            TextFields.Password(
                 modifier = Modifier,
                 value = uiState.password,
-                onValueChange = { registerViewmodel.onPasswordChange(password = it) },
-                label = "Password",
-                isError = uiState.passwordError != null,
-                isPasswordField = true
+                onValueChange = { signUpViewmodel.onPasswordChange(password = it) },
+                isError = uiState.passwordError != null
             )
             if (uiState.passwordError != null) {
                 TextError(text = uiState.passwordError!!.toUiText().asString())
             }
-            Spacer(Modifier.height(5.dp))
-            PrimaryTextField(
+            VerticalSpacer(height = Dimens.SpacingMedium)
+            TextFields.ConfirmPassword(
                 modifier = Modifier,
                 value = uiState.confirmPassword,
-                onValueChange = { registerViewmodel.onConfirmPasswordChange(confirmPassword = it) },
-                label = "Confirm password",
+                onValueChange = { signUpViewmodel.onConfirmPasswordChange(confirmPassword = it) },
                 isError = uiState.passwordConfirmError != null,
-                isPasswordField = true
+                isPasswordMatch = uiState.isPasswordMatch
             )
             if (uiState.passwordConfirmError != null) {
                 TextError(text = uiState.passwordConfirmError!!.toUiText().asString())
             }
             Spacer(Modifier.height(25.dp))
             PrimaryButton(
-                text = "Sign Up",
+                text = stringResource(R.string.auth_signup_btn_signup),
                 isLoading = uiState.isLoading,
-                onClick = { registerViewmodel.onRegisterClick() }
+                onClick = { signUpViewmodel.onRegisterClick() }
             )
-            Spacer(Modifier.height(20.dp))
+            VerticalSpacer(height = Dimens.SpacingExtraLarge)
+            AuthHorizontalDivider()
+            VerticalSpacer(height = Dimens.SpacingLarge)
+            SocialAuthButtons.Google(onClick = {})
+            VerticalSpacer(height = Dimens.SpacingLarge)
             AuthTextAction(
-                text = "Already Have Account? Log In",
+                text = stringResource(R.string.auth_signup_already_have_account),
+                actionText = stringResource(R.string.auth_signup_btn_sign_in),
                 onClick = { onNavigateToLogin() },
-                textAlign = TextAlign.Center
             )
-            Spacer(Modifier.padding(vertical = 20.dp))
-            if (uiState.showSuccessDialog) {
-                RegistrationSuccessDialog(
-                    onConfirm = {
-                        onNavigateToLogin()
-                        registerViewmodel.onDismissDialog()
-                    }
-                )
-            }
         }
     }
 }

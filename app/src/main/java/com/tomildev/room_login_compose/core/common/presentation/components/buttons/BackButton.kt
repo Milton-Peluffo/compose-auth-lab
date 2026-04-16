@@ -1,4 +1,4 @@
-package com.tomildev.room_login_compose.features.settings.presentation.components
+package com.tomildev.room_login_compose.core.common.presentation.components.buttons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
