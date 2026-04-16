@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "com.tomildev.room_login_compose"
+    namespace = "com.tomildev.trakii"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.tomildev.room_login_compose"
+        applicationId = "com.tomildev.trakii"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

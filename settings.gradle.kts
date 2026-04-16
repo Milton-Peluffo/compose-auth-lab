@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "room_login_compose"
+rootProject.name = "trakii"
 include(":app")
- 
