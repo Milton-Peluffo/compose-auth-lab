@@ -7,6 +7,7 @@ import com.tomildev.trakii.core.data.local.db.AppDatabase
 import com.tomildev.trakii.core.data.preferences.UserPreferences
 import com.tomildev.trakii.core.data.repository.UserRepositoryImpl
 import com.tomildev.trakii.core.domain.repository.UserRepository
+import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
 import com.tomildev.trakii.features.auth.otp.data.OtpRepositoryImpl
 import com.tomildev.trakii.features.auth.otp.domain.OtpRepository
 import com.tomildev.trakii.features.auth.signup.data.SignUpRepositoryImpl
@@ -32,6 +33,12 @@ object AppModule {
             AppDatabase::class.java,
             "user_database"
         ).fallbackToDestructiveMigration().build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoogleAuthClient(@ApplicationContext context: Context): GoogleAuthClient {
+        return GoogleAuthClient(context)
     }
 
     @Provides

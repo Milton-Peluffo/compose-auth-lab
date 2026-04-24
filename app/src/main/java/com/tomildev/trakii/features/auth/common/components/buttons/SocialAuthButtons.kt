@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.auth.common.components.social
+package com.tomildev.trakii.features.auth.common.components.buttons
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

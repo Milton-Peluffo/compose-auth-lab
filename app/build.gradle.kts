@@ -29,6 +29,11 @@ android {
 
         buildConfigField(
             "String",
+            "GOOGLE_WEB_CLIENT_ID",
+            "\"${properties.getProperty("GOOGLE_WEB_CLIENT_ID") ?: ""}\""
+        )
+        buildConfigField(
+            "String",
             "SUPABASE_URL",
             "\"${properties.getProperty("SUPABASE_URL") ?: ""}\""
         )
@@ -75,6 +80,11 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+
+    //GOOGLE AUTH
+    implementation(libs.google.id)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services)
 
     //SUPABASE
     implementation(libs.supabase.auth)

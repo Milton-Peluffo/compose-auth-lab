@@ -1,5 +1,6 @@
 package com.tomildev.trakii.features.auth.signup.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -34,19 +36,22 @@ import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.mapper.toUiText
 import com.tomildev.trakii.features.auth.common.components.AuthHorizontalDivider
 import com.tomildev.trakii.features.auth.common.components.AuthTextAction
-import com.tomildev.trakii.features.auth.common.components.social.SocialAuthButtons
+import com.tomildev.trakii.features.auth.common.components.buttons.SocialAuthButtons
+import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
 import com.tomildev.trakii.ui.theme.Dimens
+import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     signUpViewmodel: SignUpViewmodel = hiltViewModel(),
     onNavigateToLogin: () -> Unit,
-    onNavigateToOtp: (String) -> Unit
+    onNavigateToOtp: (String) -> Unit,
 ) {
-
+    val scope = rememberCoroutineScope()
     val uiState by signUpViewmodel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val googleAuthClient = remember { GoogleAuthClient(context) }
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
@@ -175,7 +180,18 @@ fun SignUpScreen(
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
             AuthHorizontalDivider()
             VerticalSpacer(height = Dimens.SpacingLarge)
-            SocialAuthButtons.Google(onClick = {})
+            SocialAuthButtons.Google(onClick = {
+                scope.launch {
+                    val idToken = googleAuthClient.signIn()
+                    if (idToken != null) {
+                        Log.d("Google Auth", "ID Token: $idToken")
+                        signUpViewmodel.onGoogleSignIn(idToken)
+                    }
+                    else {
+                        Log.d("Google Auth", "ID Token is null")
+                    }
+                }
+            }, isLoading = uiState.isGoogleLoading)
             VerticalSpacer(height = Dimens.SpacingLarge)
             AuthTextAction(
                 text = stringResource(R.string.auth_signup_already_have_account),

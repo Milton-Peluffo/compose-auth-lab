@@ -23,7 +23,7 @@ import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.mapper.toUiText
 import com.tomildev.trakii.features.auth.common.components.AuthHorizontalDivider
 import com.tomildev.trakii.features.auth.common.components.AuthTextAction
-import com.tomildev.trakii.features.auth.common.components.social.SocialAuthButtons
+import com.tomildev.trakii.features.auth.common.components.buttons.SocialAuthButtons
 import com.tomildev.trakii.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)

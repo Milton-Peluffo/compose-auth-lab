@@ -13,6 +13,7 @@ data class SignUpUiState(
     // STATES / VALIDATORS
     val showSuccessDialog: Boolean = false,
     val isLoading: Boolean = false,
+    val isGoogleLoading: Boolean = false,
     val isPasswordMatch: Boolean = false,
 
     //ERRORS

@@ -8,6 +8,7 @@ import com.tomildev.trakii.core.domain.model.user.UserValidationError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import com.tomildev.trakii.core.domain.use_case.user.UserUseCases
 import com.tomildev.trakii.core.domain.util.Result
+import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
 import com.tomildev.trakii.features.auth.signup.domain.SignUpRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -31,6 +32,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewmodel @Inject constructor(
     private val signUpRepository: SignUpRepository,
+    private val oAuthRepository: OAuthRepository,
     private val userUseCases: UserUseCases
 ) : ViewModel() {
 
@@ -43,6 +45,28 @@ class SignUpViewmodel @Inject constructor(
     fun onRegisterClick() {
         if (validateFields()) {
             registerUser()
+        }
+    }
+
+    fun onGoogleSignIn(idToken: String) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isGoogleLoading = true) }
+            val result = oAuthRepository.authWithGoogle(idToken)
+            _uiState.update { it.copy(isGoogleLoading = false) }
+
+            when (result) {
+                is Result.Error -> {
+                    if (result.error == DataError.Network.NoInternet || result.error == DataError.Network.Timeout) {
+                        _uiEvents.send(SignUpUiEvent.Warning(result.error))
+                    } else {
+                        _uiEvents.send(SignUpUiEvent.Error(result.error))
+                    }
+                }
+
+                is Result.Success -> {
+//                    _uiEvents.send(SignUpUiEvent.NavigateToHome)
+                }
+            }
         }
     }
 

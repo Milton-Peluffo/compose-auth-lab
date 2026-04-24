@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.auth.common.components.social
+package com.tomildev.trakii.features.auth.common.components.buttons
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
