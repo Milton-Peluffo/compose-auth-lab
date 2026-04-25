@@ -1,12 +1,10 @@
-package com.tomildev.trakii.features.auth.signup.presentation
+package com.tomildev.trakii.features.auth.signup.presentation.signup
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -21,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
@@ -33,7 +30,7 @@ import com.tomildev.trakii.core.common.presentation.components.spacers.VerticalS
 import com.tomildev.trakii.core.common.presentation.components.textfields.TextFields
 import com.tomildev.trakii.core.common.presentation.components.texts.TextError
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
-import com.tomildev.trakii.core.common.presentation.mapper.toUiText
+import com.tomildev.trakii.core.common.util.mappers.toUiText
 import com.tomildev.trakii.features.auth.common.components.AuthHorizontalDivider
 import com.tomildev.trakii.features.auth.common.components.AuthTextAction
 import com.tomildev.trakii.features.auth.common.components.buttons.SocialAuthButtons
@@ -131,16 +128,6 @@ fun SignUpScreen(
                 text = stringResource(R.string.auth_signup_title),
             )
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
-            TextFields.Name(
-                modifier = Modifier,
-                value = uiState.name,
-                onValueChange = { signUpViewmodel.onNameChange(name = it) },
-                isError = uiState.nameError != null
-            )
-            if (uiState.nameError != null) {
-                TextError(text = uiState.nameError!!.toUiText().asString())
-            }
-            VerticalSpacer(height = Dimens.SpacingMedium)
             TextFields.Email(
                 modifier = Modifier,
                 value = uiState.email,
@@ -150,28 +137,7 @@ fun SignUpScreen(
             if (uiState.emailError != null) {
                 TextError(text = uiState.emailError!!.toUiText().asString())
             }
-            VerticalSpacer(height = Dimens.SpacingMedium)
-            TextFields.Password(
-                modifier = Modifier,
-                value = uiState.password,
-                onValueChange = { signUpViewmodel.onPasswordChange(password = it) },
-                isError = uiState.passwordError != null
-            )
-            if (uiState.passwordError != null) {
-                TextError(text = uiState.passwordError!!.toUiText().asString())
-            }
-            VerticalSpacer(height = Dimens.SpacingMedium)
-            TextFields.ConfirmPassword(
-                modifier = Modifier,
-                value = uiState.confirmPassword,
-                onValueChange = { signUpViewmodel.onConfirmPasswordChange(confirmPassword = it) },
-                isError = uiState.passwordConfirmError != null,
-                isPasswordMatch = uiState.isPasswordMatch
-            )
-            if (uiState.passwordConfirmError != null) {
-                TextError(text = uiState.passwordConfirmError!!.toUiText().asString())
-            }
-            Spacer(Modifier.height(25.dp))
+            VerticalSpacer(height = Dimens.SpacingLarge)
             PrimaryButton(
                 text = stringResource(R.string.auth_signup_btn_signup),
                 isLoading = uiState.isLoading,

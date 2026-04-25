@@ -1,7 +1,7 @@
-package com.tomildev.trakii.core.common.presentation.mapper
+package com.tomildev.trakii.core.common.util.mappers
 
 import com.tomildev.trakii.R
-import com.tomildev.trakii.core.common.presentation.util.UiText
+import com.tomildev.trakii.core.common.util.ui.UiText
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.model.user.UserValidationError
 

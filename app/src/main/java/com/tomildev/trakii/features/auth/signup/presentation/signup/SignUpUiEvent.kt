@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.auth.signup.presentation
+package com.tomildev.trakii.features.auth.signup.presentation.signup
 
 import com.tomildev.trakii.core.domain.model.error.DataError
 

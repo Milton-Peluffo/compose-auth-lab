@@ -38,8 +38,8 @@ import com.tomildev.trakii.core.common.presentation.components.snackbars.Snackba
 import com.tomildev.trakii.core.common.presentation.components.spacers.HorizontalSpacer
 import com.tomildev.trakii.core.common.presentation.components.spacers.VerticalSpacer
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
-import com.tomildev.trakii.core.common.presentation.mapper.toUiText
-import com.tomildev.trakii.core.common.presentation.util.UiText
+import com.tomildev.trakii.core.common.util.mappers.toUiText
+import com.tomildev.trakii.core.common.util.ui.UiText
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.features.auth.otp.presentation.components.CustomNumericKeyboard
 import com.tomildev.trakii.features.auth.otp.presentation.components.InputDigitBox
@@ -51,7 +51,8 @@ fun OtpScreen(
     modifier: Modifier = Modifier,
     otpViewModel: OtpViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToCompleteSignUp: (String) -> Unit
 ) {
     val uiState by otpViewModel.uiState.collectAsStateWithLifecycle()
     val digits by otpViewModel.digitList.collectAsStateWithLifecycle()
@@ -65,15 +66,13 @@ fun OtpScreen(
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(uiState.isVerified) {
-        if (uiState.isVerified) {
-            onNavigateToHome()
-        }
-    }
-
     LaunchedEffect(Unit) {
         otpViewModel.uiEvents.collect { event ->
             when (event) {
+                OtpUiEvent.NavigateToHome -> onNavigateToHome()
+                
+                is OtpUiEvent.NavigateToCompleteSignUp -> onNavigateToCompleteSignUp(event.email)
+
                 is OtpUiEvent.Error -> {
                     snackbarHostState.showSnackbar(
                         SnackbarVisualsCustom(

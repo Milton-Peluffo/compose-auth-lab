@@ -8,7 +8,7 @@
 
     <!-- Common user text field -->
     <string name="common_user_label_name">Nombre</string>
-    <string name="common_user_label_email">Correo</string>
+    <string name="common_user_label_email">Correo electrónico</string>
     <string name="common_user_label_password">Contraseña</string>
     <string name="common_user_label_confirm_password">Confirmar contraseña</string>
 

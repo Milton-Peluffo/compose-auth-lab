@@ -1,4 +1,4 @@
-package com.tomildev.trakii.core.common.presentation.util
+package com.tomildev.trakii.core.common.util.ui
 
 import android.content.Context
 import androidx.annotation.StringRes

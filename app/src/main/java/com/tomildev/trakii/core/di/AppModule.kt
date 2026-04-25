@@ -7,6 +7,8 @@ import com.tomildev.trakii.core.data.local.db.AppDatabase
 import com.tomildev.trakii.core.data.preferences.UserPreferences
 import com.tomildev.trakii.core.data.repository.UserRepositoryImpl
 import com.tomildev.trakii.core.domain.repository.UserRepository
+import com.tomildev.trakii.features.auth.common.data.OAuthRepositoryImpl
+import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
 import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
 import com.tomildev.trakii.features.auth.otp.data.OtpRepositoryImpl
 import com.tomildev.trakii.features.auth.otp.domain.OtpRepository
@@ -43,6 +45,12 @@ object AppModule {
 
     @Provides
     fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
+
+    @Provides
+    @Singleton
+    fun provideOauthRepository(supabaseClient: SupabaseClient): OAuthRepository {
+        return OAuthRepositoryImpl(supabaseClient)
+    }
 
     @Provides
     @Singleton

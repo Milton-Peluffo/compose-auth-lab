@@ -20,7 +20,7 @@ import com.tomildev.trakii.core.common.presentation.components.spacers.VerticalS
 import com.tomildev.trakii.core.common.presentation.components.textfields.TextFields
 import com.tomildev.trakii.core.common.presentation.components.texts.TextError
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
-import com.tomildev.trakii.core.common.presentation.mapper.toUiText
+import com.tomildev.trakii.core.common.util.mappers.toUiText
 import com.tomildev.trakii.features.auth.common.components.AuthHorizontalDivider
 import com.tomildev.trakii.features.auth.common.components.AuthTextAction
 import com.tomildev.trakii.features.auth.common.components.buttons.SocialAuthButtons

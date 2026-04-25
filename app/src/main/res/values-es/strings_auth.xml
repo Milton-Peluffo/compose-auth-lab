@@ -20,6 +20,10 @@
     <string name="auth_signup_btn_sign_in">Iniciar sesión</string>
     <!-- Success messages -->
 
+    <!-- ========================== COMPLETE SIGN UP SCREEN ========================== -->
+    <string name="auth_complete_signup_title">Completa \nTu Perfil</string>
+    <string name="auth_complete_signup_btn_confirm">Confirmar y Finalizar</string>
+
     <!-- ========================== OTP SCREEN ========================== -->
     <string name="auth_shared_otp_title">Verifica \nTu correo</string>
     <string name="auth_shared_otp_subtitle">Ingresa el codigo que enviamos a</string>

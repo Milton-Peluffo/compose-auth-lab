@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                         NavRoute.Home
                     } else {
                         NavRoute.Settings
-                        NavRoute.SignIn
+                        NavRoute.CompleteSignUp
                     }
 
                     val navController = rememberNavController()

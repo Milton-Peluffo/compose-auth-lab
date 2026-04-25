@@ -8,6 +8,7 @@ import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.core.navigation.NavRoute
 import com.tomildev.trakii.features.auth.otp.domain.OtpRepository
+import com.tomildev.trakii.features.auth.otp.domain.OtpVerificationResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -88,22 +89,7 @@ class OtpViewModel @Inject constructor(
             when (result) {
                 is Result.Error -> {
                     _uiState.update { it.copy(networkError = result.error) }
-
-                    when (result.error) {
-                        DataError.Network.NoInternet,
-                        DataError.Network.Timeout -> {
-                            _uiEvents.send(OtpUiEvent.Warning(result.error))
-                        }
-                        DataError.Network.InvalidOtp,
-                        DataError.Network.ServiceUnavailable -> {
-                            _uiEvents.send(OtpUiEvent.Error(result.error))
-                        }
-
-                        else -> {
-                            _uiEvents.send(OtpUiEvent.Error(DataError.Network.Unknown))
-                        }
-                    }
-
+                    sendErrorEvent(result.error)
                 }
 
                 is Result.Success -> {
@@ -131,36 +117,42 @@ class OtpViewModel @Inject constructor(
             when (result) {
                 is Result.Error -> {
                     _uiState.update { it.copy(networkError = result.error) }
-
-                    when (result.error) {
-                        DataError.Network.NoInternet,
-                        DataError.Network.Timeout -> {
-                            _uiEvents.send(OtpUiEvent.Warning(result.error))
-                        }
-
-                        DataError.Network.ServiceUnavailable,
-                        DataError.Network.InvalidOtp -> {
-                            _uiEvents.send(OtpUiEvent.Error(result.error))
-                        }
-
-                        else -> {
-                            _uiEvents.send(OtpUiEvent.Error(DataError.Network.Unknown))
-                        }
-                    }
+                    sendErrorEvent(result.error)
                 }
 
                 is Result.Success -> {
-                    _uiState.update { it.copy(isVerified = true) }
+                    _uiState.update { 
+                        it.copy(
+                            isVerified = true,
+                            verificationResult = result.data
+                        ) 
+                    }
+                    
+                    when (result.data) {
+                        OtpVerificationResult.NewUser -> {
+                            _uiEvents.send(OtpUiEvent.NavigateToCompleteSignUp(currentState.email))
+                        }
+                        OtpVerificationResult.UserExists -> {
+                            _uiEvents.send(OtpUiEvent.NavigateToHome)
+                        }
+                    }
                 }
             }
         }
     }
 
-    /**
-     * A [StateFlow] representing the OTP code as a list of four individual strings.
-     * Each element corresponds to a position in the 4-digit code (indices 0 to 3).
-     * If a digit has not been entered yet, the value at that index defaults to an empty string.
-     */
+    private suspend fun sendErrorEvent(error: DataError.Network) {
+        when (error) {
+            DataError.Network.NoInternet,
+            DataError.Network.Timeout -> {
+                _uiEvents.send(OtpUiEvent.Warning(error))
+            }
+            else -> {
+                _uiEvents.send(OtpUiEvent.Error(error))
+            }
+        }
+    }
+
     val digitList: StateFlow<List<String>> = _uiState
         .map { state ->
             (0..5).map { index ->
@@ -172,11 +164,6 @@ class OtpViewModel @Inject constructor(
             initialValue = listOf("", "", "", "", "", "")
         )
 
-    /**
-     * A [StateFlow] representing the index of the next digit to be entered in the OTP sequence.
-     * The value ranges from 0 to 3, corresponding to the current input position.
-     * If all 4 digits have been entered, the value becomes -1.
-     */
     val activeIndex: StateFlow<Int> = _uiState
         .map { state ->
             if (state.code.length < 6) state.code.length else -1

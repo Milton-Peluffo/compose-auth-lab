@@ -6,7 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.tomildev.trakii.features.auth.otp.presentation.OtpScreen
 import com.tomildev.trakii.features.auth.signin.presentation.SignInScreen
-import com.tomildev.trakii.features.auth.signup.presentation.SignUpScreen
+import com.tomildev.trakii.features.auth.signup.presentation.complete_signup.CompleteSignUpScreen
+import com.tomildev.trakii.features.auth.signup.presentation.signup.SignUpScreen
 import com.tomildev.trakii.features.home.HomeScreen
 import com.tomildev.trakii.features.reset.password.presentation.PasswordResetScreen
 import com.tomildev.trakii.features.settings.presentation.SettingsScreen
@@ -42,13 +43,31 @@ fun NavigationRoot(
         }
 
         composable<NavRoute.Otp> {
-            OtpScreen(onNavigateBack = {
-                navController.popBackStack()
-            }, onNavigateToHome = {
-                navController.navigate(NavRoute.Home) {
-                    popUpTo(NavRoute.SignUp) { inclusive = true }
+            OtpScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToHome = {
+                    navController.navigate(NavRoute.Home) {
+                        popUpTo(NavRoute.SignUp) { inclusive = true }
+                    }
+                },
+                onNavigateToCompleteSignUp = { email ->
+                    navController.navigate(NavRoute.CompleteSignUp(email = email)) {
+                        popUpTo(NavRoute.SignUp) { inclusive = true }
+                    }
                 }
-            })
+            )
+        }
+
+        composable<NavRoute.CompleteSignUp> {
+            CompleteSignUpScreen(
+                onNavigateToHome = {
+                    navController.navigate(NavRoute.Home) {
+                        popUpTo(NavRoute.SignUp) { inclusive = true }
+                    }
+                }
+            )
         }
 
         composable<NavRoute.PasswordReset> {
