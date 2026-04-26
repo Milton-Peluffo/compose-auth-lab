@@ -15,14 +15,16 @@
     <!-- Accessibility -->
     <string name="a11y_show_password">Mostrar contraseña</string>
     <string name="a11y_hide_password">Ocultar contraseña</string>
+    <string name="a11y_go_back_button">Volver a atrás"</string>
 
     <!-- Common Domain errors -->
     <string name="common_error_empty_field">Este campo no puede estar vacio</string>
     <string name="common_error_user_name_too_short">El nombre de usuario debe tener al menos 3 caracteres</string>
-    <string name="common_error_user_name_invalid">El nombre de usuario solo puede contener letras, numeros y guiones bajos</string>
+    <string name="common_error_user_name_too_long">El nombre de usuario no puede exceder los 20 caracteres</string>
+    <string name="common_error_user_name_invalid">El nombre debe contener solo letras, números, espacios, guiones bajos o ø</string>
     <string name="common_error_email_invalid">Formato de correo invalido</string>
     <string name="common_error_password_too_short">La contraseña debe tener al menos 8 caracteres</string>
-    <string name="common_error_password_format">La contraseña necesita mayusculas, minusculas y un carácter especial</string>
+    <string name="common_error_password_format">La contraseña debe incluir al menos una mayúscula, una minúscula y un carácter especial</string>
     <string name="common_error_password_match">Las contraseñas deben coincidir</string>
 
     <!-- Common Network errors -->
@@ -30,5 +32,9 @@
     <string name="common_error_network_timeout">La solicitud ha expirado</string>
     <string name="common_error_network_email_exists">Este correo ya se encuentra registrado</string>
     <string name="common_error_network_unknown">Ha ocurrio un error desconocido</string>
-    <string name="common_error_network_service_unavailable">Servicio de la aplicacion no disponible</string>
+    <string name="common_error_network_service_unavailable">Servicio no disponible</string>
+
+    <!-- Subtitles for errors -->
+    <string name="common_error_subtitle_try_later">Inténtelo más tarde</string>
+    <string name="common_error_subtitle_check_connection">Por favor verifique su conexión</string>
 </resources>

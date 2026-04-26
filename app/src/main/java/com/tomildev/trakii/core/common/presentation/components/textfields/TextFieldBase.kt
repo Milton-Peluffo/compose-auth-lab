@@ -1,7 +1,6 @@
 package com.tomildev.trakii.core.common.presentation.components.textfields
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.tomildev.trakii.R
+import com.tomildev.trakii.ui.theme.Alpha
 
 @Composable
 fun TextFieldBase(
@@ -36,13 +36,12 @@ fun TextFieldBase(
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
     TextField(
-        value = value,
-        onValueChange = onValueChange,
-        isError = isError,
-        label = { Text(text = label) },
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(30),
-
+        onValueChange = onValueChange,
+        value = value,
+        label = { Text(text = label) },
+        isError = isError,
+        shape = MaterialTheme.shapes.large,
         visualTransformation = if (isPasswordField && !isPasswordVisible) {
             PasswordVisualTransformation()
         } else {
@@ -82,8 +81,8 @@ fun TextFieldBase(
             focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
             unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
             disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-            errorContainerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.3f),
-            errorLabelColor = MaterialTheme.colorScheme.primary,
+            errorContainerColor = MaterialTheme.colorScheme.error.copy(alpha = Alpha.Overlay),
+            errorLabelColor = MaterialTheme.colorScheme.onSurface,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,

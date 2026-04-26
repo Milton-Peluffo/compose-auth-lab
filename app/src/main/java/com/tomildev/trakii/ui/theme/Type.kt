@@ -25,16 +25,16 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         lineHeight = 24.sp
     ),
+    bodySmall = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Light
+    ),
     labelMedium = TextStyle(
         fontSize = 14.sp,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Normal
     ),
     labelLarge = TextStyle(
         fontSize = 17.sp,
         fontWeight = FontWeight.Normal
-    ),
-    bodySmall = TextStyle(
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Light
     )
 )

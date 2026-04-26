@@ -74,18 +74,22 @@ fun OtpScreen(
                 is OtpUiEvent.NavigateToCompleteSignUp -> onNavigateToCompleteSignUp(event.email)
 
                 is OtpUiEvent.Error -> {
+                    val errorUiText = event.error.toUiText()
                     snackbarHostState.showSnackbar(
                         SnackbarVisualsCustom(
-                            message = event.error.toUiText().asString(context),
+                            message = errorUiText.title.asString(context),
+                            description = errorUiText.description?.asString(context),
                             type = SnackbarType.Error
                         )
                     )
                 }
 
                 is OtpUiEvent.Warning -> {
+                    val errorUiText = event.error.toUiText()
                     snackbarHostState.showSnackbar(
                         SnackbarVisualsCustom(
-                            message = event.error.toUiText().asString(context),
+                            message = errorUiText.title.asString(context),
+                            description = errorUiText.description?.asString(context),
                             type = SnackbarType.Warning
                         )
                     )
@@ -203,9 +207,18 @@ fun OtpScreen(
                 val customVisuals = data.visuals as? SnackbarVisualsCustom
                 if (customVisuals != null) {
                     when (customVisuals.type) {
-                        SnackbarType.Error -> SnackBars.Error(title = customVisuals.message) { data.dismiss() }
-                        SnackbarType.Warning -> SnackBars.Warning(title = customVisuals.message) { data.dismiss() }
-                        SnackbarType.Success -> SnackBars.Success(title = customVisuals.message) { data.dismiss() }
+                        SnackbarType.Error -> SnackBars.Error(
+                            title = customVisuals.message,
+                            description = customVisuals.description
+                        ) { data.dismiss() }
+                        SnackbarType.Warning -> SnackBars.Warning(
+                            title = customVisuals.message,
+                            description = customVisuals.description
+                        ) { data.dismiss() }
+                        SnackbarType.Success -> SnackBars.Success(
+                            title = customVisuals.message,
+                            description = customVisuals.description
+                        ) { data.dismiss() }
                         else -> Snackbar(data)
                     }
                 } else {

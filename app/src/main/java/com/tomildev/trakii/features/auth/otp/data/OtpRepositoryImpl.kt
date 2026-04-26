@@ -8,6 +8,7 @@ import com.tomildev.trakii.features.auth.otp.domain.OtpVerificationResult
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.builtin.OTP
 import io.github.jan.supabase.auth.user.UserInfo
 import javax.inject.Inject
 
@@ -19,26 +20,39 @@ class OtpRepositoryImpl @Inject constructor(
         email: String,
         otp: String
     ): Result<OtpVerificationResult, DataError.Network> {
+        val cleanEmail = email.trim().lowercase()
+
         return try {
-            // Usamos MAGIC_LINK porque es el tipo que Supabase asigna a los OTP de email 
-            // cuando se envían sin contraseña (Passwordless/Magic Link OTP).
             supabaseClient.auth.verifyEmailOtp(
                 type = OtpType.Email.MAGIC_LINK,
-                email = email.trim().lowercase(),
+                email = cleanEmail,
                 token = otp
             )
-            
-            val user = supabaseClient.auth.retrieveUserForCurrentSession()
-            val isNewUser = checkIfUserIsNew(user)
-            
-            if (isNewUser) {
-                Result.Success(OtpVerificationResult.NewUser)
-            } else {
-                Result.Success(OtpVerificationResult.UserExists)
+            handleSuccessfulVerification()
+        } catch (e1: Exception) {
+            e1.printStackTrace()
+            try {
+                supabaseClient.auth.verifyEmailOtp(
+                    type = OtpType.Email.SIGNUP,
+                    email = cleanEmail,
+                    token = otp
+                )
+                handleSuccessfulVerification()
+            } catch (e2: Exception) {
+                e2.printStackTrace()
+                Result.Error(error = mapSupabaseError(e2))
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Result.Error(error = mapSupabaseError(e))
+        }
+    }
+
+    private suspend fun handleSuccessfulVerification(): Result<OtpVerificationResult, DataError.Network> {
+        val user = supabaseClient.auth.retrieveUserForCurrentSession()
+        val isNewUser = checkIfUserIsNew(user)
+
+        return if (isNewUser) {
+            Result.Success(OtpVerificationResult.NewUser)
+        } else {
+            Result.Success(OtpVerificationResult.UserExists)
         }
     }
 
@@ -49,11 +63,12 @@ class OtpRepositoryImpl @Inject constructor(
     }
 
     override suspend fun resentOtp(email: String): Result<Unit, DataError.Network> {
+        val cleanEmail = email.trim().lowercase()
         return try {
-            supabaseClient.auth.resendEmail(
-                type = OtpType.Email.MAGIC_LINK,
-                email = email.trim().lowercase()
-            )
+            supabaseClient.auth.signInWith(OTP) {
+                this.email = cleanEmail
+                createUser = true
+            }
             Result.Success(Unit)
         } catch (e: Exception) {
             e.printStackTrace()

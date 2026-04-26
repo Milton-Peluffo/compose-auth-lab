@@ -65,10 +65,11 @@ fun SignUpScreen(
                         else -> return@collect
                     }
 
-                    val errorMessage = errorData.toUiText().asString(context)
+                    val errorUiText = errorData.toUiText()
                     snackbarHostState.showSnackbar(
                         SnackbarVisualsCustom(
-                            message = errorMessage,
+                            message = errorUiText.title.asString(context),
+                            description = errorUiText.description?.asString(context),
                             type = snackbarType
                         )
                     )

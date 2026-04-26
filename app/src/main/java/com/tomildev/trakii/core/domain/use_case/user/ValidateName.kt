@@ -7,23 +7,29 @@ import javax.inject.Inject
 class ValidateName @Inject constructor() {
 
     fun execute(name: String): UserValidationResult {
+        val nameRegex = Regex("^[A-Za-z0-9_ ø]+$")
 
-        val usernameRegex = Regex("^[A-Za-z0-9_]+$")
-
-        if (name.isBlank())
+        if (name.isBlank()) {
             return UserValidationResult.Error(
                 error = UserValidationError.EmptyField
-            )
-
-        if (!usernameRegex.matches(name)) {
-            return UserValidationResult.Error(
-                error = UserValidationError.InvalidName
             )
         }
 
         if (name.length < 3) {
             return UserValidationResult.Error(
                 error = UserValidationError.TooShortName
+            )
+        }
+
+        if (name.length > 20) {
+            return UserValidationResult.Error(
+                error = UserValidationError.TooLongName
+            )
+        }
+
+        if (!nameRegex.matches(name)) {
+            return UserValidationResult.Error(
+                error = UserValidationError.InvalidName
             )
         }
 

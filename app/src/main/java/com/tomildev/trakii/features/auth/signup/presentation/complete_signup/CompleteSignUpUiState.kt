@@ -11,6 +11,7 @@ data class CompleteSignUpUiState(
 
     // STATES / VALIDATORS
     val isLoading: Boolean = false,
+    val isPasswordMatch: Boolean = false,
 
     //ERRORS
     val nameError: UserValidationError? = null,

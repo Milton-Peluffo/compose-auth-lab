@@ -1,0 +1,11 @@
+<resources>
+    <!-- ========================== LOGOUT DIALOG ========================== -->
+    <string name="dialog_logout_title">Confirmar cierre de sesión</string>
+    <string name="dialog_logout_message">¿Estás seguro de que deseas cerrar sesión en tu cuenta?</string>
+    <string name="dialog_logout_confirm">Cerrar sesión</string>
+
+    <!-- ========================== DELETE ACCOUNT DIALOG ========================== -->
+    <string name="dialog_delete_account_title">Eliminar cuenta</string>
+    <string name="dialog_delete_account_message">Esta acción eliminará permanentemente tu cuenta y todos los datos asociados. ¿Estás seguro de que deseas continuar?</string>
+    <string name="dialog_delete_account_confirm">Eliminar cuenta</string>
+</resources>

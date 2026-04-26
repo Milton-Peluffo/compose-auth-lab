@@ -48,18 +48,22 @@ fun CompleteSignUpScreen(
                 }
 
                 is CompleteSignUpUiEvent.Error -> {
+                    val errorUiText = event.error.toUiText()
                     snackbarHostState.showSnackbar(
                         SnackbarVisualsCustom(
-                            message = event.error.toUiText().asString(context),
+                            message = errorUiText.title.asString(context),
+                            description = errorUiText.description?.asString(context),
                             type = SnackbarType.Error
                         )
                     )
                 }
 
                 is CompleteSignUpUiEvent.Warning -> {
+                    val errorUiText = event.error.toUiText()
                     snackbarHostState.showSnackbar(
                         SnackbarVisualsCustom(
-                            message = event.error.toUiText().asString(context),
+                            message = errorUiText.title.asString(context),
+                            description = errorUiText.description?.asString(context),
                             type = SnackbarType.Warning
                         )
                     )
@@ -74,9 +78,21 @@ fun CompleteSignUpScreen(
                 val customVisuals = data.visuals as? SnackbarVisualsCustom
                 if (customVisuals != null) {
                     when (customVisuals.type) {
-                        SnackbarType.Error -> SnackBars.Error(title = customVisuals.message) { data.dismiss() }
-                        SnackbarType.Warning -> SnackBars.Warning(title = customVisuals.message) { data.dismiss() }
-                        SnackbarType.Success -> SnackBars.Success(title = customVisuals.message) { data.dismiss() }
+                        SnackbarType.Error -> SnackBars.Error(
+                            title = customVisuals.message,
+                            description = customVisuals.description
+                        ) { data.dismiss() }
+
+                        SnackbarType.Warning -> SnackBars.Warning(
+                            title = customVisuals.message,
+                            description = customVisuals.description
+                        ) { data.dismiss() }
+
+                        SnackbarType.Success -> SnackBars.Success(
+                            title = customVisuals.message,
+                            description = customVisuals.description
+                        ) { data.dismiss() }
+
                         else -> {}
                     }
                 }
@@ -125,7 +141,8 @@ fun CompleteSignUpScreen(
             TextFields.ConfirmPassword(
                 value = uiState.confirmPassword,
                 onValueChange = viewModel::onConfirmPasswordChange,
-                isError = uiState.confirmPasswordError != null
+                isError = uiState.confirmPasswordError != null,
+                isPasswordMatch = uiState.isPasswordMatch
             )
             if (uiState.confirmPasswordError != null) {
                 TextError(text = uiState.confirmPasswordError!!.toUiText().asString())

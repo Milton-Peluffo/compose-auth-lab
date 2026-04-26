@@ -34,12 +34,15 @@ class MainActivity : ComponentActivity() {
 
                 val userId by userPreferences.userId.collectAsState(initial = null)
 
+//                val startRoute = NavRoute.CompleteSignUp(email = "test@example.com")
+
                 if (userId != null) {
                     val startRoute = if (userId != -1) {
                         NavRoute.Home
                     } else {
+//                        startRoute
+                        NavRoute.SignIn
                         NavRoute.Settings
-                        NavRoute.CompleteSignUp
                     }
 
                     val navController = rememberNavController()

@@ -9,6 +9,7 @@ sealed class UserValidationError {
     object EmptyField : UserValidationError()
     object TooShortPassword : UserValidationError()
     object TooShortName : UserValidationError()
+    object TooLongName : UserValidationError()
     object InvalidName : UserValidationError()
     object InvalidEmail : UserValidationError()
     object InvalidPassword : UserValidationError()

@@ -39,11 +39,31 @@ class CompleteSignUpViewModel @Inject constructor(
     }
 
     fun onPasswordChange(password: String) {
-        _uiState.update { it.copy(password = password, passwordError = null) }
+        _uiState.update {
+            it.copy(
+                password = password,
+                passwordError = null,
+            )
+        }
+        if (password == _uiState.value.confirmPassword) {
+            _uiState.update { it.copy(isPasswordMatch = true) }
+        } else {
+            _uiState.update { it.copy(isPasswordMatch = false) }
+        }
     }
 
     fun onConfirmPasswordChange(confirmPassword: String) {
-        _uiState.update { it.copy(confirmPassword = confirmPassword, confirmPasswordError = null) }
+        _uiState.update {
+            it.copy(
+                confirmPassword = confirmPassword,
+                confirmPasswordError = null
+            )
+        }
+        if (confirmPassword == _uiState.value.password) {
+            _uiState.update { it.copy(isPasswordMatch = true) }
+        } else {
+            _uiState.update { it.copy(isPasswordMatch = false) }
+        }
     }
 
     fun onCompleteSignUp() {
