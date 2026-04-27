@@ -1,7 +1,6 @@
 package com.tomildev.trakii.core.common.util.mappers
 
 import com.tomildev.trakii.core.domain.model.error.DataError
-import io.github.jan.supabase.auth.exception.AuthRestException
 import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.exceptions.UnauthorizedRestException
@@ -25,7 +24,6 @@ fun mapSupabaseError(
 
         is UnauthorizedRestException -> DataError.Network.InvalidCredentials
         is RestException -> DataError.Network.ServiceUnavailable
-        is AuthRestException -> DataError.Network.Unknown
         else -> DataError.Network.Unknown
     }
 }

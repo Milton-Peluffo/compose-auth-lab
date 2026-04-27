@@ -11,10 +11,19 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import javax.inject.Inject
 
+/**
+ * Manages the user registration process using Supabase.
+ *
+ * Handles the two-step sign-up flow: initiating registration via OTP and 
+ * finalizing the account by setting the user profile details.
+ */
 class SignUpRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient
 ) : SignUpRepository {
 
+    /**
+     * Triggers the registration flow by sending a verification code to the user's email.
+     */
     override suspend fun sendOtp(email: String): Result<Unit, DataError.Network> {
         val cleanEmail = email.trim().lowercase()
         return try {
@@ -28,6 +37,9 @@ class SignUpRepositoryImpl @Inject constructor(
         }
     }
 
+    /**
+     * Finalizes the account setup by assigning the user's identity details and credentials.
+     */
     override suspend fun completeRegistration(
         name: String,
         password: String

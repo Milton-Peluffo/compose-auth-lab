@@ -33,7 +33,7 @@
     <!-- Success messages -->
     <string name="auth_shared_otp_code_resent_success">Codigo de verificacion enviado correctamente</string>
     <!-- Error messages -->
-    <string name="auth_shared_otp_error_network_invalid_code">Codigo de verificacion expirado o invalido</string>
+    <string name="auth_shared_otp_error_network_invalid_code">Código de verificación inválido o expirado</string>
 
     <!-- ========================== PASSWORD RESET SCREEN ========================== -->
     <string name="auth_shared_password_reset_title">Crear \nNueva contraseña</string>
