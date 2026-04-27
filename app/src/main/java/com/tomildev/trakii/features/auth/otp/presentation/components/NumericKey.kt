@@ -60,7 +60,7 @@ fun NumericKey(
                 modifier = Modifier.size(Dimens.IconSizeMedium)
             )
         } else {
-            Texts.Headline(text = text)
+            Texts.TitleLarge(text = text, color = Color.White)
         }
     }
 }

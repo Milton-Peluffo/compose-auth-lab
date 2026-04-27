@@ -125,10 +125,7 @@ fun OtpScreen(
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
 
-                Texts.Headline(
-                    text = stringResource(R.string.auth_shared_otp_title),
-                    modifier = Modifier.align(Alignment.Center)
-                )
+
             }
             VerticalSpacer(verticalGap)
             Texts.TitleMedium(

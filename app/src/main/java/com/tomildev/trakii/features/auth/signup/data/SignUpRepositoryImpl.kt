@@ -2,13 +2,10 @@ package com.tomildev.trakii.features.auth.signup.data
 
 import com.tomildev.trakii.core.common.util.mappers.mapSupabaseError
 import com.tomildev.trakii.core.domain.model.error.DataError
-import com.tomildev.trakii.core.domain.model.user.User
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.signup.domain.SignUpRepository
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
-import io.github.jan.supabase.auth.exception.AuthRestException
-import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.providers.builtin.OTP
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -18,31 +15,11 @@ class SignUpRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient
 ) : SignUpRepository {
 
-    override suspend fun signUp(user: User, password: String): Result<Unit, DataError.Network> {
-        return try {
-            supabaseClient.auth.signUpWith(Email) {
-                email = user.email
-                this.password = password
-                data = buildJsonObject { put("display_name", user.name) }
-            }
-            Result.Success(Unit)
-        } catch (e: Exception) {
-            val error = mapSupabaseError(e) { exception ->
-                if (exception is AuthRestException) {
-                    val msg = exception.message?.lowercase() ?: ""
-                    if (msg.contains("user_already_exists") || msg.contains("already registered")) {
-                        DataError.Network.Conflict
-                    } else null
-                } else null
-            }
-            Result.Error(error)
-        }
-    }
-
     override suspend fun sendOtp(email: String): Result<Unit, DataError.Network> {
+        val cleanEmail = email.trim().lowercase()
         return try {
             supabaseClient.auth.signInWith(OTP) {
-                this.email = email.trim().lowercase()
+                this.email = cleanEmail
                 createUser = true
             }
             Result.Success(Unit)

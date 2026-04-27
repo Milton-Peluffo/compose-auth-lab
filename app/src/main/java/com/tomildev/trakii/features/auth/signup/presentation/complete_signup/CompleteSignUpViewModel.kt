@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import com.tomildev.trakii.core.domain.use_case.user.UserUseCases
+import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.signup.domain.SignUpRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -102,8 +103,22 @@ class CompleteSignUpViewModel @Inject constructor(
     private fun completeSignUp() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
+            
+            val result = signUpRepository.completeRegistration(
+                name = _uiState.value.name,
+                password = _uiState.value.password
+            )
+            
             _uiState.update { it.copy(isLoading = false) }
-            _uiEvents.send(CompleteSignUpUiEvent.Success)
+
+            when (result) {
+                is Result.Error -> {
+                    _uiEvents.send(CompleteSignUpUiEvent.Error(result.error))
+                }
+                is Result.Success -> {
+                    _uiEvents.send(CompleteSignUpUiEvent.Success)
+                }
+            }
         }
     }
 }

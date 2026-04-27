@@ -36,11 +36,11 @@ fun TextFieldBase(
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
     TextField(
-        modifier = modifier.fillMaxWidth(),
-        onValueChange = onValueChange,
         value = value,
-        label = { Text(text = label) },
+        onValueChange = onValueChange,
         isError = isError,
+        modifier = modifier.fillMaxWidth(),
+        label = { Text(text = label) },
         shape = MaterialTheme.shapes.large,
         visualTransformation = if (isPasswordField && !isPasswordVisible) {
             PasswordVisualTransformation()
@@ -82,7 +82,7 @@ fun TextFieldBase(
             unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
             disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             errorContainerColor = MaterialTheme.colorScheme.error.copy(alpha = Alpha.Overlay),
-            errorLabelColor = MaterialTheme.colorScheme.onSurface,
+            errorLabelColor = MaterialTheme.colorScheme.error,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,

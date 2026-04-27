@@ -23,55 +23,48 @@ class OtpRepositoryImpl @Inject constructor(
         val cleanEmail = email.trim().lowercase()
 
         return try {
-            supabaseClient.auth.verifyEmailOtp(
-                type = OtpType.Email.MAGIC_LINK,
-                email = cleanEmail,
-                token = otp
-            )
-            handleSuccessfulVerification()
-        } catch (e1: Exception) {
-            e1.printStackTrace()
             try {
+                supabaseClient.auth.verifyEmailOtp(
+                    type = OtpType.Email.MAGIC_LINK,
+                    email = cleanEmail,
+                    token = otp
+                )
+            } catch (e: Exception) {
                 supabaseClient.auth.verifyEmailOtp(
                     type = OtpType.Email.SIGNUP,
                     email = cleanEmail,
                     token = otp
                 )
-                handleSuccessfulVerification()
-            } catch (e2: Exception) {
-                e2.printStackTrace()
-                Result.Error(error = mapSupabaseError(e2))
             }
+
+            val user = supabaseClient.auth.retrieveUserForCurrentSession()
+            val isComplete = checkIfUserIsComplete(user)
+
+            if (isComplete) {
+                Result.Success(OtpVerificationResult.UserExists)
+            } else {
+                Result.Success(OtpVerificationResult.NewUser)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Error(error = mapSupabaseError(e))
         }
     }
 
-    private suspend fun handleSuccessfulVerification(): Result<OtpVerificationResult, DataError.Network> {
-        val user = supabaseClient.auth.retrieveUserForCurrentSession()
-        val isNewUser = checkIfUserIsNew(user)
-
-        return if (isNewUser) {
-            Result.Success(OtpVerificationResult.NewUser)
-        } else {
-            Result.Success(OtpVerificationResult.UserExists)
-        }
-    }
-
-    private fun checkIfUserIsNew(user: UserInfo): Boolean {
+    private fun checkIfUserIsComplete(user: UserInfo): Boolean {
         val metadata = user.userMetadata
         val displayName = metadata?.get("display_name")?.toString()?.replace("\"", "")
-        return displayName.isNullOrBlank()
+        return !displayName.isNullOrBlank()
     }
 
     override suspend fun resentOtp(email: String): Result<Unit, DataError.Network> {
-        val cleanEmail = email.trim().lowercase()
         return try {
             supabaseClient.auth.signInWith(OTP) {
-                this.email = cleanEmail
+                this.email = email.trim().lowercase()
                 createUser = true
             }
             Result.Success(Unit)
         } catch (e: Exception) {
-            e.printStackTrace()
             Result.Error(error = mapSupabaseError(e))
         }
     }
