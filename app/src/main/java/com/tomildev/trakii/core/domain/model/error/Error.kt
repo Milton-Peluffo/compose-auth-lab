@@ -10,12 +10,13 @@ package com.tomildev.trakii.core.domain.model.error
 sealed interface Error
 sealed class DataError : Error {
     sealed class Network : DataError() {
-        object ServiceUnavailable : Network()
-        object InvalidCredentials : Network()
-        object InvalidOtp : Network()
-        object Conflict : Network()
-        object NoInternet : Network()
-        object Timeout : Network()
-        object Unknown : Network()
+        data object ServiceUnavailable : Network()
+        data object InvalidCredentials : Network()
+        data object InvalidOtp : Network()
+        data object Conflict : Network()
+        data object GoogleAccountExists : Network()
+        data object NoInternet : Network()
+        data object Timeout : Network()
+        data object Unknown : Network()
     }
 }

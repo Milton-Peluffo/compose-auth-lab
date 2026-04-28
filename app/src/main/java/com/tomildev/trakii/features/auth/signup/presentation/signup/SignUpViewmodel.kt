@@ -96,6 +96,7 @@ class SignUpViewmodel @Inject constructor(
                     }
                 }
                 is Result.Success -> {
+                    _uiEvents.send(SignUpUiEvent.NavigateToHome)
                 }
             }
         }

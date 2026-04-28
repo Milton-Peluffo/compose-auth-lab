@@ -1,6 +1,7 @@
 package com.tomildev.trakii.features.auth.otp.data
 
 import com.tomildev.trakii.core.common.util.mappers.mapSupabaseError
+import com.tomildev.trakii.core.data.remote.dto.ProfileDto
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.otp.domain.OtpRepository
@@ -9,22 +10,18 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.OTP
-import io.github.jan.supabase.auth.user.UserInfo
 import io.github.jan.supabase.exceptions.RestException
+import io.github.jan.supabase.postgrest.from
 import javax.inject.Inject
 
 /**
- * Handles One-Time Password (OTP) operations via Supabase, including 
- * verification for sign-up and login flows, and resending codes.
+ * Handles One-Time Password (OTP) operations via Supabase, including
+ * verification for sign-up, login flows and resending codes.
  */
 class OtpRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient
 ) : OtpRepository {
 
-    /**
-     * Verifies the provided OTP against Magic Link and Signup flows, then checks 
-     * if the user's profile is complete to determine the next navigation step.
-     */
     override suspend fun verifyOtp(
         email: String,
         otp: String
@@ -46,21 +43,30 @@ class OtpRepositoryImpl @Inject constructor(
                 )
             }
 
-            val user = supabaseClient.auth.retrieveUserForCurrentSession()
-            val isComplete = checkIfUserIsComplete(user)
+            val user = supabaseClient.auth.currentUserOrNull()
+                ?: return Result.Error(DataError.Network.ServiceUnavailable)
 
-            if (isComplete) {
+            val profile = supabaseClient.from("profiles")
+                .select {
+                    filter {
+                        eq("id", user.id)
+                    }
+                }
+                .decodeSingleOrNull<ProfileDto>()
+
+            if (profile?.isProfileComplete == true) {
                 Result.Success(OtpVerificationResult.UserExists)
             } else {
                 Result.Success(OtpVerificationResult.NewUser)
             }
+
         } catch (e: Exception) {
-            e.printStackTrace()
             Result.Error(
                 error = mapSupabaseError(e) { exception ->
                     if (exception is RestException) {
                         val message = exception.message ?: ""
-                        if (message.contains("otp_expired", ignoreCase = true) ||
+                        if (
+                            message.contains("otp_expired", ignoreCase = true) ||
                             message.contains("invalid_grant", ignoreCase = true)
                         ) {
                             DataError.Network.InvalidOtp
@@ -71,26 +77,18 @@ class OtpRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun checkIfUserIsComplete(user: UserInfo): Boolean {
-        val isOAuthUser = user.identities?.any { it.provider != "email" } == true
-        if (isOAuthUser) return true
-
-        val metadata = user.userMetadata
-        val displayName = metadata?.get("display_name")?.toString()?.replace("\"", "")
-        val fullName = metadata?.get("full_name")?.toString()?.replace("\"", "")
-
-        return !displayName.isNullOrBlank() || !fullName.isNullOrBlank()
-    }
-
     override suspend fun resentOtp(email: String): Result<Unit, DataError.Network> {
+        val cleanEmail = email.trim().lowercase()
+
         return try {
             supabaseClient.auth.signInWith(OTP) {
-                this.email = email.trim().lowercase()
-                createUser = true
+                this.email = cleanEmail
             }
+
             Result.Success(Unit)
+
         } catch (e: Exception) {
-            Result.Error(error = mapSupabaseError(e))
+            Result.Error(mapSupabaseError(e))
         }
     }
 }

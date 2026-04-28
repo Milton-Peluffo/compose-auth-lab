@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tomildev.trakii.R
+import com.tomildev.trakii.core.common.presentation.components.spacers.HorizontalSpacer
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.ui.theme.Alpha
 import com.tomildev.trakii.ui.theme.Dimens
@@ -48,7 +49,7 @@ fun SnackbarBase(
     Snackbar(
         modifier = modifier
             .height(Dimens.SnackbarHeight)
-            .padding(horizontal = Dimens.ScreenHorizontalPadding)
+            .padding(horizontal = 8.dp)
             .border(
                 width = Dimens.borderNormal,
                 shape = shape,
@@ -59,9 +60,11 @@ fun SnackbarBase(
         action = null
     ) {
         Row(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxHeight(),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
             Icon(
                 modifier = Modifier.size(Dimens.IconSizeMedium),
                 painter = icon,
@@ -69,16 +72,17 @@ fun SnackbarBase(
                 tint = iconTint
             )
 
+            HorizontalSpacer(Dimens.SpacingMedium)
+
             Column(
-                modifier = Modifier
-                    .padding(start = 12.dp, end = 8.dp)
-                    .weight(1f),
+                modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center
             ) {
                 Texts.Body(
                     text = title,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+
                 if (!description.isNullOrBlank()) {
                     Texts.BodySmall(
                         text = description,

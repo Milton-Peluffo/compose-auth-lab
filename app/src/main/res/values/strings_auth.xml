@@ -12,6 +12,8 @@
     <string name="auth_signin_btn_sign_up">Sign up</string>
     <!-- Error messages -->
     <string name="auth_signin_network_error_invalid_credentials">Invalid email or password</string>
+    <string name="auth_signin_error_google_account_exists_title">This email is linked to Google</string>
+    <string name="auth_signin_error_google_account_exists_subtitle">Use the Google button to continue.</string>
 
     <!-- ========================== SIGN UP SCREEN ========================== -->
     <string name="auth_signup_title">Let\'s get\nStarted</string>

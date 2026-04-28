@@ -39,7 +39,10 @@ fun NavigationRoot(
                 navController.navigate(NavRoute.SignIn)
             }, onNavigateToOtp = { email ->
                 navController.navigate(NavRoute.Otp(email = email))
-            })
+            }, onNavigateToHome = {
+                navController.navigate(NavRoute.Home)
+            }
+            )
         }
 
         composable<NavRoute.Otp> {

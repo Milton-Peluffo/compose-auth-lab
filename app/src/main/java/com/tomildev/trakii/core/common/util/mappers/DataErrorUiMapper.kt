@@ -32,6 +32,7 @@ fun DataError.toUiText(): DataErrorUiText {
                 DataError.Network.InvalidCredentials -> R.string.auth_signin_network_error_invalid_credentials
                 DataError.Network.InvalidOtp -> R.string.auth_shared_otp_error_network_invalid_code
                 DataError.Network.Conflict -> R.string.common_error_network_email_exists
+                DataError.Network.GoogleAccountExists -> R.string.auth_signin_error_google_account_exists_title
                 DataError.Network.NoInternet -> R.string.common_error_network_no_internet
                 DataError.Network.Timeout -> R.string.common_error_network_timeout
                 DataError.Network.Unknown -> R.string.common_error_network_unknown
@@ -41,6 +42,7 @@ fun DataError.toUiText(): DataErrorUiText {
                 DataError.Network.ServiceUnavailable -> R.string.common_error_subtitle_try_later
                 DataError.Network.NoInternet -> R.string.common_error_subtitle_check_connection
                 DataError.Network.Timeout -> R.string.common_error_subtitle_try_later
+                DataError.Network.GoogleAccountExists -> R.string.auth_signin_error_google_account_exists_subtitle
                 else -> null
             }
             
