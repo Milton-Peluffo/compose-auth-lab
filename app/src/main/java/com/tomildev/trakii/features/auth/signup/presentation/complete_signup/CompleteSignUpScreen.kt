@@ -153,7 +153,7 @@ fun CompleteSignUpScreen(
             PrimaryButton(
                 text = stringResource(R.string.auth_complete_signup_btn_confirm),
                 isLoading = uiState.isLoading,
-                onClick = viewModel::onCompleteSignUp
+                onClick = viewModel::onCompleteSignUpClick
             )
         }
     }

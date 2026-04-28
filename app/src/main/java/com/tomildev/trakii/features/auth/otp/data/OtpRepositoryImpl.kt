@@ -61,16 +61,17 @@ class OtpRepositoryImpl @Inject constructor(
             }
 
         } catch (e: Exception) {
+
             Result.Error(
-                error = mapSupabaseError(e) { exception ->
+                mapSupabaseError(e) { exception ->
                     if (exception is RestException) {
                         val message = exception.message ?: ""
-                        if (
-                            message.contains("otp_expired", ignoreCase = true) ||
-                            message.contains("invalid_grant", ignoreCase = true)
-                        ) {
-                            DataError.Network.InvalidOtp
-                        } else null
+                        when {
+                            message.contains("otp_expired", ignoreCase = true) ->
+                                DataError.Network.InvalidOtp
+
+                            else -> DataError.Network.Unknown
+                        }
                     } else null
                 }
             )

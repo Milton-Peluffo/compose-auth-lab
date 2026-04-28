@@ -1,30 +1,40 @@
 package com.tomildev.trakii.features.auth.signin.presentation
 
 import androidx.lifecycle.ViewModel
-import com.tomildev.trakii.core.data.preferences.UserPreferences
+import androidx.lifecycle.viewModelScope
+import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.model.user.UserValidationError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import com.tomildev.trakii.core.domain.use_case.user.UserUseCases
+import com.tomildev.trakii.core.domain.util.Result
+import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
+import com.tomildev.trakii.features.auth.signin.domain.SignInRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val userUseCases: UserUseCases,
-    private val userPreferences: UserPreferences
+    private val signInRepository: SignInRepository,
+    private val oAuthRepository: OAuthRepository,
+    private val userUseCases: UserUseCases
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignInUiState())
     val uiState: StateFlow<SignInUiState> = _uiState.asStateFlow()
 
+    private val _uiEvents = Channel<SignInUiEvent>()
+    val uiEvents = _uiEvents.receiveAsFlow()
 
-    fun onLoginClick() {
+    fun onSignInClick() {
         if (validateFields()) {
-            userLogin()
+            signIn()
         }
     }
 
@@ -50,37 +60,71 @@ class SignInViewModel @Inject constructor(
     private fun updateErrorState(
         emailError: UserValidationError? = null,
         passwordError: UserValidationError? = null,
+        networkError: DataError? = null
     ) {
         _uiState.update {
             it.copy(
                 emailError = emailError,
                 passwordError = passwordError,
+                networkError = networkError
             )
         }
     }
 
-    private fun userLogin() {
-//
-//        viewModelScope.launch {
-//            _uiState.update { it.copy(isLoading = true) }
-//            val result = userRepository.getUserByEmail(_uiState.value.email)
-//
-//            result.onSuccess { user ->
-//                if (user != null && user.password == _uiState.value.password) {
-//                    delay(2500)
-//                    userRepository.saveUserSession(user.id)
-//                    _uiState.update { it.copy(isLoginSuccess = true) }
-//
-//                } else {
-//                    _uiState.update {
-//                        it.copy(errorMessage = "Email or password incorrect")
-//                    }
-//                }
-//            }.onFailure {
-//                _uiState.update { it.copy(errorMessage = "An error occurred") }
-//            }
-//            _uiState.update { it.copy(isLoading = false) }
-//        }
+    private fun signIn() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, networkError = null) }
+            val result = signInRepository.signInWithEmail(
+                email = _uiState.value.email,
+                password = _uiState.value.password
+            )
+
+            _uiState.update { it.copy(isLoading = false) }
+
+            when (result) {
+                is Result.Success -> {
+                    _uiEvents.send(SignInUiEvent.NavigateToHome(_uiState.value.email))
+                }
+
+                is Result.Error -> {
+                    _uiState.update { it.copy(networkError = result.error) }
+                    if (result.error == DataError.Network.NoInternet || result.error == DataError.Network.Timeout) {
+                        _uiEvents.send(SignInUiEvent.Warning(result.error))
+                    } else {
+                        _uiEvents.send(SignInUiEvent.Error(result.error))
+                    }
+                }
+            }
+        }
+    }
+
+    fun onGoogleSignInStart() {
+        _uiState.update { it.copy(isGoogleLoading = true) }
+    }
+
+    fun onGoogleSignInCancel() {
+        _uiState.update { it.copy(isGoogleLoading = false) }
+    }
+
+    fun onGoogleSignIn(idToken: String) {
+        viewModelScope.launch {
+            val result = oAuthRepository.authWithGoogle(idToken)
+            _uiState.update { it.copy(isGoogleLoading = false) }
+
+            when (result) {
+                is Result.Success -> {
+                    _uiEvents.send(SignInUiEvent.NavigateToHome(""))
+                }
+
+                is Result.Error -> {
+                    if (result.error == DataError.Network.NoInternet || result.error == DataError.Network.Timeout) {
+                        _uiEvents.send(SignInUiEvent.Warning(result.error))
+                    } else {
+                        _uiEvents.send(SignInUiEvent.Error(result.error))
+                    }
+                }
+            }
+        }
     }
 
     fun onEmailChange(email: String) {
@@ -88,7 +132,7 @@ class SignInViewModel @Inject constructor(
             currentState.copy(
                 email = email,
                 emailError = null,
-                errorMessage = null,
+                networkError = null
             )
         }
     }
@@ -98,7 +142,7 @@ class SignInViewModel @Inject constructor(
             currentState.copy(
                 password = password,
                 passwordError = null,
-                errorMessage = null,
+                networkError = null
             )
         }
     }

@@ -1,6 +1,5 @@
 package com.tomildev.trakii.features.auth.signup.presentation.signup
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -67,7 +66,6 @@ fun SignUpScreen(
                     val (errorData, snackbarType) = when (uiEvent) {
                         is SignUpUiEvent.Error -> uiEvent.error to SnackbarType.Error
                         is SignUpUiEvent.Warning -> uiEvent.error to SnackbarType.Warning
-                        else -> return@collect
                     }
 
                     val errorUiText = errorData.toUiText()
@@ -147,23 +145,25 @@ fun SignUpScreen(
             PrimaryButton(
                 text = stringResource(R.string.auth_signup_btn_signup),
                 isLoading = uiState.isLoading,
-                onClick = { signUpViewmodel.onRegisterClick() }
+                onClick = { signUpViewmodel.onSignUpClick() }
             )
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
             AuthHorizontalDivider()
             VerticalSpacer(height = Dimens.SpacingLarge)
-            SocialAuthButtons.Google(onClick = {
-                scope.launch {
-                    val idToken = googleAuthClient.signIn()
-                    if (idToken != null) {
-                        Log.d("Google Auth", "ID Token: $idToken")
-                        signUpViewmodel.onGoogleSignIn(idToken)
+            SocialAuthButtons.Google(
+                onClick = {
+                    scope.launch {
+                        signUpViewmodel.onGoogleSignInStart()
+                        val idToken = googleAuthClient.signIn()
+                        if (idToken != null) {
+                            signUpViewmodel.onGoogleSignIn(idToken)
+                        } else {
+                            signUpViewmodel.onGoogleSignInCancel()
+                        }
                     }
-                    else {
-                        Log.d("Google Auth", "ID Token is null")
-                    }
-                }
-            }, isLoading = uiState.isGoogleLoading)
+                },
+                isLoading = uiState.isGoogleLoading
+            )
             VerticalSpacer(height = Dimens.SpacingLarge)
             AuthTextAction(
                 text = stringResource(R.string.auth_signup_already_have_account),

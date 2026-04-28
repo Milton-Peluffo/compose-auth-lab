@@ -35,39 +35,7 @@ class CompleteSignUpViewModel @Inject constructor(
         _uiState.update { it.copy(email = email) }
     }
 
-    fun onNameChange(name: String) {
-        _uiState.update { it.copy(name = name, nameError = null) }
-    }
-
-    fun onPasswordChange(password: String) {
-        _uiState.update {
-            it.copy(
-                password = password,
-                passwordError = null,
-            )
-        }
-        if (password == _uiState.value.confirmPassword) {
-            _uiState.update { it.copy(isPasswordMatch = true) }
-        } else {
-            _uiState.update { it.copy(isPasswordMatch = false) }
-        }
-    }
-
-    fun onConfirmPasswordChange(confirmPassword: String) {
-        _uiState.update {
-            it.copy(
-                confirmPassword = confirmPassword,
-                confirmPasswordError = null
-            )
-        }
-        if (confirmPassword == _uiState.value.password) {
-            _uiState.update { it.copy(isPasswordMatch = true) }
-        } else {
-            _uiState.update { it.copy(isPasswordMatch = false) }
-        }
-    }
-
-    fun onCompleteSignUp() {
+    fun onCompleteSignUpClick() {
         if (validateFields()) {
             completeSignUp()
         }
@@ -103,22 +71,55 @@ class CompleteSignUpViewModel @Inject constructor(
     private fun completeSignUp() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            
+
             val result = signUpRepository.completeRegistration(
                 name = _uiState.value.name,
                 password = _uiState.value.password
             )
-            
+
             _uiState.update { it.copy(isLoading = false) }
 
             when (result) {
                 is Result.Error -> {
                     _uiEvents.send(CompleteSignUpUiEvent.Error(result.error))
                 }
+
                 is Result.Success -> {
                     _uiEvents.send(CompleteSignUpUiEvent.Success)
                 }
             }
+        }
+    }
+
+    fun onNameChange(name: String) {
+        _uiState.update { it.copy(name = name, nameError = null) }
+    }
+
+    fun onPasswordChange(password: String) {
+        _uiState.update {
+            it.copy(
+                password = password,
+                passwordError = null,
+            )
+        }
+        if (password == _uiState.value.confirmPassword) {
+            _uiState.update { it.copy(isPasswordMatch = true) }
+        } else {
+            _uiState.update { it.copy(isPasswordMatch = false) }
+        }
+    }
+
+    fun onConfirmPasswordChange(confirmPassword: String) {
+        _uiState.update {
+            it.copy(
+                confirmPassword = confirmPassword,
+                confirmPasswordError = null
+            )
+        }
+        if (confirmPassword == _uiState.value.password) {
+            _uiState.update { it.copy(isPasswordMatch = true) }
+        } else {
+            _uiState.update { it.copy(isPasswordMatch = false) }
         }
     }
 }

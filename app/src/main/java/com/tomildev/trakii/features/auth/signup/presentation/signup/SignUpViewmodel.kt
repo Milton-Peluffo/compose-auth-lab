@@ -31,7 +31,7 @@ class SignUpViewmodel @Inject constructor(
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
 
-    fun onRegisterClick() {
+    fun onSignUpClick() {
         if (validateFields()) {
             sendOtp()
         }
@@ -51,11 +51,11 @@ class SignUpViewmodel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             val cleanedEmail = _uiState.value.email.trim().lowercase()
-            
+
             val result = signUpRepository.sendOtp(cleanedEmail)
-            
+
             _uiState.update { it.copy(isLoading = false) }
-            
+
             when (result) {
                 is Result.Error -> {
                     if (result.error == DataError.Network.NoInternet || result.error == DataError.Network.Timeout) {
@@ -64,8 +64,38 @@ class SignUpViewmodel @Inject constructor(
                         _uiEvents.send(SignUpUiEvent.Error(result.error))
                     }
                 }
+
                 is Result.Success -> {
                     _uiEvents.send(SignUpUiEvent.NavigateToOtp(cleanedEmail))
+                }
+            }
+        }
+    }
+
+    fun onGoogleSignInStart() {
+        _uiState.update { it.copy(isGoogleLoading = true) }
+    }
+
+    fun onGoogleSignInCancel() {
+        _uiState.update { it.copy(isGoogleLoading = false) }
+    }
+
+    fun onGoogleSignIn(idToken: String) {
+        viewModelScope.launch {
+            val result = oAuthRepository.authWithGoogle(idToken)
+            _uiState.update { it.copy(isGoogleLoading = false) }
+
+            when (result) {
+                is Result.Error -> {
+                    if (result.error == DataError.Network.NoInternet || result.error == DataError.Network.Timeout) {
+                        _uiEvents.send(SignUpUiEvent.Warning(result.error))
+                    } else {
+                        _uiEvents.send(SignUpUiEvent.Error(result.error))
+                    }
+                }
+
+                is Result.Success -> {
+                    _uiEvents.send(SignUpUiEvent.NavigateToHome)
                 }
             }
         }
@@ -78,27 +108,6 @@ class SignUpViewmodel @Inject constructor(
                 emailError = null,
                 errorMessage = null,
             )
-        }
-    }
-
-    fun onGoogleSignIn(idToken: String) {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isGoogleLoading = true) }
-            val result = oAuthRepository.authWithGoogle(idToken)
-            _uiState.update { it.copy(isGoogleLoading = false) }
-
-            when (result) {
-                is Result.Error -> {
-                    if (result.error == DataError.Network.NoInternet || result.error == DataError.Network.Timeout) {
-                        _uiEvents.send(SignUpUiEvent.Warning(result.error))
-                    } else {
-                        _uiEvents.send(SignUpUiEvent.Error(result.error))
-                    }
-                }
-                is Result.Success -> {
-                    _uiEvents.send(SignUpUiEvent.NavigateToHome)
-                }
-            }
         }
     }
 }

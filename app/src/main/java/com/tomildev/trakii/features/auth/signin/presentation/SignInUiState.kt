@@ -10,10 +10,10 @@ data class SignInUiState(
 
     // STATES / VALIDATORS
     val isLoading: Boolean = false,
+    val isGoogleLoading: Boolean = false,
 
     //ERRORS
     val networkError: DataError? = null,
-    val errorMessage: String? = null,
     val emailError: UserValidationError? = null,
     val passwordError: UserValidationError? = null,
 )

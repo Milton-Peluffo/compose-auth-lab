@@ -11,7 +11,7 @@
     <string name="auth_signin_dont_have_account">No tienes una cuenta?</string>
     <string name="auth_signin_btn_sign_up">Registrate</string>
     <!-- Error messages -->
-    <string name="auth_signin_network_error_invalid_credentials">Correo o contraseña invalidos</string>
+    <string name="auth_signin_network_error_invalid_credentials">correo o contraseña incorrectos</string>
     <string name="auth_signin_error_google_account_exists_title">Correo vinculado con Google</string>
     <string name="auth_signin_error_google_account_exists_subtitle">Usa el botón de Google para continuar.</string>
 

@@ -1,5 +1,9 @@
 package com.tomildev.trakii.features.auth.signin.presentation
 
-sealed interface SignUpUiEvent {
+import com.tomildev.trakii.core.domain.model.error.DataError
 
+sealed interface SignInUiEvent {
+    data class NavigateToHome(val email: String) : SignInUiEvent
+    data class Error(val error: DataError) : SignInUiEvent
+    data class Warning(val error: DataError) : SignInUiEvent
 }

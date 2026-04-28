@@ -12,6 +12,8 @@ import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
 import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
 import com.tomildev.trakii.features.auth.otp.data.OtpRepositoryImpl
 import com.tomildev.trakii.features.auth.otp.domain.OtpRepository
+import com.tomildev.trakii.features.auth.signin.data.SignInRepositoryImpl
+import com.tomildev.trakii.features.auth.signin.domain.SignInRepository
 import com.tomildev.trakii.features.auth.signup.data.SignUpRepositoryImpl
 import com.tomildev.trakii.features.auth.signup.domain.SignUpRepository
 import dagger.Module
@@ -56,6 +58,12 @@ object AppModule {
     @Singleton
     fun provideSignUpRepository(supabaseClient: SupabaseClient): SignUpRepository {
         return SignUpRepositoryImpl(supabaseClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignInRepository(supabaseClient: SupabaseClient): SignInRepository {
+        return SignInRepositoryImpl(supabaseClient)
     }
 
     @Provides
