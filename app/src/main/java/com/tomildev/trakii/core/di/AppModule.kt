@@ -7,17 +7,17 @@ import com.tomildev.trakii.core.data.local.db.AppDatabase
 import com.tomildev.trakii.core.data.preferences.UserPreferences
 import com.tomildev.trakii.core.data.repository.UserRepositoryImpl
 import com.tomildev.trakii.core.domain.repository.UserRepository
-import com.tomildev.trakii.features.auth.common.data.OAuthRepositoryImpl
-import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
+import com.tomildev.trakii.core.domain.use_case.user.UserValidationUseCases
+import com.tomildev.trakii.core.domain.use_case.user.ValidateConfirmPassword
+import com.tomildev.trakii.core.domain.use_case.user.ValidateEmail
+import com.tomildev.trakii.core.domain.use_case.user.ValidateName
+import com.tomildev.trakii.core.domain.use_case.user.ValidatePassword
 import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
-import com.tomildev.trakii.features.auth.signin.data.SignInRepositoryImpl
-import com.tomildev.trakii.features.auth.signin.domain.SignInRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.github.jan.supabase.SupabaseClient
 import javax.inject.Singleton
 
 @Module
@@ -37,24 +37,23 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideUserValidationUseCases(): UserValidationUseCases {
+        return UserValidationUseCases(
+            validateName = ValidateName(),
+            validateEmail = ValidateEmail(),
+            validatePassword = ValidatePassword(),
+            validateConfirmPassword = ValidateConfirmPassword()
+        )
+    }
+
+    @Provides
+    @Singleton
     fun provideGoogleAuthClient(@ApplicationContext context: Context): GoogleAuthClient {
         return GoogleAuthClient(context)
     }
 
     @Provides
     fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
-
-    @Provides
-    @Singleton
-    fun provideOauthRepository(supabaseClient: SupabaseClient): OAuthRepository {
-        return OAuthRepositoryImpl(supabaseClient)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSignInRepository(supabaseClient: SupabaseClient): SignInRepository {
-        return SignInRepositoryImpl(supabaseClient)
-    }
 
     @Provides
     @Singleton

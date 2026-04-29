@@ -5,10 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.model.user.UserValidationError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
-import com.tomildev.trakii.core.domain.use_case.user.UserUseCases
+import com.tomildev.trakii.core.domain.use_case.user.UserValidationUseCases
 import com.tomildev.trakii.core.domain.util.Result
-import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
-import com.tomildev.trakii.features.auth.signin.domain.SignInRepository
+import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,9 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val signInRepository: SignInRepository,
-    private val oAuthRepository: OAuthRepository,
-    private val userUseCases: UserUseCases
+    private val authUseCases: AuthUseCases,
+    private val userValidationUseCases: UserValidationUseCases
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignInUiState())
@@ -41,13 +39,13 @@ class SignInViewModel @Inject constructor(
     private fun validateFields(): Boolean {
         val state = _uiState.value
 
-        val emailResult = userUseCases.validateEmail.execute(email = state.email)
+        val emailResult = userValidationUseCases.validateEmail.execute(email = state.email)
         if (emailResult is UserValidationResult.Error) {
             updateErrorState(emailError = emailResult.error)
             return false
         }
 
-        val passwordResult = userUseCases.validatePassword.execute(password = state.password)
+        val passwordResult = userValidationUseCases.validatePassword.execute(password = state.password)
         if (passwordResult is UserValidationResult.Error) {
             updateErrorState(passwordError = passwordResult.error)
             return false
@@ -74,7 +72,7 @@ class SignInViewModel @Inject constructor(
     private fun signIn() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, networkError = null) }
-            val result = signInRepository.signInWithEmail(
+            val result = authUseCases.signInWithEmail.execute(
                 email = _uiState.value.email,
                 password = _uiState.value.password
             )
@@ -108,7 +106,7 @@ class SignInViewModel @Inject constructor(
 
     fun onGoogleSignIn(idToken: String) {
         viewModelScope.launch {
-            val result = oAuthRepository.authWithGoogle(idToken)
+            val result = authUseCases.authWithGoogle.execute(idToken)
             _uiState.update { it.copy(isGoogleLoading = false) }
 
             when (result) {

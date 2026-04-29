@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
-import com.tomildev.trakii.core.domain.use_case.user.UserUseCases
+import com.tomildev.trakii.core.domain.use_case.user.UserValidationUseCases
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.signup.domain.SignUpRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CompleteSignUpViewModel @Inject constructor(
     private val signUpRepository: SignUpRepository,
-    private val userUseCases: UserUseCases,
+    private val userValidationUseCases: UserValidationUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -44,19 +44,19 @@ class CompleteSignUpViewModel @Inject constructor(
     private fun validateFields(): Boolean {
         val state = _uiState.value
 
-        val nameResult = userUseCases.validateName.execute(state.name)
+        val nameResult = userValidationUseCases.validateName.execute(state.name)
         if (nameResult is UserValidationResult.Error) {
             _uiState.update { it.copy(nameError = nameResult.error) }
             return false
         }
 
-        val passwordResult = userUseCases.validatePassword.execute(state.password)
+        val passwordResult = userValidationUseCases.validatePassword.execute(state.password)
         if (passwordResult is UserValidationResult.Error) {
             _uiState.update { it.copy(passwordError = passwordResult.error) }
             return false
         }
 
-        val confirmPasswordResult = userUseCases.validateConfirmPassword.execute(
+        val confirmPasswordResult = userValidationUseCases.validateConfirmPassword.execute(
             state.password,
             state.confirmPassword
         )

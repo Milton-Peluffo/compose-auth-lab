@@ -4,9 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
-import com.tomildev.trakii.core.domain.use_case.user.UserUseCases
+import com.tomildev.trakii.core.domain.use_case.user.UserValidationUseCases
 import com.tomildev.trakii.core.domain.util.Result
-import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
 import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -21,8 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewmodel @Inject constructor(
     private val authUseCases: AuthUseCases,
-    private val oAuthRepository: OAuthRepository,
-    private val userUseCases: UserUseCases
+    private val userValidationUseCases: UserValidationUseCases
 ) : ViewModel() {
 
     private val _uiEvents = Channel<SignUpUiEvent>()
@@ -38,7 +36,7 @@ class SignUpViewmodel @Inject constructor(
     }
 
     private fun validateFields(): Boolean {
-        val emailResult = userUseCases.validateEmail.execute(email = _uiState.value.email)
+        val emailResult = userValidationUseCases.validateEmail.execute(email = _uiState.value.email)
         if (emailResult is UserValidationResult.Error) {
             _uiState.update { it.copy(emailError = emailResult.error) }
             return false
@@ -82,7 +80,7 @@ class SignUpViewmodel @Inject constructor(
 
     fun onGoogleSignIn(idToken: String) {
         viewModelScope.launch {
-            val result = oAuthRepository.authWithGoogle(idToken)
+            val result = authUseCases.authWithGoogle.execute(idToken)
             _uiState.update { it.copy(isGoogleLoading = false) }
 
             when (result) {
