@@ -124,8 +124,6 @@ fun OtpScreen(
                     onClick = onNavigateBack,
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
-
-
             }
             VerticalSpacer(verticalGap)
             Texts.TitleMedium(
@@ -229,10 +227,7 @@ fun OtpScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(
-                    horizontal = if (isLandScape)
-                        Dimens.ScreenHorizontalPadding
-                    else
-                        Dimens.ScreenHorizontalPadding
+                    horizontal = Dimens.ScreenHorizontalPadding
                 ),
         ) {
             if (isLandScape) {

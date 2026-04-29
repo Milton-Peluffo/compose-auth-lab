@@ -7,7 +7,7 @@ import androidx.navigation.toRoute
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.core.navigation.NavRoute
-import com.tomildev.trakii.features.auth.otp.domain.OtpRepository
+import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
 import com.tomildev.trakii.features.auth.otp.domain.OtpVerificationResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OtpViewModel @Inject constructor(
-    private val otpRepository: OtpRepository,
+    private val authUseCases: AuthUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -35,6 +35,7 @@ class OtpViewModel @Inject constructor(
 
     private val _uiEvents = Channel<OtpUiEvent>()
     val uiEvents = _uiEvents.receiveAsFlow()
+    
     private val navArgs = savedStateHandle.toRoute<NavRoute.Otp>()
     private val emailFromArgs = navArgs.email
     private var timerJob: Job? = null
@@ -65,8 +66,7 @@ class OtpViewModel @Inject constructor(
 
     fun startTimer() {
         timerJob?.cancel()
-
-        _uiState.update { it.copy(timer = 10, canResend = false) }
+        _uiState.update { it.copy(timer = 60, canResend = false) }
 
         timerJob = viewModelScope.launch {
             while (_uiState.value.timer > 0) {
@@ -79,11 +79,11 @@ class OtpViewModel @Inject constructor(
 
     fun resendOtp() {
         val email = _uiState.value.email
-
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, networkError = null) }
-
-            val result = otpRepository.resentOtp(email)
+            
+            val result = authUseCases.resendOtp.execute(email)
+            
             _uiState.update { it.copy(isLoading = false) }
 
             when (result) {
@@ -91,7 +91,6 @@ class OtpViewModel @Inject constructor(
                     _uiState.update { it.copy(networkError = result.error) }
                     sendErrorEvent(result.error)
                 }
-
                 is Result.Success -> {
                     startTimer()
                     _uiEvents.send(OtpUiEvent.CodeResent)
@@ -107,7 +106,7 @@ class OtpViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, networkError = null) }
 
-            val result = otpRepository.verifyOtp(
+            val result = authUseCases.verifyOtp.execute(
                 email = currentState.email,
                 otp = currentState.code
             )
@@ -119,7 +118,6 @@ class OtpViewModel @Inject constructor(
                     _uiState.update { it.copy(networkError = result.error) }
                     sendErrorEvent(result.error)
                 }
-
                 is Result.Success -> {
                     _uiState.update { 
                         it.copy(
@@ -172,7 +170,6 @@ class OtpViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = 0
         )
-
 
     fun onNumberClick(number: String) {
         val currentCode = _uiState.value.code

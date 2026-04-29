@@ -13,51 +13,39 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import javax.inject.Inject
 
-/**
- * Manages the user registration process using Supabase.
- *
- * Handles the two-step sign-up flow: initiating registration via OTP and 
- * finalizing the account by setting the user profile details.
- */
 class SignUpRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient
 ) : SignUpRepository {
 
-    override suspend fun sendOtp(email: String): Result<Unit, DataError.Network> {
-        val cleanEmail = email.trim().lowercase()
+    override suspend fun getProfileByEmail(email: String): Result<ProfileDto?, DataError.Network> {
         return try {
-            val profile = try {
-                supabaseClient.from("profiles")
-                    .select { filter { eq("email", cleanEmail) } }
-                    .decodeSingleOrNull<ProfileDto>()
-            } catch (e: Exception) {
-                null
-            }
+            val profile = supabaseClient.from("profiles")
+                .select { filter { eq("email", email) } }
+                .decodeSingleOrNull<ProfileDto>()
+            Result.Success(profile)
+        } catch (e: Exception) {
+            Result.Error(mapSupabaseError(e))
+        }
+    }
 
-            if (profile?.provider == "google") {
-                return Result.Error(DataError.Network.GoogleAccountExists)
-            }
-
-            val isComplete = profile?.isProfileComplete == true
-
-            if (!isComplete) {
-                try {
-                    supabaseClient.auth.signUpWith(OTP) {
-                        this.email = cleanEmail
-                    }
-                } catch (e: Exception) {
-                    supabaseClient.auth.signInWith(OTP) {
-                        this.email = cleanEmail
-                    }
-                }
-            } else {
-                supabaseClient.auth.signInWith(OTP) {
-                    this.email = cleanEmail
-                }
+    override suspend fun signUpWithOtp(email: String): Result<Unit, DataError.Network> {
+        return try {
+            supabaseClient.auth.signUpWith(OTP) {
+                this.email = email
             }
             Result.Success(Unit)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Result.Error(mapSupabaseError(e))
+        }
+    }
+
+    override suspend fun signInWithOtp(email: String): Result<Unit, DataError.Network> {
+        return try {
+            supabaseClient.auth.signInWith(OTP) {
+                this.email = email
+            }
+            Result.Success(Unit)
+        } catch (e: Exception) {
             Result.Error(mapSupabaseError(e))
         }
     }
@@ -76,7 +64,6 @@ class SignUpRepositoryImpl @Inject constructor(
             }
             Result.Success(Unit)
         } catch (e: Exception) {
-            e.printStackTrace()
             Result.Error(mapSupabaseError(e))
         }
     }

@@ -7,7 +7,7 @@ import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import com.tomildev.trakii.core.domain.use_case.user.UserUseCases
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
-import com.tomildev.trakii.features.auth.signup.domain.SignUpRepository
+import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewmodel @Inject constructor(
-    private val signUpRepository: SignUpRepository,
+    private val authUseCases: AuthUseCases,
     private val oAuthRepository: OAuthRepository,
     private val userUseCases: UserUseCases
 ) : ViewModel() {
@@ -50,23 +50,23 @@ class SignUpViewmodel @Inject constructor(
     private fun sendOtp() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            val cleanedEmail = _uiState.value.email.trim().lowercase()
+            val email = _uiState.value.email
 
-            val result = signUpRepository.sendOtp(cleanedEmail)
+            val result = authUseCases.sendOtp.execute(email)
 
             _uiState.update { it.copy(isLoading = false) }
 
             when (result) {
                 is Result.Error -> {
-                    if (result.error == DataError.Network.NoInternet || result.error == DataError.Network.Timeout) {
-                        _uiEvents.send(SignUpUiEvent.Warning(result.error))
+                    val error = result.error
+                    if (error == DataError.Network.NoInternet || error == DataError.Network.Timeout) {
+                        _uiEvents.send(SignUpUiEvent.Warning(error))
                     } else {
-                        _uiEvents.send(SignUpUiEvent.Error(result.error))
+                        _uiEvents.send(SignUpUiEvent.Error(error))
                     }
                 }
-
                 is Result.Success -> {
-                    _uiEvents.send(SignUpUiEvent.NavigateToOtp(cleanedEmail))
+                    _uiEvents.send(SignUpUiEvent.NavigateToOtp(email.trim().lowercase()))
                 }
             }
         }
@@ -93,7 +93,6 @@ class SignUpViewmodel @Inject constructor(
                         _uiEvents.send(SignUpUiEvent.Error(result.error))
                     }
                 }
-
                 is Result.Success -> {
                     _uiEvents.send(SignUpUiEvent.NavigateToHome)
                 }
