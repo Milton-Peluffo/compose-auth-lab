@@ -14,7 +14,7 @@ class SendOtpUseCase @Inject constructor(
     private val repository: SignUpRepository,
     private val authUserRepository: AuthUserRepository
 ) {
-    suspend fun execute(email: String): Result<Unit, DataError.Network> {
+    suspend operator fun invoke(email: String): Result<Unit, DataError.Network> {
         val cleanEmail = email.trim().lowercase()
         val profileResult = authUserRepository.getProfileByEmail(cleanEmail)
 

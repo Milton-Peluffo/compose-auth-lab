@@ -37,13 +37,13 @@ class UpdatePasswordViewModel @Inject constructor(
     private fun validateFields(): Boolean {
         val state = _uiState.value
 
-        val passwordResult = userValidationUseCases.validatePassword.execute(state.password)
+        val passwordResult = userValidationUseCases.validatePassword(state.password)
         if (passwordResult is UserValidationResult.Error) {
             _uiState.update { it.copy(passwordError = passwordResult.error) }
             return false
         }
 
-        val confirmPasswordResult = userValidationUseCases.validateConfirmPassword.execute(
+        val confirmPasswordResult = userValidationUseCases.validateConfirmPassword(
             state.password,
             state.confirmPassword
         )

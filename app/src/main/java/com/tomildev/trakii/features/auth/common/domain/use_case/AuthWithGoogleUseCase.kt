@@ -8,7 +8,7 @@ import javax.inject.Inject
 class AuthWithGoogleUseCase @Inject constructor(
     private val repository: OAuthRepository
 ) {
-    suspend fun execute(idToken: String): Result<Unit, DataError.Network> {
+    suspend operator fun invoke(idToken: String): Result<Unit, DataError.Network> {
         return repository.authWithGoogle(idToken)
     }
 }

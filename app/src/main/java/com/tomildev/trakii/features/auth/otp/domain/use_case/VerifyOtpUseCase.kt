@@ -12,7 +12,7 @@ class VerifyOtpUseCase @Inject constructor(
     private val otpRepository: OtpRepository,
     private val authUserRepository: AuthUserRepository
 ) {
-    suspend fun execute(
+    suspend operator fun invoke(
         email: String,
         otp: String
     ): Result<OtpVerificationResult, DataError.Network> {

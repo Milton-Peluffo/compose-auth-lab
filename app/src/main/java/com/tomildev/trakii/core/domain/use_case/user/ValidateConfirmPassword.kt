@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class ValidateConfirmPassword @Inject constructor() {
 
-    fun execute(password: String, confirmPassword: String): UserValidationResult {
+    operator fun invoke(password: String, confirmPassword: String): UserValidationResult {
 
         if (confirmPassword.isBlank())
             return UserValidationResult.Error(

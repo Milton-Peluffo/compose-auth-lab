@@ -6,6 +6,6 @@ import javax.inject.Inject
 class SignInWithEmailUseCase @Inject constructor(
     private val repository: SignInRepository
 ) {
-    suspend fun execute(email: String, password: String) =
+    suspend operator fun invoke(email: String, password: String) =
         repository.signInWithEmail(email, password)
 }

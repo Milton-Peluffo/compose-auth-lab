@@ -86,7 +86,7 @@ class OtpViewModel @Inject constructor(
             val result = if (isRecovery) {
                 authUseCases.sendResetOtp(email)
             } else {
-                authUseCases.resendOtp.execute(email)
+                authUseCases.resendOtp(email)
             }
 
             _uiState.update { it.copy(isLoading = false) }
@@ -112,7 +112,7 @@ class OtpViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, networkError = null) }
 
-            val result = authUseCases.verifyOtp.execute(
+            val result = authUseCases.verifyOtp(
                 email = currentState.email,
                 otp = currentState.code
             )

@@ -8,7 +8,7 @@ import javax.inject.Inject
 class ResendOtpUseCase @Inject constructor(
     private val repository: OtpRepository
 ) {
-    suspend fun execute(email: String): Result<Unit, DataError.Network> {
+    suspend operator fun invoke(email: String): Result<Unit, DataError.Network> {
         return repository.resendOtp(email.trim().lowercase())
     }
 }

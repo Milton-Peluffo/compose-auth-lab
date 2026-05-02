@@ -22,7 +22,7 @@ class ValidatePasswordTest {
     @Test
     fun `Empty password returns empty field error`(){
         val password = ""
-        val result = validatePassword.execute(password)
+        val result = validatePassword(password)
         assert(result is UserValidationResult.Error)
         assertEquals(UserValidationError.EmptyField, (result as UserValidationResult.Error).error)
     }
@@ -30,7 +30,7 @@ class ValidatePasswordTest {
     @Test
     fun `Password with only spaces returns empty field error`(){
         val password = "   "
-        val result = validatePassword.execute(password)
+        val result = validatePassword(password)
         assert(result is UserValidationResult.Error)
         assertEquals(UserValidationError.EmptyField, (result as UserValidationResult.Error).error)
     }
@@ -38,7 +38,7 @@ class ValidatePasswordTest {
     @Test
     fun `Password with only numbers returns invalid password error`(){
         val password = "12345678"
-        val result = validatePassword.execute(password)
+        val result = validatePassword(password)
         assert(result is UserValidationResult.Error)
         assertEquals(UserValidationError.InvalidPassword, (result as UserValidationResult.Error).error)
     }
@@ -46,7 +46,7 @@ class ValidatePasswordTest {
     @Test
     fun `Password with less than 8 characters returns password too short error`(){
         val password = "@1234"
-        val result = validatePassword.execute(password)
+        val result = validatePassword(password)
         assert(result is UserValidationResult.Error)
         assertEquals(UserValidationError.TooShortPassword, (result as UserValidationResult.Error).error)
     }
@@ -54,7 +54,7 @@ class ValidatePasswordTest {
     @Test
     fun `Password with special character, letters and numbers returns success`(){
         val password = "@Pass234"
-        val result = validatePassword.execute(password)
+        val result = validatePassword(password)
         assert(result is UserValidationResult.Success)
     }
 }

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class ValidateName @Inject constructor() {
 
-    fun execute(name: String): UserValidationResult {
+    operator fun invoke(name: String): UserValidationResult {
         val nameRegex = Regex("^[A-Za-z0-9_ ø]+$")
 
         if (name.isBlank()) {

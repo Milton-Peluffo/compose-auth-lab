@@ -36,7 +36,7 @@ class SignUpViewmodel @Inject constructor(
     }
 
     private fun validateFields(): Boolean {
-        val emailResult = userValidationUseCases.validateEmail.execute(email = _uiState.value.email)
+        val emailResult = userValidationUseCases.validateEmail(email = _uiState.value.email)
         if (emailResult is UserValidationResult.Error) {
             _uiState.update { it.copy(emailError = emailResult.error) }
             return false
@@ -50,7 +50,7 @@ class SignUpViewmodel @Inject constructor(
             _uiState.update { it.copy(isLoading = true) }
             val email = _uiState.value.email
 
-            val result = authUseCases.sendOtp.execute(email)
+            val result = authUseCases.sendOtp(email)
 
             _uiState.update { it.copy(isLoading = false) }
 
@@ -80,7 +80,7 @@ class SignUpViewmodel @Inject constructor(
 
     fun onGoogleSignIn(idToken: String) {
         viewModelScope.launch {
-            val result = authUseCases.authWithGoogle.execute(idToken)
+            val result = authUseCases.authWithGoogle(idToken)
             _uiState.update { it.copy(isGoogleLoading = false) }
 
             when (result) {

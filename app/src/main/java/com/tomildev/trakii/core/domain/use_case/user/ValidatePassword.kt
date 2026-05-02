@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class ValidatePassword @Inject constructor() {
 
-    fun execute(password: String): UserValidationResult {
+    operator fun invoke(password: String): UserValidationResult {
 
         val passwordRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$")
 

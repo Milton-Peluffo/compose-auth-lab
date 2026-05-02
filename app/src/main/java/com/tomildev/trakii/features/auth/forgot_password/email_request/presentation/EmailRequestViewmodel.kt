@@ -37,27 +37,25 @@ class EmailRequestViewmodel @Inject constructor(
 
     fun sendOtp() {
         viewModelScope.launch {
-            viewModelScope.launch {
-                _uiState.update { it.copy(isLoading = true) }
-                val email = _uiState.value.email
+            _uiState.update { it.copy(isLoading = true) }
+            val email = _uiState.value.email
 
-                val result = authUseCases.sendResetOtp(email)
+            val result = authUseCases.sendResetOtp(email)
 
-                _uiState.update { it.copy(isLoading = false) }
+            _uiState.update { it.copy(isLoading = false) }
 
-                when (result) {
-                    is Result.Error -> {
-                        val error = result.error
-                        if (error == DataError.Network.NoInternet || error == DataError.Network.Timeout) {
-                            _uiEvents.send(EmailRequestUiEvent.Warning(error))
-                        } else {
-                            _uiEvents.send(EmailRequestUiEvent.Error(error))
-                        }
+            when (result) {
+                is Result.Error -> {
+                    val error = result.error
+                    if (error == DataError.Network.NoInternet || error == DataError.Network.Timeout) {
+                        _uiEvents.send(EmailRequestUiEvent.Warning(error))
+                    } else {
+                        _uiEvents.send(EmailRequestUiEvent.Error(error))
                     }
+                }
 
-                    is Result.Success -> {
-                        _uiEvents.send(EmailRequestUiEvent.NavigateToOtp(email.trim().lowercase()))
-                    }
+                is Result.Success -> {
+                    _uiEvents.send(EmailRequestUiEvent.NavigateToOtp(email.trim().lowercase()))
                 }
             }
         }
@@ -66,7 +64,7 @@ class EmailRequestViewmodel @Inject constructor(
     private fun validateFields(): Boolean {
         val state = _uiState.value
 
-        val emailResult = userValidationUseCases.validateEmail.execute(email = state.email)
+        val emailResult = userValidationUseCases.validateEmail(email = state.email)
         if (emailResult is UserValidationResult.Error) {
             updateErrorState(emailError = emailResult.error)
             return false

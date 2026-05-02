@@ -39,13 +39,13 @@ class SignInViewModel @Inject constructor(
     private fun validateFields(): Boolean {
         val state = _uiState.value
 
-        val emailResult = userValidationUseCases.validateEmail.execute(email = state.email)
+        val emailResult = userValidationUseCases.validateEmail(email = state.email)
         if (emailResult is UserValidationResult.Error) {
             updateErrorState(emailError = emailResult.error)
             return false
         }
 
-        val passwordResult = userValidationUseCases.validatePassword.execute(password = state.password)
+        val passwordResult = userValidationUseCases.validatePassword(password = state.password)
         if (passwordResult is UserValidationResult.Error) {
             updateErrorState(passwordError = passwordResult.error)
             return false
@@ -72,7 +72,7 @@ class SignInViewModel @Inject constructor(
     private fun signIn() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, networkError = null) }
-            val result = authUseCases.signInWithEmail.execute(
+            val result = authUseCases.signInWithEmail(
                 email = _uiState.value.email,
                 password = _uiState.value.password
             )
@@ -106,7 +106,7 @@ class SignInViewModel @Inject constructor(
 
     fun onGoogleSignIn(idToken: String) {
         viewModelScope.launch {
-            val result = authUseCases.authWithGoogle.execute(idToken)
+            val result = authUseCases.authWithGoogle(idToken)
             _uiState.update { it.copy(isGoogleLoading = false) }
 
             when (result) {

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class ValidateEmail @Inject constructor() {
 
-    fun execute(email: String): UserValidationResult {
+    operator fun invoke(email: String): UserValidationResult {
 
         val emailRegex = Regex(
             "^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\\.[A-Za-z]{2,})+$"

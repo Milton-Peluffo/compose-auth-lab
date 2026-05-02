@@ -23,7 +23,7 @@ class ValidateConfirmPasswordTest {
     fun `Empty confirm password returns empty field error`() {
         val password = ""
         val confirmPassword = ""
-        val result = validateConfirmPassword.execute(password, confirmPassword)
+        val result = validateConfirmPassword(password, confirmPassword)
         assert(result is UserValidationResult.Error)
         assertEquals(UserValidationError.EmptyField, (result as UserValidationResult.Error).error)
     }
@@ -32,7 +32,7 @@ class ValidateConfirmPasswordTest {
     fun `Confirm password with only spaces returns empty field error`() {
         val password = ""
         val confirmPassword = "    "
-        val result = validateConfirmPassword.execute(password, confirmPassword)
+        val result = validateConfirmPassword(password, confirmPassword)
         assert(result is UserValidationResult.Error)
         assertEquals(UserValidationError.EmptyField, (result as UserValidationResult.Error).error)
     }
@@ -41,7 +41,7 @@ class ValidateConfirmPasswordTest {
     fun `When confirm password do not match returns PasswordDoNotMatch error`() {
         val password = "@1234"
         val confirmPassword = "@A12373"
-        val result = validateConfirmPassword.execute(password, confirmPassword)
+        val result = validateConfirmPassword(password, confirmPassword)
         assert(result is UserValidationResult.Error)
         assertEquals(UserValidationError.PasswordDoNotMatch, (result as UserValidationResult.Error).error)
     }
@@ -50,7 +50,7 @@ class ValidateConfirmPasswordTest {
     fun `When confirm password matches the password, returns success`() {
         val password = "@54321"
         val confirmPassword = "@54321"
-        val result = validateConfirmPassword.execute(password, confirmPassword)
+        val result = validateConfirmPassword(password, confirmPassword)
         assert(result is UserValidationResult.Success)
     }
 }
