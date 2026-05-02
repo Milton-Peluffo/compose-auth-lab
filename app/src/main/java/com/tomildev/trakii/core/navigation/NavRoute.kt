@@ -11,7 +11,7 @@ sealed interface NavRoute {
     data object SignUp : NavRoute
 
     @Serializable
-    data class Otp(val email: String) : NavRoute
+    data class Otp(val email: String, val isRecovery: Boolean = false) : NavRoute
 
     @Serializable
     data class CompleteSignUp(val email: String) : NavRoute

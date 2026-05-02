@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.tomildev.trakii.features.auth.forgot_password.email_request.presentation.EmailRequestScreen
 import com.tomildev.trakii.features.auth.forgot_password.update_password.presentation.Auth_UpdatePasswordScreen
 import com.tomildev.trakii.features.auth.otp.presentation.OtpScreen
@@ -42,14 +43,15 @@ fun NavigationRoot(
             SignUpScreen(onNavigateToLogin = {
                 navController.navigate(NavRoute.SignIn)
             }, onNavigateToOtp = { email ->
-                navController.navigate(NavRoute.Otp(email = email))
+                navController.navigate(NavRoute.Otp(email = email, isRecovery = false))
             }, onNavigateToHome = {
                 navController.navigate(NavRoute.Home)
             }
             )
         }
 
-        composable<NavRoute.Otp> {
+        composable<NavRoute.Otp> { backStackEntry ->
+            val args = backStackEntry.toRoute<NavRoute.Otp>()
             OtpScreen(
                 onNavigateBack = {
                     navController.popBackStack()
@@ -62,6 +64,11 @@ fun NavigationRoot(
                 onNavigateToCompleteSignUp = { email ->
                     navController.navigate(NavRoute.CompleteSignUp(email = email)) {
                         popUpTo(NavRoute.SignUp) { inclusive = true }
+                    }
+                },
+                onNavigateToUpdatePassword = {
+                    navController.navigate(NavRoute.ForgotPasswordReset) {
+                        popUpTo(NavRoute.ForgotPasswordEmailRequest) { inclusive = true }
                     }
                 }
             )
@@ -79,7 +86,9 @@ fun NavigationRoot(
 
         composable<NavRoute.ForgotPasswordReset> {
             Auth_UpdatePasswordScreen(onNavigateToSignIn = {
-                navController.navigate(NavRoute.SignIn)
+                navController.navigate(NavRoute.SignIn) {
+                    popUpTo(0) { inclusive = true }
+                }
             })
         }
 
@@ -87,7 +96,7 @@ fun NavigationRoot(
             EmailRequestScreen(onNavigateToSignIn = {
                 navController.popBackStack()
             }) { email ->
-                navController.navigate(NavRoute.Otp(email = email))
+                navController.navigate(NavRoute.Otp(email = email, isRecovery = true))
             }
         }
 

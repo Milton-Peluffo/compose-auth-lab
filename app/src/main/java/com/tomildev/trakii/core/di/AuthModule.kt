@@ -1,13 +1,17 @@
 package com.tomildev.trakii.core.di
 
-import android.content.Context
 import com.tomildev.trakii.features.auth.common.data.AuthUserRepositoryImpl
 import com.tomildev.trakii.features.auth.common.data.OAuthRepositoryImpl
 import com.tomildev.trakii.features.auth.common.domain.AuthUserRepository
 import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
 import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
 import com.tomildev.trakii.features.auth.common.domain.use_case.AuthWithGoogleUseCase
-import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
+import com.tomildev.trakii.features.auth.forgot_password.email_request.data.EmailRequestRepositoryImpl
+import com.tomildev.trakii.features.auth.forgot_password.email_request.domain.EmailRequestRepository
+import com.tomildev.trakii.features.auth.forgot_password.email_request.domain.use_case.SendResetOtpUseCase
+import com.tomildev.trakii.features.auth.forgot_password.update_password.data.UpdatePasswordRepositoryImpl
+import com.tomildev.trakii.features.auth.forgot_password.update_password.domain.UpdatePasswordRepository
+import com.tomildev.trakii.features.auth.forgot_password.update_password.domain.use_case.UpdatePasswordUseCase
 import com.tomildev.trakii.features.auth.otp.data.OtpRepositoryImpl
 import com.tomildev.trakii.features.auth.otp.domain.OtpRepository
 import com.tomildev.trakii.features.auth.otp.domain.use_case.ResendOtpUseCase
@@ -21,7 +25,6 @@ import com.tomildev.trakii.features.auth.signup.domain.use_case.SendOtpUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.jan.supabase.SupabaseClient
 import javax.inject.Singleton
@@ -56,15 +59,31 @@ object AuthModule {
 
     @Provides
     @Singleton
+    fun provideEmailRequestRepository(supabaseClient: SupabaseClient): EmailRequestRepository {
+        return EmailRequestRepositoryImpl(supabaseClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdatePasswordRepository(supabaseClient: SupabaseClient): UpdatePasswordRepository {
+        return UpdatePasswordRepositoryImpl(supabaseClient)
+    }
+
+    @Provides
+    @Singleton
     fun provideAuthUseCases(
         signUpRepository: SignUpRepository,
         signInRepository: SignInRepository,
         otpRepository: OtpRepository,
         oauthRepository: OAuthRepository,
-        authUserRepository: AuthUserRepository
+        authUserRepository: AuthUserRepository,
+        emailRequestRepository: EmailRequestRepository,
+        updatePasswordRepository: UpdatePasswordRepository
     ): AuthUseCases {
         return AuthUseCases(
             sendOtp = SendOtpUseCase(signUpRepository, authUserRepository),
+            sendResetOtp = SendResetOtpUseCase(emailRequestRepository, authUserRepository),
+            updatePassword = UpdatePasswordUseCase(updatePasswordRepository),
             verifyOtp = VerifyOtpUseCase(otpRepository, authUserRepository),
             resendOtp = ResendOtpUseCase(otpRepository),
             authWithGoogle = AuthWithGoogleUseCase(oauthRepository),

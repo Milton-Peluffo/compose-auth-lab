@@ -35,9 +35,10 @@ class OtpViewModel @Inject constructor(
 
     private val _uiEvents = Channel<OtpUiEvent>()
     val uiEvents = _uiEvents.receiveAsFlow()
-    
+
     private val navArgs = savedStateHandle.toRoute<NavRoute.Otp>()
     private val emailFromArgs = navArgs.email
+    private val isRecovery = navArgs.isRecovery
     private var timerJob: Job? = null
 
     init {
@@ -81,9 +82,13 @@ class OtpViewModel @Inject constructor(
         val email = _uiState.value.email
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, networkError = null) }
-            
-            val result = authUseCases.resendOtp.execute(email)
-            
+
+            val result = if (isRecovery) {
+                authUseCases.sendResetOtp(email)
+            } else {
+                authUseCases.resendOtp.execute(email)
+            }
+
             _uiState.update { it.copy(isLoading = false) }
 
             when (result) {
@@ -91,6 +96,7 @@ class OtpViewModel @Inject constructor(
                     _uiState.update { it.copy(networkError = result.error) }
                     sendErrorEvent(result.error)
                 }
+
                 is Result.Success -> {
                     startTimer()
                     _uiEvents.send(OtpUiEvent.CodeResent)
@@ -118,18 +124,25 @@ class OtpViewModel @Inject constructor(
                     _uiState.update { it.copy(networkError = result.error) }
                     sendErrorEvent(result.error)
                 }
+
                 is Result.Success -> {
-                    _uiState.update { 
+                    _uiState.update {
                         it.copy(
                             isVerified = true,
                             verificationResult = result.data
-                        ) 
+                        )
                     }
-                    
+
+                    if (isRecovery) {
+                        _uiEvents.send(OtpUiEvent.NavigateToUpdatePassword)
+                        return@launch
+                    }
+
                     when (result.data) {
                         OtpVerificationResult.NewUser -> {
                             _uiEvents.send(OtpUiEvent.NavigateToCompleteSignUp(currentState.email))
                         }
+
                         OtpVerificationResult.UserExists -> {
                             _uiEvents.send(OtpUiEvent.NavigateToHome)
                         }
@@ -145,6 +158,7 @@ class OtpViewModel @Inject constructor(
             DataError.Network.Timeout -> {
                 _uiEvents.send(OtpUiEvent.Warning(error))
             }
+
             else -> {
                 _uiEvents.send(OtpUiEvent.Error(error))
             }

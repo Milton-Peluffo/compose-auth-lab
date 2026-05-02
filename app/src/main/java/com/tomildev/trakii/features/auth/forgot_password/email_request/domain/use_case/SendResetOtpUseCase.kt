@@ -13,14 +13,9 @@ class SendResetOtpUseCase @Inject constructor(
     suspend operator fun invoke(email: String): Result<Unit, DataError.Network> {
         val cleanEmail = email.trim().lowercase()
 
-        // We check if user exists first. 
-        // If it doesn't exist, we return Unknown to prevent email enumeration.
         val profileResult = authUserRepository.getProfileByEmail(cleanEmail)
         
         if (profileResult is Result.Error) {
-            // Even if there's a network error checking, we might want to return Unknown 
-            // but for debugging purposes or connection issues, we might return the real error.
-            // However, the requirement is to not reveal user existence.
             return Result.Error(DataError.Network.Unknown)
         }
 
