@@ -37,7 +37,12 @@
     <!-- Error messages -->
     <string name="auth_shared_otp_error_network_invalid_code">Verification code expired or invalid</string>
 
-    <!-- ========================== PASSWORD RESET SCREEN ========================== -->
+    <!-- ========================== EMAIL REQUEST FORGOT PASSWORD SCREEN ========================== -->
+    <string name="auth_email_request_password_reset_title">Forgot Password</string>
+    <string name="auth_email_request_password_reset_subtitle">Please enter your email, and we will send
+        you a confirmation code to reset your password </string>
+
+    <!-- ========================== FORGOT PASSWORD SCREEN ========================== -->
     <string name="auth_shared_password_reset_title">Create \nNew Password</string>
     <string name="auth_shared_password_reset_subtitle">Your new password must be different
     from the previously used password</string>

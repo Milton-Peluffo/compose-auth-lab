@@ -17,8 +17,10 @@ sealed interface NavRoute {
     data class CompleteSignUp(val email: String) : NavRoute
 
     @Serializable
-    data object PasswordReset : NavRoute
+    data object ForgotPasswordReset : NavRoute
 
+    @Serializable
+    data object ForgotPasswordEmailRequest : NavRoute
     @Serializable
     data object Home : NavRoute
 

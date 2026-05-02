@@ -12,8 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -32,7 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
 import com.tomildev.trakii.core.common.presentation.components.buttons.BackButton
 import com.tomildev.trakii.core.common.presentation.components.buttons.PrimaryButton
-import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackBars
+import com.tomildev.trakii.core.common.presentation.components.snackbars.AppSnackbarHost
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarType
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarVisualsCustom
 import com.tomildev.trakii.core.common.presentation.components.spacers.HorizontalSpacer
@@ -70,7 +68,7 @@ fun OtpScreen(
         otpViewModel.uiEvents.collect { event ->
             when (event) {
                 OtpUiEvent.NavigateToHome -> onNavigateToHome()
-                
+
                 is OtpUiEvent.NavigateToCompleteSignUp -> onNavigateToCompleteSignUp(event.email)
 
                 is OtpUiEvent.Error -> {
@@ -195,31 +193,9 @@ fun OtpScreen(
 
     Scaffold(
         snackbarHost = {
-            SnackbarHost(
-                modifier = Modifier.padding(vertical = Dimens.SnackbarBottomPadding),
+            AppSnackbarHost(
                 hostState = snackbarHostState
-            ) { data ->
-                val customVisuals = data.visuals as? SnackbarVisualsCustom
-                if (customVisuals != null) {
-                    when (customVisuals.type) {
-                        SnackbarType.Error -> SnackBars.Error(
-                            title = customVisuals.message,
-                            description = customVisuals.description
-                        ) { data.dismiss() }
-                        SnackbarType.Warning -> SnackBars.Warning(
-                            title = customVisuals.message,
-                            description = customVisuals.description
-                        ) { data.dismiss() }
-                        SnackbarType.Success -> SnackBars.Success(
-                            title = customVisuals.message,
-                            description = customVisuals.description
-                        ) { data.dismiss() }
-                        else -> Snackbar(data)
-                    }
-                } else {
-                    Snackbar(data)
-                }
-            }
+            )
         }
     ) { innerPadding ->
         Box(

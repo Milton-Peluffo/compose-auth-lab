@@ -6,11 +6,11 @@ import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.otp.domain.OtpRepository
 import com.tomildev.trakii.features.auth.otp.domain.OtpType
 import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.auth.OtpType as SupabaseOtpType
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.OTP
 import io.github.jan.supabase.exceptions.RestException
 import javax.inject.Inject
+import io.github.jan.supabase.auth.OtpType as SupabaseOtpType
 
 class OtpRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient
@@ -24,6 +24,7 @@ class OtpRepositoryImpl @Inject constructor(
         val supabaseType = when (type) {
             OtpType.SIGNUP -> SupabaseOtpType.Email.SIGNUP
             OtpType.MAGIC_LINK -> SupabaseOtpType.Email.MAGIC_LINK
+            OtpType.RECOVERY -> SupabaseOtpType.Email.RECOVERY
         }
 
         return try {
@@ -41,6 +42,7 @@ class OtpRepositoryImpl @Inject constructor(
                         when {
                             message.contains("otp_expired", ignoreCase = true) ->
                                 DataError.Network.InvalidOtp
+
                             else -> null
                         }
                     } else null

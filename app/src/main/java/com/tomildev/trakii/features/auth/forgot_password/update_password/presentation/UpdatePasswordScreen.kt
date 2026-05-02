@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.reset.password.presentation
+package com.tomildev.trakii.features.auth.forgot_password.update_password.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +22,7 @@ import com.tomildev.trakii.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordResetScreen(
+fun Auth_UpdatePasswordScreen(
     modifier: Modifier = Modifier,
     onNavigateToSignIn: () -> Unit
 ) {

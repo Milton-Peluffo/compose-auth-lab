@@ -4,6 +4,7 @@
     <!-- ========================== COMMON ========================== -->
     <!-- Common texts -->
     <string name="common_btn_confirm">Confirmar</string>
+    <string name="common_btn_send">Enviar</string>
     <string name="common_btn_cancel">Cancelar</string>
 
     <!-- Common user text field -->

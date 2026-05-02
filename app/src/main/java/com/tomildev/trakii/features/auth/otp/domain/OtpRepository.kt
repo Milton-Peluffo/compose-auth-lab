@@ -9,7 +9,7 @@ interface OtpRepository {
 }
 
 enum class OtpType {
-    SIGNUP, MAGIC_LINK
+    SIGNUP, MAGIC_LINK, RECOVERY
 }
 
 sealed interface OtpVerificationResult {

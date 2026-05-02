@@ -30,8 +30,8 @@ import com.tomildev.trakii.core.common.presentation.components.textfields.TextFi
 import com.tomildev.trakii.core.common.presentation.components.texts.TextError
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.util.mappers.toUiText
-import com.tomildev.trakii.features.auth.common.components.AuthHorizontalDivider
-import com.tomildev.trakii.features.auth.common.components.AuthTextAction
+import com.tomildev.trakii.features.auth.common.components.dividers.AuthHorizontalDivider
+import com.tomildev.trakii.features.auth.common.components.buttons.AuthTextAction
 import com.tomildev.trakii.features.auth.common.components.buttons.SocialAuthButtons
 import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
 import com.tomildev.trakii.ui.theme.Dimens

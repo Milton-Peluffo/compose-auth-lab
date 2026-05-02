@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.auth.common.components
+package com.tomildev.trakii.features.auth.common.components.buttons
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

@@ -1,7 +1,9 @@
 package com.tomildev.trakii.core.di
 
 import android.content.Context
+import com.tomildev.trakii.features.auth.common.data.AuthUserRepositoryImpl
 import com.tomildev.trakii.features.auth.common.data.OAuthRepositoryImpl
+import com.tomildev.trakii.features.auth.common.domain.AuthUserRepository
 import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
 import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
 import com.tomildev.trakii.features.auth.common.domain.use_case.AuthWithGoogleUseCase
@@ -48,15 +50,22 @@ object AuthModule {
 
     @Provides
     @Singleton
+    fun provideAuthUserRepository(supabaseClient: SupabaseClient): AuthUserRepository {
+        return AuthUserRepositoryImpl(supabaseClient)
+    }
+
+    @Provides
+    @Singleton
     fun provideAuthUseCases(
         signUpRepository: SignUpRepository,
         signInRepository: SignInRepository,
         otpRepository: OtpRepository,
-        oauthRepository: OAuthRepository
+        oauthRepository: OAuthRepository,
+        authUserRepository: AuthUserRepository
     ): AuthUseCases {
         return AuthUseCases(
-            sendOtp = SendOtpUseCase(signUpRepository),
-            verifyOtp = VerifyOtpUseCase(otpRepository, signUpRepository),
+            sendOtp = SendOtpUseCase(signUpRepository, authUserRepository),
+            verifyOtp = VerifyOtpUseCase(otpRepository, authUserRepository),
             resendOtp = ResendOtpUseCase(otpRepository),
             authWithGoogle = AuthWithGoogleUseCase(oauthRepository),
             signInWithEmail = SignInWithEmailUseCase(signInRepository)

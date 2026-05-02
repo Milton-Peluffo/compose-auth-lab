@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.auth.common.components
+package com.tomildev.trakii.features.auth.common.components.dividers
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

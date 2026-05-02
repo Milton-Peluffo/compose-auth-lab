@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.common.presentation.components
+package com.tomildev.trakii.core.common.presentation.components.dialogs
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth

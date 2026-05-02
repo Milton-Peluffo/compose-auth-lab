@@ -1,14 +1,12 @@
 package com.tomildev.trakii.features.auth.signup.data
 
 import com.tomildev.trakii.core.common.util.mappers.mapSupabaseError
-import com.tomildev.trakii.core.data.remote.dto.ProfileDto
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.signup.domain.SignUpRepository
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.OTP
-import io.github.jan.supabase.postgrest.from
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import javax.inject.Inject
@@ -16,17 +14,6 @@ import javax.inject.Inject
 class SignUpRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient
 ) : SignUpRepository {
-
-    override suspend fun getProfileByEmail(email: String): Result<ProfileDto?, DataError.Network> {
-        return try {
-            val profile = supabaseClient.from("profiles")
-                .select { filter { eq("email", email) } }
-                .decodeSingleOrNull<ProfileDto>()
-            Result.Success(profile)
-        } catch (e: Exception) {
-            Result.Error(mapSupabaseError(e))
-        }
-    }
 
     override suspend fun signUpWithOtp(email: String): Result<Unit, DataError.Network> {
         return try {
