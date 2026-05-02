@@ -34,16 +34,11 @@ class MainActivity : ComponentActivity() {
 
                 val userId by userPreferences.userId.collectAsState(initial = null)
 
-//                val startRoute = NavRoute.ForgotPasswordReset
-
                 if (userId != null) {
-                    val startRoute = if (userId != -1) {
+                    val startRoute: Any = if (userId != -1) {
                         NavRoute.HabitList
                     } else {
-//                        startRoute
-                        NavRoute.Settings
-//                        startRoute
-                        NavRoute.SignIn
+                        NavRoute.SignIn()
                     }
 
                     val navController = rememberNavController()

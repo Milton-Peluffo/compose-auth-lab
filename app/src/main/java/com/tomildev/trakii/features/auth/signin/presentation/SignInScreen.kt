@@ -42,6 +42,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
+    showPasswordUpdatedSnackbar: Boolean = false,
     signInViewModel: SignInViewModel = hiltViewModel(),
     onNavigateToRegister: () -> Unit,
     onNavigateToHabitList: (String) -> Unit,
@@ -52,6 +53,19 @@ fun SignInScreen(
     val context = LocalContext.current
     val googleAuthClient = remember { GoogleAuthClient(context) }
     val snackbarHostState = remember { SnackbarHostState() }
+
+    val passwordUpdatedMessage = stringResource(R.string.auth_signin_password_updated_success)
+
+    LaunchedEffect(showPasswordUpdatedSnackbar) {
+        if (showPasswordUpdatedSnackbar) {
+            snackbarHostState.showSnackbar(
+                SnackbarVisualsCustom(
+                    message = passwordUpdatedMessage,
+                    type = SnackbarType.Success
+                )
+            )
+        }
+    }
 
     LaunchedEffect(Unit) {
         signInViewModel.uiEvents.collect { uiEvent ->
@@ -157,8 +171,8 @@ fun SignInScreen(
             )
             VerticalSpacer(height = Dimens.SpacingLarge)
             AuthTextAction(
-                text = stringResource(R.string.auth_signup_already_have_account),
-                actionText = stringResource(R.string.auth_signup_btn_sign_in),
+                text = stringResource(R.string.auth_signin_dont_have_account),
+                actionText = stringResource(R.string.auth_signin_btn_sign_up),
                 onClick = { onNavigateToRegister() },
             )
         }

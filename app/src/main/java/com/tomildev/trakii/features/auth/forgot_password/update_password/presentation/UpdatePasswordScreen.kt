@@ -35,8 +35,7 @@ import com.tomildev.trakii.ui.theme.Dimens
 fun UpdatePasswordScreen(
     modifier: Modifier = Modifier,
     updatePasswordViewModel: UpdatePasswordViewModel = hiltViewModel(),
-    onNavigateToSignIn: () -> Unit,
-    onNavigateToHabitList: () -> Unit
+    onNavigateToSignIn: (Boolean) -> Unit
 ) {
 
     val uiState by updatePasswordViewModel.uiState.collectAsStateWithLifecycle()
@@ -47,7 +46,7 @@ fun UpdatePasswordScreen(
         updatePasswordViewModel.uiEvents.collect { event ->
             when (event) {
                 UpdatePasswordUiEvent.Success -> {
-                    onNavigateToHabitList()
+                    onNavigateToSignIn(true)
                 }
 
                 is UpdatePasswordUiEvent.Error -> {
@@ -78,7 +77,7 @@ fun UpdatePasswordScreen(
     Scaffold(
         topBar = {
             BackButtonTopBar(
-                backButton = onNavigateToSignIn
+                backButton = { onNavigateToSignIn(false) }
             )
         },
         snackbarHost = {

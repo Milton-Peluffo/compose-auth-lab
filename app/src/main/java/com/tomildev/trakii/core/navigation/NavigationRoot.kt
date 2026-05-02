@@ -17,7 +17,7 @@ import com.tomildev.trakii.features.settings.presentation.SettingsScreen
 @Composable
 fun NavigationRoot(
     navController: NavHostController,
-    startDestination: Any = NavRoute.SignIn
+    startDestination: Any = NavRoute.SignIn()
 ) {
 
     NavHost(
@@ -25,8 +25,10 @@ fun NavigationRoot(
         startDestination = startDestination
     ) {
 
-        composable<NavRoute.SignIn> {
+        composable<NavRoute.SignIn> { backStackEntry ->
+            val args = backStackEntry.toRoute<NavRoute.SignIn>()
             SignInScreen(
+                showPasswordUpdatedSnackbar = args.showPasswordUpdatedSnackbar,
                 onNavigateToRegister = {
                     navController.navigate(NavRoute.SignUp)
                 },
@@ -41,7 +43,7 @@ fun NavigationRoot(
 
         composable<NavRoute.SignUp> {
             SignUpScreen(onNavigateToLogin = {
-                navController.navigate(NavRoute.SignIn)
+                navController.navigate(NavRoute.SignIn())
             }, onNavigateToOtp = { email ->
                 navController.navigate(NavRoute.Otp(email = email, isRecovery = false))
             }, onNavigateToHabitList = {
@@ -86,13 +88,10 @@ fun NavigationRoot(
 
         composable<NavRoute.ForgotPasswordReset> {
             UpdatePasswordScreen(
-                onNavigateToSignIn = {
-                    navController.navigate(NavRoute.SignIn) {
+                onNavigateToSignIn = { showSnackbar ->
+                    navController.navigate(NavRoute.SignIn(showPasswordUpdatedSnackbar = showSnackbar)) {
                         popUpTo(0) { inclusive = true }
                     }
-                },
-                onNavigateToHabitList = {
-                    navController.navigate(NavRoute.HabitList)
                 }
             )
         }
@@ -119,7 +118,7 @@ fun NavigationRoot(
                     navController.popBackStack()
                 },
                 onNavigateToLogin = {
-                    navController.navigate(NavRoute.SignIn) {
+                    navController.navigate(NavRoute.SignIn()) {
                         popUpTo(0) {
                             inclusive = true
                         }

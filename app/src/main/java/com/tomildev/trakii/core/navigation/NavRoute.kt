@@ -2,10 +2,11 @@ package com.tomildev.trakii.core.navigation
 
 import kotlinx.serialization.Serializable
 
+@Serializable
 sealed interface NavRoute {
 
     @Serializable
-    data object SignIn : NavRoute
+    data class SignIn(val showPasswordUpdatedSnackbar: Boolean = false) : NavRoute
 
     @Serializable
     data object SignUp : NavRoute
@@ -21,6 +22,7 @@ sealed interface NavRoute {
 
     @Serializable
     data object ForgotPasswordEmailRequest : NavRoute
+
     @Serializable
     data object HabitList : NavRoute
 
