@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,7 +19,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
 import com.tomildev.trakii.core.common.presentation.components.buttons.PrimaryButton
-import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackBars
+import com.tomildev.trakii.core.common.presentation.components.snackbars.AppSnackbarHost
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarType
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarVisualsCustom
 import com.tomildev.trakii.core.common.presentation.components.spacers.VerticalSpacer
@@ -33,15 +32,15 @@ import com.tomildev.trakii.ui.theme.Dimens
 @Composable
 fun CompleteSignUpScreen(
     modifier: Modifier = Modifier,
-    viewModel: CompleteSignUpViewModel = hiltViewModel(),
+    completeSignUpViewModel: CompleteSignUpViewModel = hiltViewModel(),
     onNavigateToHome: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by completeSignUpViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
-        viewModel.uiEvents.collect { event ->
+        completeSignUpViewModel.uiEvents.collect { event ->
             when (event) {
                 CompleteSignUpUiEvent.Success -> {
                     onNavigateToHome()
@@ -74,29 +73,7 @@ fun CompleteSignUpScreen(
 
     Scaffold(
         snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState) { data ->
-                val customVisuals = data.visuals as? SnackbarVisualsCustom
-                if (customVisuals != null) {
-                    when (customVisuals.type) {
-                        SnackbarType.Error -> SnackBars.Error(
-                            title = customVisuals.message,
-                            description = customVisuals.description
-                        ) { data.dismiss() }
-
-                        SnackbarType.Warning -> SnackBars.Warning(
-                            title = customVisuals.message,
-                            description = customVisuals.description
-                        ) { data.dismiss() }
-
-                        SnackbarType.Success -> SnackBars.Success(
-                            title = customVisuals.message,
-                            description = customVisuals.description
-                        ) { data.dismiss() }
-
-                        else -> {}
-                    }
-                }
-            }
+            AppSnackbarHost(hostState = snackbarHostState)
         }
     ) { innerPadding ->
         Column(
@@ -118,7 +95,7 @@ fun CompleteSignUpScreen(
 
             TextFields.Name(
                 value = uiState.name,
-                onValueChange = viewModel::onNameChange,
+                onValueChange = completeSignUpViewModel::onNameChange,
                 isError = uiState.nameError != null
             )
             if (uiState.nameError != null) {
@@ -129,7 +106,7 @@ fun CompleteSignUpScreen(
 
             TextFields.Password(
                 value = uiState.password,
-                onValueChange = viewModel::onPasswordChange,
+                onValueChange = completeSignUpViewModel::onPasswordChange,
                 isError = uiState.passwordError != null
             )
             if (uiState.passwordError != null) {
@@ -140,7 +117,7 @@ fun CompleteSignUpScreen(
 
             TextFields.ConfirmPassword(
                 value = uiState.confirmPassword,
-                onValueChange = viewModel::onConfirmPasswordChange,
+                onValueChange = completeSignUpViewModel::onConfirmPasswordChange,
                 isError = uiState.confirmPasswordError != null,
                 isPasswordMatch = uiState.isPasswordMatch
             )
@@ -153,7 +130,7 @@ fun CompleteSignUpScreen(
             PrimaryButton(
                 text = stringResource(R.string.auth_complete_signup_btn_confirm),
                 isLoading = uiState.isLoading,
-                onClick = viewModel::onCompleteSignUpClick
+                onClick = completeSignUpViewModel::onCompleteSignUpClick
             )
         }
     }

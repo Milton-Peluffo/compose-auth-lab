@@ -9,8 +9,6 @@ class UpdatePasswordUseCase @Inject constructor(
     private val repository: UpdatePasswordRepository
 ) {
     suspend operator fun invoke(password: String): Result<Unit, DataError.Network> {
-        // Validation could be added here or in the ViewModel
-        // Usually we just delegate to the repository after potential domain-level checks
         return repository.updatePassword(password)
     }
 }

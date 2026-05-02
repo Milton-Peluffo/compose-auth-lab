@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.tomildev.trakii.features.auth.forgot_password.email_request.presentation.EmailRequestScreen
-import com.tomildev.trakii.features.auth.forgot_password.update_password.presentation.Auth_UpdatePasswordScreen
+import com.tomildev.trakii.features.auth.forgot_password.update_password.presentation.UpdatePasswordScreen
 import com.tomildev.trakii.features.auth.otp.presentation.OtpScreen
 import com.tomildev.trakii.features.auth.signin.presentation.SignInScreen
 import com.tomildev.trakii.features.auth.signup.presentation.complete_signup.CompleteSignUpScreen
@@ -85,11 +85,16 @@ fun NavigationRoot(
         }
 
         composable<NavRoute.ForgotPasswordReset> {
-            Auth_UpdatePasswordScreen(onNavigateToSignIn = {
-                navController.navigate(NavRoute.SignIn) {
-                    popUpTo(0) { inclusive = true }
+            UpdatePasswordScreen(
+                onNavigateToSignIn = {
+                    navController.navigate(NavRoute.SignIn) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
+                onNavigateToHome = {
+                    navController.navigate(NavRoute.Home)
                 }
-            })
+            )
         }
 
         composable<NavRoute.ForgotPasswordEmailRequest> {
