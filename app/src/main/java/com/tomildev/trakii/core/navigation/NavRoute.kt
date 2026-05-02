@@ -22,7 +22,7 @@ sealed interface NavRoute {
     @Serializable
     data object ForgotPasswordEmailRequest : NavRoute
     @Serializable
-    data object Home : NavRoute
+    data object HabitList : NavRoute
 
     @Serializable
     data object Settings : NavRoute

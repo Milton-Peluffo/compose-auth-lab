@@ -49,7 +49,7 @@ fun OtpScreen(
     modifier: Modifier = Modifier,
     otpViewModel: OtpViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit,
-    onNavigateToHome: () -> Unit,
+    onNavigateToHabitList: () -> Unit,
     onNavigateToCompleteSignUp: (String) -> Unit,
     onNavigateToUpdatePassword: () -> Unit
 ) {
@@ -68,7 +68,7 @@ fun OtpScreen(
     LaunchedEffect(Unit) {
         otpViewModel.uiEvents.collect { event ->
             when (event) {
-                OtpUiEvent.NavigateToHome -> onNavigateToHome()
+                OtpUiEvent.NavigateToHabitList -> onNavigateToHabitList()
 
                 is OtpUiEvent.NavigateToCompleteSignUp -> onNavigateToCompleteSignUp(event.email)
                 

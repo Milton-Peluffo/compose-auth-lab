@@ -33,7 +33,7 @@ import com.tomildev.trakii.features.settings.presentation.components.UserProfile
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
-    onNavigateToHome: () -> Unit,
+    onNavigateToHabitList: () -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
 
@@ -57,7 +57,7 @@ fun SettingsScreen(
                     containerColor = androidx.compose.ui.graphics.Color.Transparent,
                     scrolledContainerColor = androidx.compose.ui.graphics.Color.Transparent
                 ),
-                navigationIcon = { BackButton(onClick = { onNavigateToHome() }) },
+                navigationIcon = { BackButton(onClick = { onNavigateToHabitList() }) },
                 title = {
                     SecondaryTitle(title = "Settings")
                 },

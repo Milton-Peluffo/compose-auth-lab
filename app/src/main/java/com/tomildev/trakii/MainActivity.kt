@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
                 if (userId != null) {
                     val startRoute = if (userId != -1) {
-                        NavRoute.Home
+                        NavRoute.HabitList
                     } else {
 //                        startRoute
                         NavRoute.Settings

@@ -81,7 +81,7 @@ class SignInViewModel @Inject constructor(
 
             when (result) {
                 is Result.Success -> {
-                    _uiEvents.send(SignInUiEvent.NavigateToHome(_uiState.value.email))
+                    _uiEvents.send(SignInUiEvent.NavigateToHabitList(_uiState.value.email))
                 }
 
                 is Result.Error -> {
@@ -111,7 +111,7 @@ class SignInViewModel @Inject constructor(
 
             when (result) {
                 is Result.Success -> {
-                    _uiEvents.send(SignInUiEvent.NavigateToHome(""))
+                    _uiEvents.send(SignInUiEvent.NavigateToHabitList(""))
                 }
 
                 is Result.Error -> {

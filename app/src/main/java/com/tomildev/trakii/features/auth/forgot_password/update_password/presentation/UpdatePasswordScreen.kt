@@ -36,7 +36,7 @@ fun UpdatePasswordScreen(
     modifier: Modifier = Modifier,
     updatePasswordViewModel: UpdatePasswordViewModel = hiltViewModel(),
     onNavigateToSignIn: () -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHabitList: () -> Unit
 ) {
 
     val uiState by updatePasswordViewModel.uiState.collectAsStateWithLifecycle()
@@ -47,7 +47,7 @@ fun UpdatePasswordScreen(
         updatePasswordViewModel.uiEvents.collect { event ->
             when (event) {
                 UpdatePasswordUiEvent.Success -> {
-                    onNavigateToHome()
+                    onNavigateToHabitList()
                 }
 
                 is UpdatePasswordUiEvent.Error -> {

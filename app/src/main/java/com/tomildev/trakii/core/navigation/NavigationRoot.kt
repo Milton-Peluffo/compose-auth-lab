@@ -11,7 +11,7 @@ import com.tomildev.trakii.features.auth.otp.presentation.OtpScreen
 import com.tomildev.trakii.features.auth.signin.presentation.SignInScreen
 import com.tomildev.trakii.features.auth.signup.presentation.complete_signup.CompleteSignUpScreen
 import com.tomildev.trakii.features.auth.signup.presentation.signup.SignUpScreen
-import com.tomildev.trakii.features.home.HomeScreen
+import com.tomildev.trakii.features.habit.habit_list.presentation.HabitListScreen
 import com.tomildev.trakii.features.settings.presentation.SettingsScreen
 
 @Composable
@@ -30,8 +30,8 @@ fun NavigationRoot(
                 onNavigateToRegister = {
                     navController.navigate(NavRoute.SignUp)
                 },
-                onNavigateToHome = {
-                    navController.navigate(NavRoute.Home)
+                onNavigateToHabitList = {
+                    navController.navigate(NavRoute.HabitList)
                 },
                 onNavigateToForgotPassword = {
                     navController.navigate(NavRoute.ForgotPasswordEmailRequest)
@@ -44,8 +44,8 @@ fun NavigationRoot(
                 navController.navigate(NavRoute.SignIn)
             }, onNavigateToOtp = { email ->
                 navController.navigate(NavRoute.Otp(email = email, isRecovery = false))
-            }, onNavigateToHome = {
-                navController.navigate(NavRoute.Home)
+            }, onNavigateToHabitList = {
+                navController.navigate(NavRoute.HabitList)
             }
             )
         }
@@ -56,8 +56,8 @@ fun NavigationRoot(
                 onNavigateBack = {
                     navController.popBackStack()
                 },
-                onNavigateToHome = {
-                    navController.navigate(NavRoute.Home) {
+                onNavigateToHabitList = {
+                    navController.navigate(NavRoute.HabitList) {
                         popUpTo(NavRoute.SignUp) { inclusive = true }
                     }
                 },
@@ -76,8 +76,8 @@ fun NavigationRoot(
 
         composable<NavRoute.CompleteSignUp> {
             CompleteSignUpScreen(
-                onNavigateToHome = {
-                    navController.navigate(NavRoute.Home) {
+                onNavigateToHabitList = {
+                    navController.navigate(NavRoute.HabitList) {
                         popUpTo(NavRoute.SignUp) { inclusive = true }
                     }
                 }
@@ -91,8 +91,8 @@ fun NavigationRoot(
                         popUpTo(0) { inclusive = true }
                     }
                 },
-                onNavigateToHome = {
-                    navController.navigate(NavRoute.Home)
+                onNavigateToHabitList = {
+                    navController.navigate(NavRoute.HabitList)
                 }
             )
         }
@@ -105,8 +105,8 @@ fun NavigationRoot(
             }
         }
 
-        composable<NavRoute.Home> {
-            HomeScreen(
+        composable<NavRoute.HabitList> {
+            HabitListScreen(
                 onNavigateToSettings = {
                     navController.navigate(NavRoute.Settings)
                 }
@@ -115,7 +115,7 @@ fun NavigationRoot(
 
         composable<NavRoute.Settings> {
             SettingsScreen(
-                onNavigateToHome = {
+                onNavigateToHabitList = {
                     navController.popBackStack()
                 },
                 onNavigateToLogin = {

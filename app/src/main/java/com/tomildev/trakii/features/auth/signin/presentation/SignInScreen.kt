@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.tomildev.trakii.features.auth.signin.presentation
 
 import androidx.compose.foundation.layout.Arrangement
@@ -5,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -41,7 +44,7 @@ fun SignInScreen(
     modifier: Modifier = Modifier,
     signInViewModel: SignInViewModel = hiltViewModel(),
     onNavigateToRegister: () -> Unit,
-    onNavigateToHome: (String) -> Unit,
+    onNavigateToHabitList: (String) -> Unit,
     onNavigateToForgotPassword: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -53,8 +56,8 @@ fun SignInScreen(
     LaunchedEffect(Unit) {
         signInViewModel.uiEvents.collect { uiEvent ->
             when (uiEvent) {
-                is SignInUiEvent.NavigateToHome -> {
-                    onNavigateToHome(uiEvent.email)
+                is SignInUiEvent.NavigateToHabitList -> {
+                    onNavigateToHabitList(uiEvent.email)
                 }
 
                 is SignInUiEvent.Error, is SignInUiEvent.Warning -> {
@@ -73,6 +76,10 @@ fun SignInScreen(
                             )
                         )
                     }
+                }
+
+                SignInUiEvent.NavigateToSignUp -> {
+                    onNavigateToRegister()
                 }
             }
         }

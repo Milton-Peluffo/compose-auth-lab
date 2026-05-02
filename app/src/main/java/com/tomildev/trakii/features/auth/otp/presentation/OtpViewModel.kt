@@ -144,7 +144,7 @@ class OtpViewModel @Inject constructor(
                         }
 
                         OtpVerificationResult.UserExists -> {
-                            _uiEvents.send(OtpUiEvent.NavigateToHome)
+                            _uiEvents.send(OtpUiEvent.NavigateToHabitList)
                         }
                     }
                 }

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.tomildev.trakii.features.home
+package com.tomildev.trakii.features.habit.habit_list.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,12 +26,12 @@ import com.tomildev.trakii.R
 import java.util.Locale.getDefault
 
 @Composable
-fun HomeScreen(
-    homeViewModel: HomeViewModel = hiltViewModel(),
+fun HabitListScreen(
+    habitListViewmodel: HabitListViewmodel = hiltViewModel(),
     onNavigateToSettings: () -> Unit,
 ) {
 
-    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by habitListViewmodel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {

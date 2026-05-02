@@ -33,7 +33,7 @@ import com.tomildev.trakii.ui.theme.Dimens
 fun CompleteSignUpScreen(
     modifier: Modifier = Modifier,
     completeSignUpViewModel: CompleteSignUpViewModel = hiltViewModel(),
-    onNavigateToHome: () -> Unit
+    onNavigateToHabitList: () -> Unit
 ) {
     val uiState by completeSignUpViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -43,7 +43,7 @@ fun CompleteSignUpScreen(
         completeSignUpViewModel.uiEvents.collect { event ->
             when (event) {
                 CompleteSignUpUiEvent.Success -> {
-                    onNavigateToHome()
+                    onNavigateToHabitList()
                 }
 
                 is CompleteSignUpUiEvent.Error -> {

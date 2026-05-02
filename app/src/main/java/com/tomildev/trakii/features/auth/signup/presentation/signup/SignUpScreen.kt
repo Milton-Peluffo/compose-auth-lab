@@ -43,7 +43,7 @@ fun SignUpScreen(
     signUpViewmodel: SignUpViewmodel = hiltViewModel(),
     onNavigateToLogin: () -> Unit,
     onNavigateToOtp: (String) -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHabitList: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val uiState by signUpViewmodel.uiState.collectAsStateWithLifecycle()
@@ -58,8 +58,8 @@ fun SignUpScreen(
                     onNavigateToOtp(uiEvent.email)
                 }
 
-                is SignUpUiEvent.NavigateToHome -> {
-                    onNavigateToHome()
+                is SignUpUiEvent.NavigateToHabitList -> {
+                    onNavigateToHabitList()
                 }
 
                 is SignUpUiEvent.Error, is SignUpUiEvent.Warning -> {

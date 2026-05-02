@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.home
+package com.tomildev.trakii.features.habit.habit_list.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,11 +11,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class HabitListViewmodel @Inject constructor(
     private val userRepository: UserRepository,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeUiState())
+    private val _uiState = MutableStateFlow(HabitListUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -26,8 +26,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.getCurrentUser().collect { user ->
                 user?.let { data ->
-                    _uiState.update { homeUiState ->
-                        homeUiState.copy(
+                    _uiState.update { habitListUiState ->
+                        habitListUiState.copy(
                             name = data.name
                         )
                     }
@@ -37,6 +37,6 @@ class HomeViewModel @Inject constructor(
     }
 }
 
-data class HomeUiState(
+data class HabitListUiState(
     val name: String = "",
 )
