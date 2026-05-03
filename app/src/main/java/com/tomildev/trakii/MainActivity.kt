@@ -39,6 +39,7 @@ class MainActivity : ComponentActivity() {
                         NavRoute.HabitList
                     } else {
                         NavRoute.SignIn()
+                        NavRoute.Settings
                     }
 
                     val navController = rememberNavController()

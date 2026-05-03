@@ -51,7 +51,7 @@ fun SnackbarBase(
             .height(Dimens.SnackbarHeight)
             .padding(horizontal = 8.dp)
             .border(
-                width = Dimens.borderNormal,
+                width = Dimens.BorderNormal,
                 shape = shape,
                 color = iconTint.copy(alpha = borderAlpha)
             ),

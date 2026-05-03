@@ -28,7 +28,7 @@ object Texts {
     fun TitleLarge(
         modifier: Modifier = Modifier,
         text: String,
-        color: Color,
+        color: Color = Color.Unspecified,
         isSecondary: Boolean = false,
         textAlign: TextAlign = TextAlign.Start
     ) {
@@ -55,6 +55,24 @@ object Texts {
             text = text,
             color = color,
             style = MaterialTheme.typography.titleMedium,
+            alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
+            textAlign = textAlign
+        )
+    }
+
+    @Composable
+    fun TitleSmall(
+        modifier: Modifier = Modifier,
+        text: String,
+        color: Color = Color.Unspecified,
+        isSecondary: Boolean = false,
+        textAlign: TextAlign = TextAlign.Start
+    ) {
+        AppText(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = MaterialTheme.typography.titleSmall,
             alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
             textAlign = textAlign
         )

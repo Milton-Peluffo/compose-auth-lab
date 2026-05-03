@@ -42,7 +42,7 @@ fun PrimaryButton(
             CircularProgressIndicator(
                 modifier = Modifier.size(Dimens.IconSizeNormal),
                 color = MaterialTheme.colorScheme.onPrimary,
-                strokeWidth = Dimens.borderNormal
+                strokeWidth = Dimens.BorderNormal
             )
         } else {
             Texts.LabelLarge(

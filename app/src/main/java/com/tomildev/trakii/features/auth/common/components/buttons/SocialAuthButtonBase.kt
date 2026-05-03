@@ -48,7 +48,7 @@ fun SocialAuthButtonBase(
             CircularProgressIndicator(
                 modifier = Modifier.size(Dimens.IconSizeNormal),
                 color = MaterialTheme.colorScheme.onSurface,
-                strokeWidth = Dimens.borderNormal
+                strokeWidth = Dimens.BorderNormal
             )
         } else {
             Texts.LabelLarge(text = text)

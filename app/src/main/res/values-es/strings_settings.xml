@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ========================== PRINCIPAL SETTINGS SCREEN ========================== -->
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_app_preferences">Mis preferencias</string>
+    <string name="settings_other_subtitle">Otros</string>
+    <string name="settings_other_theme">Tema</string>
+    <string name="settings_other_notifications">Notificaciones</string>
+    <string name="settings_other_language">Idioma</string>
+    <string name="settings_other_data_controls">Controles de datos</string>
+    <string name="settings_other_privacy_policy">Política de privacidad</string>
+
+    <!-- ========================== PROFILE SETTINGS SCREEN ========================== -->
+    <string name="settings_profile_security">Seguridad</string>
+</resources>

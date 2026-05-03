@@ -13,7 +13,7 @@ private enum class SnackbarStyle(
     val color: @Composable () -> Color
 ) {
     Success(R.drawable.ic_success, { ExtendedTheme.colors.success }),
-    Info(R.drawable.ic_info, { ExtendedTheme.colors.info }),
+    Info(R.drawable.ic_info_outlined, { ExtendedTheme.colors.info }),
     Warning(R.drawable.ic_warning, { ExtendedTheme.colors.warning }),
     Error(R.drawable.ic_error, { MaterialTheme.colorScheme.error })
 }

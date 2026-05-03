@@ -8,15 +8,16 @@ object Dimens {
     val ScreenHorizontalPadding = 20.dp
     val SnackbarBottomPadding = 20.dp
     val SpacingTiny = 4.dp
-    val SpacingSmall = 10.dp
+    val SpacingSmall = 13.dp
     val SpacingMedium = 16.dp
     val SpacingLarge = 24.dp
     val SpacingExtraLarge = 32.dp
     val SpacingHuge = 48.dp
 
     //================== BORDERS ==================
-    val borderTiny = 1.dp
-    val borderNormal = 2.dp
+    val BorderTiny = 0.5.dp
+    val BorderSmall = 1.dp
+    val BorderNormal = 2.dp
 
     //================== COMPONENT SIZES ==================
     val KeySize = 80.dp
