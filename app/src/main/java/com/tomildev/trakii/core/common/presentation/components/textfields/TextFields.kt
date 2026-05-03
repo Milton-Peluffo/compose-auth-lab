@@ -37,7 +37,7 @@ object TextFields {
         value: String,
         label: String = stringResource(R.string.common_user_label_email),
         isError: Boolean = false,
-        leadingIcon: Painter = painterResource(id = R.drawable.ic_email),
+        leadingIcon: Painter = painterResource(id = R.drawable.ic_email_outlined),
     ) {
         TextFieldBase(
             modifier = modifier,
@@ -82,7 +82,7 @@ object TextFields {
     ) {
         val leadingIcon: Painter =
             if (isPasswordMatch) {
-                painterResource(id = R.drawable.ic_check)
+                painterResource(id = R.drawable.ic_check_outlined)
             } else {
                 painterResource(id = R.drawable.ic_lock_outlined)
             }

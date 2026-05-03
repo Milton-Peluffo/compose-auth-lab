@@ -96,7 +96,7 @@ fun SnackbarBase(
                 onClick = onClick
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_close),
+                    painter = painterResource(R.drawable.ic_close_outlined),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.Hint)
                 )

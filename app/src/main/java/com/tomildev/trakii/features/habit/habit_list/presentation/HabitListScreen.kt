@@ -41,7 +41,7 @@ fun HabitListScreen(
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(
                             modifier = Modifier.size(24.dp),
-                            painter = painterResource(R.drawable.ic_gear),
+                            painter = painterResource(R.drawable.ic_settings_outlined),
                             contentDescription = "Settings"
                         )
                     }

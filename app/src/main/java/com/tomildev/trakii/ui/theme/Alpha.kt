@@ -11,7 +11,7 @@ object Alpha {
     const val Divider = 0.12f
     
     /** Used for background overlays. */
-    const val Overlay = 0.4f
+    const val Overlay = 0.3f
     
     /** Full value (no transparency). */
     const val Full = 1.0f

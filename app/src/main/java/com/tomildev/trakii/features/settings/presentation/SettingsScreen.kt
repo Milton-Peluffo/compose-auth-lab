@@ -99,7 +99,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(12.dp))
             SettingsItemContainer {
                 SettingsItems.SettingsNavigationItem(
-                    leadingIcon = R.drawable.ic_data_outlined,
+                    leadingIcon = R.drawable.ic_database_outlined,
                     text = stringResource(R.string.settings_other_data_controls),
                     onClick = {}
                 )

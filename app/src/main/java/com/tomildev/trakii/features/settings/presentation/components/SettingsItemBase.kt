@@ -54,7 +54,7 @@ fun SettingsItemBase(
                         indication = ripple(color = rippleColor)
                     ) else it
                 }
-                .padding(horizontal = Dimens.SpacingSmall),
+                .padding(horizontal = Dimens.SpacingMedium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -63,7 +63,7 @@ fun SettingsItemBase(
                 contentDescription = contentDescription,
                 tint = color
             )
-            HorizontalSpacer(Dimens.SpacingSmall)
+            HorizontalSpacer(Dimens.SpacingMedium)
 
             Texts.TitleSmall(
                 modifier = Modifier.weight(1f),

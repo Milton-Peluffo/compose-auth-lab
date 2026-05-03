@@ -33,7 +33,7 @@ object SettingsItems {
                 Icon(
                     painter = painterResource(R.drawable.ic_arrow_right),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.Secondary)
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.Overlay)
                 )
             }
         )
