@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,7 +20,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
 import com.tomildev.trakii.core.common.presentation.components.buttons.PrimaryButton
-import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackBars
+import com.tomildev.trakii.core.common.presentation.components.snackbars.AppSnackbarHost
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarType
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarVisualsCustom
 import com.tomildev.trakii.core.common.presentation.components.spacers.VerticalSpacer
@@ -30,9 +28,9 @@ import com.tomildev.trakii.core.common.presentation.components.textfields.TextFi
 import com.tomildev.trakii.core.common.presentation.components.texts.TextError
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.util.mappers.toUiText
-import com.tomildev.trakii.features.auth.common.components.dividers.AuthHorizontalDivider
 import com.tomildev.trakii.features.auth.common.components.buttons.AuthTextAction
 import com.tomildev.trakii.features.auth.common.components.buttons.SocialAuthButtons
+import com.tomildev.trakii.features.auth.common.components.dividers.AuthHorizontalDivider
 import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
 import com.tomildev.trakii.ui.theme.Dimens
 import kotlinx.coroutines.launch
@@ -83,38 +81,9 @@ fun SignUpScreen(
 
     Scaffold(
         snackbarHost = {
-            SnackbarHost(
-                modifier = Modifier.padding(vertical = Dimens.SnackbarBottomPadding),
+            AppSnackbarHost(
                 hostState = snackbarHostState
-            ) { data ->
-                val customVisuals = data.visuals as? SnackbarVisualsCustom
-
-                if (customVisuals != null) {
-                    when (customVisuals.type) {
-                        SnackbarType.Error -> SnackBars.Error(
-                            title = customVisuals.message,
-                            description = customVisuals.description,
-                            onClick = { data.dismiss() }
-                        )
-
-                        SnackbarType.Success -> SnackBars.Success(
-                            title = customVisuals.message,
-                            description = customVisuals.description,
-                            onClick = { data.dismiss() }
-                        )
-
-                        SnackbarType.Warning -> SnackBars.Warning(
-                            title = customVisuals.message,
-                            description = customVisuals.description,
-                            onClick = { data.dismiss() }
-                        )
-
-                        else -> {}
-                    }
-                } else {
-                    Snackbar(snackbarData = data)
-                }
-            }
+            )
         }
     ) { innerPadding ->
 

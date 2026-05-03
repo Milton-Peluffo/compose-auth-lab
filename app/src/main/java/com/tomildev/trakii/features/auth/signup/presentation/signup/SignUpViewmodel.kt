@@ -63,6 +63,7 @@ class SignUpViewmodel @Inject constructor(
                         _uiEvents.send(SignUpUiEvent.Error(error))
                     }
                 }
+
                 is Result.Success -> {
                     _uiEvents.send(SignUpUiEvent.NavigateToOtp(email.trim().lowercase()))
                 }

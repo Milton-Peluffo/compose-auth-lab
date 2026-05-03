@@ -16,7 +16,7 @@ class SendResetOtpUseCase @Inject constructor(
         val profileResult = authUserRepository.getProfileByEmail(cleanEmail)
         
         if (profileResult is Result.Error) {
-            return Result.Error(DataError.Network.Unknown)
+            return profileResult
         }
 
         val profile = (profileResult as Result.Success).data 
