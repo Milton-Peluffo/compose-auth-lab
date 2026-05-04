@@ -11,23 +11,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.tomildev.trakii.R
+import com.tomildev.trakii.core.common.presentation.components.texts.Texts
+import com.tomildev.trakii.ui.theme.Alpha
+import com.tomildev.trakii.ui.theme.Dimens
 
 @Composable
-fun UserProfileHeader(
+fun UserAccountHeader(
     modifier: Modifier,
     userName: String,
     userEmail: String,
@@ -38,12 +37,12 @@ fun UserProfileHeader(
         modifier = Modifier
             .fillMaxWidth()
             .height(70.dp)
-            .clip(shape = RoundedCornerShape(10.dp))
+            .clip(shape = MaterialTheme.shapes.medium)
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .border(
-                1.dp,
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(10.dp)
+                Dimens.BorderSmall,
+                color = MaterialTheme.colorScheme.outline.copy(alpha = Alpha.Overlay),
+                shape = MaterialTheme.shapes.medium
             )
             .clickable(onClick = onclick),
         contentAlignment = Alignment.CenterEnd
@@ -52,7 +51,7 @@ fun UserProfileHeader(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = Dimens.ScreenHorizontalPadding),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -62,26 +61,22 @@ fun UserProfileHeader(
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
+                Texts.TitleMedium(
                     text = userName,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                Text(
+                Texts.LabelMedium(
                     text = userEmail,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = Alpha.Secondary)
                 )
             }
 
             Icon(
                 painter = painterResource(R.drawable.ic_arrow_right),
-                contentDescription = "User information",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.Secondary),
+                contentDescription = null,
             )
         }
     }

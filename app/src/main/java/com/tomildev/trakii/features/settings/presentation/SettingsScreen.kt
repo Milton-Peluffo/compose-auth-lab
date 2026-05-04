@@ -25,7 +25,7 @@ import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.components.topbars.BackbuttonTitleTopBar
 import com.tomildev.trakii.features.settings.presentation.components.SettingsItemContainer
 import com.tomildev.trakii.features.settings.presentation.components.SettingsItems
-import com.tomildev.trakii.features.settings.presentation.components.UserProfileHeader
+import com.tomildev.trakii.features.settings.presentation.components.UserAccountHeader
 
 @Composable
 fun SettingsScreen(
@@ -48,7 +48,7 @@ fun SettingsScreen(
     Scaffold(
         topBar = {
             BackbuttonTitleTopBar(
-                title = stringResource(R.string.settings_title), // "Settings"
+                title = stringResource(R.string.settings_title),
                 backButton = { onNavigateToHabitList() }
             )
         }
@@ -60,7 +60,7 @@ fun SettingsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
         ) {
-            UserProfileHeader(
+            UserAccountHeader(
                 modifier = Modifier.fillMaxWidth(),
                 userName = uiState.name,
                 userEmail = uiState.email,
@@ -88,7 +88,8 @@ fun SettingsScreen(
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_language_outlined,
                     text = stringResource(R.string.settings_other_language),
-                    onClick = { }
+                    onClick = { },
+                    showDivider = false
                 )
             }
             Spacer(modifier = Modifier.height(12.dp))
