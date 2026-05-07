@@ -5,27 +5,26 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface NavRoute {
 
-    @Serializable
-    data class SignIn(val showPasswordUpdatedSnackbar: Boolean = false) : NavRoute
 
-    @Serializable
-    data object SignUp : NavRoute
+    sealed interface Auth : NavRoute {
+        @Serializable data class SignIn(val showPasswordUpdatedSnackbar: Boolean = false) : Auth
+        @Serializable data object SignUp : Auth
+        @Serializable data class Otp(val email: String, val isRecovery: Boolean = false) : Auth
+        @Serializable data class CompleteSignUp(val email: String) : Auth
+        @Serializable data object ForgotPasswordEmailRequest : Auth
+        @Serializable data object ForgotPasswordReset : Auth
+    }
+    @Serializable data object HabitList : NavRoute
 
+    @Serializable data object SettingsGraph : NavRoute
     @Serializable
-    data class Otp(val email: String, val isRecovery: Boolean = false) : NavRoute
-
-    @Serializable
-    data class CompleteSignUp(val email: String) : NavRoute
-
-    @Serializable
-    data object ForgotPasswordReset : NavRoute
-
-    @Serializable
-    data object ForgotPasswordEmailRequest : NavRoute
-
-    @Serializable
-    data object HabitList : NavRoute
-
-    @Serializable
-    data object Settings : NavRoute
+    sealed interface Settings : NavRoute {
+        @Serializable data object Main : Settings
+        @Serializable data object Account : Settings
+        @Serializable data object Notifications : Settings
+        @Serializable data object Appearance : Settings
+        @Serializable data object Language : Settings
+        @Serializable data object DataControl : Settings
+        @Serializable data object AboutApp : Settings
+    }
 }

@@ -135,13 +135,15 @@ object Texts {
         modifier: Modifier = Modifier,
         text: String,
         color: Color = Color.Unspecified,
+        isSecondary: Boolean = false,
         textAlign: TextAlign = TextAlign.Center
     ) {
         AppText(
             modifier = modifier,
             text = text,
-            style = MaterialTheme.typography.labelMedium,
             color = color,
+            style = MaterialTheme.typography.labelMedium,
+            alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
             textAlign = textAlign
         )
     }

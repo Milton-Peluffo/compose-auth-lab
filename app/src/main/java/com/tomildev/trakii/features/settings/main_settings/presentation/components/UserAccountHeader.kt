@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.presentation.components
+package com.tomildev.trakii.features.settings.main_settings.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -69,7 +69,8 @@ fun UserAccountHeader(
                 Texts.LabelMedium(
                     text = userEmail,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = Alpha.Secondary)
+                    color = MaterialTheme.colorScheme.onBackground,
+                    isSecondary = true
                 )
             }
 

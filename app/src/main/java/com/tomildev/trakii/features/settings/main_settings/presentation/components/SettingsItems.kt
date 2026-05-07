@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.presentation.components
+package com.tomildev.trakii.features.settings.main_settings.presentation.components
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
@@ -40,8 +40,8 @@ object SettingsItems {
     }
 
     @Composable
-    fun SettingsActionItem(
-        leadingIcon: Int,
+    fun SettingsStaticItem(
+        leadingIcon: Int? = null,
         text: String,
         isWarning: Boolean = false,
         showDivider: Boolean = true,

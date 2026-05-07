@@ -10,6 +10,7 @@
     <string name="settings_other_data_controls">Data Controls</string>
     <string name="settings_other_privacy_policy">Privacy Policy</string>
 
-    <!-- ========================== PROFILE SETTINGS SCREEN ========================== -->
-    <string name="settings_profile_security">Security</string>
+    <!-- ========================== ACCOUNT SUB SETTINGS SCREEN ========================== -->
+    <string name="sub_settings_account_title">My Account</string>
+    <string name="sub_settings_account_member_since">Member since</string>
 </resources>

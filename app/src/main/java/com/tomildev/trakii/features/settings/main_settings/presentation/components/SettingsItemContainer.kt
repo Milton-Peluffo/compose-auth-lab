@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.presentation.components
+package com.tomildev.trakii.features.settings.main_settings.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

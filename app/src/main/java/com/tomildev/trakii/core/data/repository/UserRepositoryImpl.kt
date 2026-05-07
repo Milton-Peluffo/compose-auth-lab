@@ -4,15 +4,15 @@ import com.tomildev.trakii.core.data.dao.UserDao
 import com.tomildev.trakii.core.data.local.entities.UserEntity
 import com.tomildev.trakii.core.data.preferences.UserPreferences
 import com.tomildev.trakii.core.domain.model.user.User
+import com.tomildev.trakii.core.domain.repository.SessionRepository
 import com.tomildev.trakii.core.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val sessionRepository: SessionRepository
 ) : UserRepository {
 
     private fun UserEntity.toDomain() = User(
@@ -30,23 +30,12 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserById(id: Int): Result<User?> {
+    override suspend fun getUserById(id: String): Result<User?> {
         return try {
             val entity = userDao.getUserById(id)
             Result.success(entity?.toDomain())
         } catch (e: Exception) {
             Result.failure(e)
-        }
-    }
-
-    override fun getCurrentUser(): Flow<User?> = flow {
-        userPreferences.userId.collect { id ->
-            if (id != -1) {
-                val entity = userDao.getUserById(id)
-                emit(entity?.toDomain())
-            } else {
-                emit(null)
-            }
         }
     }
 
@@ -57,27 +46,16 @@ class UserRepositoryImpl @Inject constructor(
         userPreferences.toggleDarkMode(isDark = isEnabled)
     }
 
-    //------ USER SESSION -------
-
-    override suspend fun saveUserSession(userId: Int) {
-        userPreferences.saveSession(userId)
-    }
-
-    override suspend fun closeUserSession() {
-        userPreferences.logOut()
-    }
-
     override suspend fun deleteUserById(): Result<Unit> {
-        val userId = userPreferences.userId.first()
-        if (userId != -1) {
-            return try {
-                userDao.deleteUserById(userId)
-                userPreferences.logOut()
-                Result.success(Unit)
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
+        val currentUser = sessionRepository.getCurrentUser()
+            ?: return Result.failure(Exception("User not found"))
+
+        return try {
+            userDao.deleteUserById(currentUser.id)
+            sessionRepository.logout()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
-        return Result.failure(Exception("User not found"))
     }
 }

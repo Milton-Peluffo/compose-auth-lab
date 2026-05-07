@@ -9,6 +9,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
 import com.tomildev.trakii.core.data.preferences.UserPreferences
+import com.tomildev.trakii.core.domain.repository.SessionRepository
+import com.tomildev.trakii.core.domain.repository.SessionState
 import com.tomildev.trakii.core.navigation.NavRoute
 import com.tomildev.trakii.core.navigation.NavigationRoot
 import com.tomildev.trakii.ui.theme.TrakiiTheme
@@ -22,6 +24,9 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var userPreferences: UserPreferences
 
+    @Inject
+    lateinit var sessionRepository: SessionRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,20 +35,17 @@ class MainActivity : ComponentActivity() {
             val systemTheme = isSystemInDarkTheme()
             val isDarkTheme by userPreferences.isDarkMode.collectAsState(initial = systemTheme)
 
+            val sessionState by sessionRepository.observeSession()
+                .collectAsState(initial = SessionState.Loading)
+
             TrakiiTheme(darkTheme = true) {
-
-                val userId by userPreferences.userId.collectAsState(initial = null)
-
-                if (userId != null) {
-                    val startRoute: Any = if (userId != -1) {
-                        NavRoute.HabitList
-                    } else {
-                        NavRoute.SignIn()
-                        NavRoute.Settings
+                if (sessionState !is SessionState.Loading) {
+                    val startRoute: Any = when (sessionState) {
+                        is SessionState.Authenticated -> NavRoute.HabitList
+                        else -> NavRoute.Auth.SignIn()
                     }
 
                     val navController = rememberNavController()
-
                     NavigationRoot(navController = navController, startDestination = startRoute)
                 }
             }

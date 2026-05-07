@@ -1,5 +1,7 @@
 package com.tomildev.trakii.core.di
 
+import com.tomildev.trakii.core.data.repository.SessionRepositoryImpl
+import com.tomildev.trakii.core.domain.repository.SessionRepository
 import com.tomildev.trakii.features.auth.common.data.AuthUserRepositoryImpl
 import com.tomildev.trakii.features.auth.common.data.OAuthRepositoryImpl
 import com.tomildev.trakii.features.auth.common.domain.AuthUserRepository
@@ -22,6 +24,7 @@ import com.tomildev.trakii.features.auth.signin.domain.use_case.SignInWithEmailU
 import com.tomildev.trakii.features.auth.signup.data.SignUpRepositoryImpl
 import com.tomildev.trakii.features.auth.signup.domain.SignUpRepository
 import com.tomildev.trakii.features.auth.signup.domain.use_case.SendOtpUseCase
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.LogoutUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -78,7 +81,8 @@ object AuthModule {
         oauthRepository: OAuthRepository,
         authUserRepository: AuthUserRepository,
         emailRequestRepository: EmailRequestRepository,
-        updatePasswordRepository: UpdatePasswordRepository
+        updatePasswordRepository: UpdatePasswordRepository,
+        sessionRepository: SessionRepository
     ): AuthUseCases {
         return AuthUseCases(
             sendOtp = SendOtpUseCase(signUpRepository, authUserRepository),
@@ -87,7 +91,8 @@ object AuthModule {
             verifyOtp = VerifyOtpUseCase(otpRepository, authUserRepository),
             resendOtp = ResendOtpUseCase(otpRepository),
             authWithGoogle = AuthWithGoogleUseCase(oauthRepository),
-            signInWithEmail = SignInWithEmailUseCase(signInRepository)
+            signInWithEmail = SignInWithEmailUseCase(signInRepository),
+            logout = LogoutUseCase(sessionRepository)
         )
     }
 
@@ -95,5 +100,11 @@ object AuthModule {
     @Singleton
     fun provideOauthRepository(supabaseClient: SupabaseClient): OAuthRepository {
         return OAuthRepositoryImpl(supabaseClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSessionRepository(supabaseClient: SupabaseClient): SessionRepository {
+        return SessionRepositoryImpl(supabaseClient)
     }
 }

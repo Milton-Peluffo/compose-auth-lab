@@ -24,7 +24,6 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class UserPreferences @Inject constructor(@ApplicationContext private val context: Context) {
 
     private object PreferencesKeys {
-        val USER_ID = intPreferencesKey("user_id")
         val DARK_MODE = booleanPreferencesKey("dark_mode")
         val LANGUAGE = stringPreferencesKey("language")
     }
@@ -42,19 +41,6 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
     suspend fun saveLanguage(langCode: String) {
         context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.LANGUAGE] = langCode
-        }
-    }
-
-    //-------- SESSION --------
-    val userId: Flow<Int> = context.dataStore.data
-        .handleErrors()
-        .map { preferences ->
-            preferences[PreferencesKeys.USER_ID] ?: -1
-        }
-
-    suspend fun saveSession(userId: Int) {
-        context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.USER_ID] = userId
         }
     }
 

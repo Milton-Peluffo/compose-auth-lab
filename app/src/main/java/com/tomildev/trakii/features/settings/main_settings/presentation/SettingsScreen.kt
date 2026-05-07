@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.tomildev.trakii.features.settings.presentation
+package com.tomildev.trakii.features.settings.main_settings.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,33 +22,23 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.components.topbars.BackbuttonTitleTopBar
-import com.tomildev.trakii.features.settings.presentation.components.SettingsItemContainer
-import com.tomildev.trakii.features.settings.presentation.components.SettingsItems
-import com.tomildev.trakii.features.settings.presentation.components.UserAccountHeader
+import com.tomildev.trakii.features.settings.main_settings.presentation.components.SettingsItemContainer
+import com.tomildev.trakii.features.settings.main_settings.presentation.components.SettingsItems
+import com.tomildev.trakii.features.settings.main_settings.presentation.components.UserAccountHeader
 
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
-    onNavigateToHabitList: () -> Unit,
-    onNavigateToLogin: () -> Unit
+    onNavigationEvent: (SettingsUiEvent) -> Unit
 ) {
     val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
-    val isDarkTheme by settingsViewModel.isDarkTheme.collectAsStateWithLifecycle(initialValue = false)
-
-    LaunchedEffect(Unit) {
-        settingsViewModel.events.collect { event ->
-            when (event) {
-                is SettingsUiEvent.NavigateToLogin -> onNavigateToLogin()
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
             BackbuttonTitleTopBar(
                 title = stringResource(R.string.settings_title),
-                backButton = { onNavigateToHabitList() }
+                backButton = { onNavigationEvent(SettingsUiEvent.NavigateToHabitList) }
             )
         }
     ) { innerPadding ->
@@ -64,7 +53,7 @@ fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 userName = uiState.name,
                 userEmail = uiState.email,
-                onclick = {}
+                onclick = { onNavigationEvent(SettingsUiEvent.NavigateToAccount) }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -116,44 +105,6 @@ fun SettingsScreen(
                     onClick = { }
                 )
             }
-
-
-//            Texts.TitleSmall(
-//                text = "Account Actions",
-//                isSecondary = true
-//            )
-//            Spacer(modifier = Modifier.height(12.dp))
-//            SettingsItemContainer {
-//                SettingsItems.SettingsLoadingActionItem(
-//                    leadingIcon = R.drawable.ic_log_out,
-//                    text = "Log out",
-//                    isLoading = uiState.loadingState is LoadingState.LoggingOut,
-//                    onClick = { settingsViewModel.onLogoutClick() }
-//                )
-//                SettingsItems.SettingsLoadingActionItem(
-//                    leadingIcon = R.drawable.ic_bin,
-//                    text = "Delete my account",
-//                    isWarning = true,
-//                    showDivider = false,
-//                    isLoading = uiState.loadingState is LoadingState.DeletingAccount,
-//                    onClick = { settingsViewModel.onDeleteAccountClick() }
-//                )
-//            }
-
         }
-
-//    if (uiState.showLogoutDialog) {
-//        Dialogs.LogOut(
-//            onConfirm = { settingsViewModel.onConfirmLogoutDialog() },
-//            onDismiss = { settingsViewModel.onDismissLogoutDialog() }
-//        )
-//    }
-//
-//    if (uiState.showDeleteAccountDialog) {
-//        Dialogs.DeleteAccount(
-//            onConfirm = { settingsViewModel.onConfirmDeleteAccountDialog() },
-//            onDismiss = { settingsViewModel.onDismissDeleteAccountDialog() }
-//        )
-//    }
     }
 }

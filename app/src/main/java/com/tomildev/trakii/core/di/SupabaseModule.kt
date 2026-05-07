@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.auth.FlowType
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import javax.inject.Singleton
@@ -28,7 +29,12 @@ object SupabaseModule {
             supabaseKey = BuildConfig.SUPABASE_ANON_KEY,
             supabaseUrl = BuildConfig.SUPABASE_URL
         ) {
-            install(Auth)
+            install(Auth) {
+                alwaysAutoRefresh = true
+                autoLoadFromStorage = true
+                autoSaveToStorage = true
+                flowType = FlowType.PKCE
+            }
             install(Postgrest)
         }
     }

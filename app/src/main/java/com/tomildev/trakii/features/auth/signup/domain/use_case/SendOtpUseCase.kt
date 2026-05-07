@@ -27,12 +27,7 @@ class SendOtpUseCase @Inject constructor(
 
         val isComplete = profile?.isProfileComplete == true
         return if (!isComplete) {
-            val signUpResult = repository.signUpWithOtp(cleanEmail)
-            if (signUpResult is Result.Error) {
-                repository.signInWithOtp(cleanEmail)
-            } else {
-                signUpResult
-            }
+            repository.signUpWithOtp(cleanEmail)
         } else {
             repository.signInWithOtp(cleanEmail)
         }

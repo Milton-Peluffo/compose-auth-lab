@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.presentation.components
+package com.tomildev.trakii.features.settings.main_settings.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -28,7 +28,7 @@ import com.tomildev.trakii.ui.theme.Dimens
 @Composable
 fun SettingsItemBase(
     modifier: Modifier = Modifier,
-    leadingIcon: Int,
+    leadingIcon: Int? = null,
     text: String,
     contentDescription: String? = null,
     isWarning: Boolean = false,
@@ -36,11 +36,8 @@ fun SettingsItemBase(
     onClick: (() -> Unit)? = null,
     trailingContent: @Composable ((color: Color) -> Unit)? = null
 ) {
-
-    val color =
-        if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
-    val rippleColor =
-        if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+    val color = if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
+    val rippleColor = if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
 
     Column {
         Row(
@@ -57,13 +54,15 @@ fun SettingsItemBase(
                 .padding(horizontal = Dimens.SpacingMedium),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                modifier = Modifier.size(Dimens.IconSizeNormal),
-                painter = painterResource(leadingIcon),
-                contentDescription = contentDescription,
-                tint = color
-            )
-            HorizontalSpacer(Dimens.SpacingMedium)
+            if (leadingIcon != null) {
+                Icon(
+                    modifier = Modifier.size(Dimens.IconSizeNormal),
+                    painter = painterResource(leadingIcon),
+                    contentDescription = contentDescription,
+                    tint = color
+                )
+                HorizontalSpacer(Dimens.SpacingMedium)
+            }
 
             Texts.TitleSmall(
                 modifier = Modifier.weight(1f),
@@ -75,8 +74,7 @@ fun SettingsItemBase(
         }
         if (showDivider) {
             HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 thickness = Dimens.BorderTiny,
                 color = MaterialTheme.colorScheme.outline.copy(alpha = Alpha.Overlay)
             )

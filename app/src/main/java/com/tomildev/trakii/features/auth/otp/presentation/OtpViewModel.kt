@@ -36,7 +36,7 @@ class OtpViewModel @Inject constructor(
     private val _uiEvents = Channel<OtpUiEvent>()
     val uiEvents = _uiEvents.receiveAsFlow()
 
-    private val navArgs = savedStateHandle.toRoute<NavRoute.Otp>()
+    private val navArgs = savedStateHandle.toRoute<NavRoute.Auth.Otp>()
     private val emailFromArgs = navArgs.email
     private val isRecovery = navArgs.isRecovery
     private var timerJob: Job? = null

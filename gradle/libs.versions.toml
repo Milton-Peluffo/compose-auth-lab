@@ -22,6 +22,7 @@ supabase = "3.4.1"
 ktor = "3.4.1"
 googleid = "1.2.0"
 credentials = "1.6.0"
+desugarJdkLibs = "2.1.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -69,6 +70,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 
 #DATASTORE
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences" }
+desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 #RETROFIT
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
