@@ -25,7 +25,7 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
     composable<NavRoute.Auth.SignUp> {
         SignUpScreen(
             onNavigateToLogin = { navController.navigate(NavRoute.Auth.SignIn()) },
-            onNavigateToOtp = { email -> navController.navigate(NavRoute.Auth.Otp(email, false)) },
+            onNavigateToOtp = { email -> navController.navigate(NavRoute.Auth.Otp(email)) },
             onNavigateToHabitList = { navController.navigate(NavRoute.HabitList) }
         )
     }
@@ -45,8 +45,15 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
                 }
             },
             onNavigateToUpdatePassword = {
-                navController.navigate(NavRoute.Auth.ForgotPasswordReset) {
+                navController.navigate(NavRoute.Auth.ForgotPasswordReset()) {
                     popUpTo(NavRoute.Auth.ForgotPasswordEmailRequest) { inclusive = true }
+                }
+            },
+            onNavigateToAccountPasswordUpdate = {
+                navController.navigate(
+                    NavRoute.Auth.ForgotPasswordReset(isAccountUpdate = true)
+                ) {
+                    popUpTo(NavRoute.Settings.Account) { inclusive = false }
                 }
             }
         )
@@ -62,20 +69,31 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         )
     }
 
-    composable<NavRoute.Auth.ForgotPasswordReset> {
+    composable<NavRoute.Auth.ForgotPasswordReset> { backStackEntry ->
+        val args = backStackEntry.toRoute<NavRoute.Auth.ForgotPasswordReset>()
         UpdatePasswordScreen(
+            isAccountUpdate = args.isAccountUpdate,
             onNavigateToSignIn = { showSnackbar ->
                 navController.navigate(NavRoute.Auth.SignIn(showSnackbar)) {
                     popUpTo(0) { inclusive = true }
                 }
-            }
+            },
+            onNavigateBack = { navController.popBackStack() }
         )
     }
 
     composable<NavRoute.Auth.ForgotPasswordEmailRequest> {
         EmailRequestScreen(
             onNavigateToSignIn = { navController.popBackStack() },
-            onNavigateToOtp = { email -> navController.navigate(NavRoute.Auth.Otp(email, true)) }
+            onNavigateToOtp = {
+                email -> navController.navigate(
+                    NavRoute.Auth.Otp(
+                        email = email,
+                        isRecovery = true,
+                        purpose = NavRoute.OtpPurpose.Recovery
+                    )
+                )
+            }
         )
     }
 }

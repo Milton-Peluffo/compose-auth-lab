@@ -19,6 +19,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
 import com.tomildev.trakii.core.common.presentation.components.buttons.PrimaryButton
+import com.tomildev.trakii.core.common.presentation.components.dialogs.ConfirmationDialogBase
 import com.tomildev.trakii.core.common.presentation.components.snackbars.AppSnackbarHost
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarType
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarVisualsCustom
@@ -35,7 +36,9 @@ import com.tomildev.trakii.ui.theme.Dimens
 fun UpdatePasswordScreen(
     modifier: Modifier = Modifier,
     updatePasswordViewModel: UpdatePasswordViewModel = hiltViewModel(),
-    onNavigateToSignIn: (Boolean) -> Unit
+    isAccountUpdate: Boolean = false,
+    onNavigateToSignIn: (Boolean) -> Unit,
+    onNavigateBack: () -> Unit = { onNavigateToSignIn(false) }
 ) {
 
     val uiState by updatePasswordViewModel.uiState.collectAsStateWithLifecycle()
@@ -48,6 +51,8 @@ fun UpdatePasswordScreen(
                 UpdatePasswordUiEvent.Success -> {
                     onNavigateToSignIn(true)
                 }
+
+                UpdatePasswordUiEvent.NavigateBack -> onNavigateBack()
 
                 is UpdatePasswordUiEvent.Error -> {
                     val errorUiText = event.error.toUiText()
@@ -77,7 +82,7 @@ fun UpdatePasswordScreen(
     Scaffold(
         topBar = {
             BackButtonTopBar(
-                backButton = { onNavigateToSignIn(false) }
+                backButton = { updatePasswordViewModel.onBackClick() }
             )
         },
         snackbarHost = {
@@ -95,7 +100,13 @@ fun UpdatePasswordScreen(
             VerticalSpacer(Dimens.ScreenPaddingTop)
             Texts.Headline(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.auth_shared_password_reset_title),
+                text = stringResource(
+                    if (isAccountUpdate) {
+                        R.string.sub_settings_account_update_password_title
+                    } else {
+                        R.string.auth_shared_password_reset_title
+                    }
+                ),
             )
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
             Texts.Body(
@@ -132,4 +143,16 @@ fun UpdatePasswordScreen(
             )
         }
     }
+
+    if (uiState.showCancelUpdateDialog) {
+        ConfirmationDialogBase(
+            title = stringResource(R.string.sub_settings_account_cancel_password_update_title),
+            message = stringResource(R.string.sub_settings_account_cancel_password_update_message),
+            confirmText = stringResource(R.string.common_btn_confirm),
+            dismissText = stringResource(R.string.common_btn_cancel),
+            onConfirm = { updatePasswordViewModel.onConfirmCancelUpdateDialog() },
+            onDismiss = { updatePasswordViewModel.onDismissCancelUpdateDialog() }
+        )
+    }
+
 }

@@ -9,6 +9,7 @@ import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.core.navigation.NavRoute
 import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
 import com.tomildev.trakii.features.auth.otp.domain.OtpVerificationResult
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountSettingsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -27,6 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OtpViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
+    private val accountSettingsUseCases: AccountSettingsUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -39,6 +41,7 @@ class OtpViewModel @Inject constructor(
     private val navArgs = savedStateHandle.toRoute<NavRoute.Auth.Otp>()
     private val emailFromArgs = navArgs.email
     private val isRecovery = navArgs.isRecovery
+    private val purpose = navArgs.purpose
     private var timerJob: Job? = null
 
     init {
@@ -83,10 +86,14 @@ class OtpViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, networkError = null) }
 
-            val result = if (isRecovery) {
-                authUseCases.sendResetOtp(email)
-            } else {
-                authUseCases.resendOtp(email)
+            val result = when (purpose) {
+                NavRoute.OtpPurpose.Recovery -> authUseCases.sendResetOtp(email)
+
+                NavRoute.OtpPurpose.AccountPasswordUpdate -> accountSettingsUseCases.sendAccountUpdateOtp(email)
+
+                NavRoute.OtpPurpose.Auth -> {
+                    if (isRecovery) authUseCases.sendResetOtp(email) else authUseCases.resendOtp(email)
+                }
             }
 
             _uiState.update { it.copy(isLoading = false) }
@@ -133,9 +140,18 @@ class OtpViewModel @Inject constructor(
                         )
                     }
 
-                    if (isRecovery) {
-                        _uiEvents.send(OtpUiEvent.NavigateToUpdatePassword)
-                        return@launch
+                    when (purpose) {
+                        NavRoute.OtpPurpose.Recovery -> {
+                            _uiEvents.send(OtpUiEvent.NavigateToUpdatePassword)
+                            return@launch
+                        }
+
+                        NavRoute.OtpPurpose.AccountPasswordUpdate -> {
+                            _uiEvents.send(OtpUiEvent.NavigateToAccountPasswordUpdate)
+                            return@launch
+                        }
+
+                        NavRoute.OtpPurpose.Auth -> Unit
                     }
 
                     when (result.data) {

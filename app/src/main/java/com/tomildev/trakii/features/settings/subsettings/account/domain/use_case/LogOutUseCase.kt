@@ -1,12 +1,12 @@
 package com.tomildev.trakii.features.settings.subsettings.account.domain.use_case
 
-import com.tomildev.trakii.core.domain.repository.SessionRepository
+import com.tomildev.trakii.features.settings.subsettings.account.domain.AccountSettingsRepository
 import javax.inject.Inject
 
 class LogoutUseCase @Inject constructor(
-    private val sessionRepository: SessionRepository
+    private val repository: AccountSettingsRepository
 ) {
     suspend operator fun invoke() {
-        sessionRepository.logout()
+        repository.logout()
     }
 }

@@ -11,6 +11,7 @@ data class UpdatePasswordUiState(
     // STATES / VALIDATORS
     val isLoading: Boolean = false,
     val isPasswordMatch: Boolean = false,
+    val showCancelUpdateDialog: Boolean = false,
 
     //ERRORS
     val passwordError: UserValidationError? = null,

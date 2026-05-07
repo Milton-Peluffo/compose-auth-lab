@@ -2,11 +2,15 @@ package com.tomildev.trakii.features.auth.forgot_password.update_password.presen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import com.tomildev.trakii.core.domain.use_case.user.UserValidationUseCases
 import com.tomildev.trakii.core.domain.util.Result
+import com.tomildev.trakii.core.navigation.NavRoute
 import com.tomildev.trakii.features.auth.forgot_password.update_password.domain.use_case.UpdatePasswordUseCase
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountSettingsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +24,8 @@ import javax.inject.Inject
 class UpdatePasswordViewModel @Inject constructor(
     private val userValidationUseCases: UserValidationUseCases,
     private val updatePasswordUseCase: UpdatePasswordUseCase,
+    private val accountSettingsUseCases: AccountSettingsUseCases,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UpdatePasswordUiState())
@@ -27,6 +33,7 @@ class UpdatePasswordViewModel @Inject constructor(
 
     private val _uiEvents = Channel<UpdatePasswordUiEvent>()
     val uiEvents = _uiEvents.receiveAsFlow()
+    private val isAccountUpdate = savedStateHandle.toRoute<NavRoute.Auth.ForgotPasswordReset>().isAccountUpdate
 
     fun onConfirmChanges() {
         if (validateFields()) {
@@ -71,9 +78,33 @@ class UpdatePasswordViewModel @Inject constructor(
                 }
 
                 is Result.Success -> {
-                    _uiEvents.send(UpdatePasswordUiEvent.Success)
+                    if (isAccountUpdate) {
+                        accountSettingsUseCases.setReauthenticationRequired(true)
+                        _uiEvents.send(UpdatePasswordUiEvent.Success)
+                    } else {
+                        _uiEvents.send(UpdatePasswordUiEvent.Success)
+                    }
                 }
             }
+        }
+    }
+
+    fun onBackClick() {
+        if (isAccountUpdate) {
+            _uiState.update { it.copy(showCancelUpdateDialog = true) }
+        } else {
+            viewModelScope.launch { _uiEvents.send(UpdatePasswordUiEvent.NavigateBack) }
+        }
+    }
+
+    fun onDismissCancelUpdateDialog() {
+        _uiState.update { it.copy(showCancelUpdateDialog = false) }
+    }
+
+    fun onConfirmCancelUpdateDialog() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(showCancelUpdateDialog = false) }
+            _uiEvents.send(UpdatePasswordUiEvent.NavigateBack)
         }
     }
 

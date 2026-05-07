@@ -1,6 +1,7 @@
 package com.tomildev.trakii.features.settings.subsettings.account.presentation
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,18 +9,38 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
+import com.tomildev.trakii.core.common.presentation.components.dialogs.ConfirmationDialogBase
 import com.tomildev.trakii.core.common.presentation.components.dialogs.Dialogs
+import com.tomildev.trakii.core.common.presentation.components.snackbars.AppSnackbarHost
+import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarType
+import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarVisualsCustom
+import com.tomildev.trakii.core.common.presentation.components.textfields.TextFields
+import com.tomildev.trakii.core.common.presentation.components.texts.TextError
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.components.topbars.BackbuttonTitleTopBar
+import com.tomildev.trakii.core.common.util.mappers.toUiText
+import com.tomildev.trakii.core.navigation.NavRoute
 import com.tomildev.trakii.features.settings.main_settings.presentation.components.SettingsItemContainer
 import com.tomildev.trakii.features.settings.main_settings.presentation.components.SettingsItems
 
@@ -28,8 +49,42 @@ fun AccountSettingsScreen(
     modifier: Modifier = Modifier,
     accountSettingsViewModel: AccountSettingsViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit,
+    onNavigateToOtp: (String, NavRoute.OtpPurpose) -> Unit,
+    onNavigateToSignIn: () -> Unit
 ) {
     val uiState by accountSettingsViewModel.uiState.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        accountSettingsViewModel.events.collect { event ->
+            when (event) {
+                AccountSettingsUiEvent.NavigateToSignIn -> onNavigateToSignIn()
+                is AccountSettingsUiEvent.NavigateToOtp -> onNavigateToOtp(event.email, event.purpose)
+                is AccountSettingsUiEvent.Error -> {
+                    val errorUiText = event.error.toUiText()
+                    snackbarHostState.showSnackbar(
+                        SnackbarVisualsCustom(
+                            message = errorUiText.title.asString(context),
+                            description = errorUiText.description?.asString(context),
+                            type = SnackbarType.Error
+                        )
+                    )
+                }
+
+                is AccountSettingsUiEvent.Warning -> {
+                    val errorUiText = event.error.toUiText()
+                    snackbarHostState.showSnackbar(
+                        SnackbarVisualsCustom(
+                            message = errorUiText.title.asString(context),
+                            description = errorUiText.description?.asString(context),
+                            type = SnackbarType.Warning
+                        )
+                    )
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -37,6 +92,9 @@ fun AccountSettingsScreen(
                 title = stringResource(R.string.sub_settings_account_title),
                 backButton = { onNavigateBack() }
             )
+        },
+        snackbarHost = {
+            AppSnackbarHost(hostState = snackbarHostState)
         }
     ) { innerPadding ->
         Column(
@@ -51,10 +109,22 @@ fun AccountSettingsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.sub_settings_account_greeting)
             )
-            Texts.Headline(
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                text = uiState.name
-            )
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Texts.Headline(
+                    modifier = Modifier.weight(1f),
+                    text = uiState.name
+                )
+                IconButton(onClick = { accountSettingsViewModel.onEditNameClick() }) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_edit_outlined),
+                        contentDescription = stringResource(R.string.sub_settings_account_edit_name),
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
             Spacer(modifier = Modifier.height(8.dp))
             Texts.Body(
                 text = stringResource(R.string.sub_settings_account_description),
@@ -71,12 +141,12 @@ fun AccountSettingsScreen(
                     leadingIcon = R.drawable.ic_email_outlined,
                     title = stringResource(R.string.sub_settings_account_email),
                     subtitle = uiState.email,
-                    onClick = {}
                 )
-                SettingsItems.SettingsNavigationItem(
+                SettingsItems.SettingsLoadingNavigationItem(
                     leadingIcon = R.drawable.ic_lock_outlined,
                     text = stringResource(R.string.sub_settings_account_password),
-                    onClick = {},
+                    isLoading = uiState.loadingState is LoadingState.SendingPasswordOtp,
+                    onClick = { accountSettingsViewModel.onPasswordClick() },
                 )
                 SettingsItems.SettingsTwoLineItem(
                     leadingIcon = R.drawable.ic_calendar_outlined,
@@ -112,6 +182,54 @@ fun AccountSettingsScreen(
             Dialogs.LogOut(
                 onConfirm = { accountSettingsViewModel.onConfirmLogoutDialog() },
                 onDismiss = { accountSettingsViewModel.onDismissLogoutDialog() }
+            )
+        }
+
+        if (uiState.showUpdatePasswordDialog) {
+            ConfirmationDialogBase(
+                title = stringResource(R.string.sub_settings_account_update_password_dialog_title),
+                message = stringResource(R.string.sub_settings_account_update_password_dialog_message),
+                confirmText = stringResource(R.string.common_btn_confirm),
+                dismissText = stringResource(R.string.common_btn_cancel),
+                onConfirm = { accountSettingsViewModel.onConfirmUpdatePasswordDialog() },
+                onDismiss = { accountSettingsViewModel.onDismissUpdatePasswordDialog() }
+            )
+        }
+
+        if (uiState.showEditNameDialog) {
+            AlertDialog(
+                onDismissRequest = { accountSettingsViewModel.onDismissEditNameDialog() },
+                title = {
+                    Texts.TitleMedium(text = stringResource(R.string.sub_settings_account_edit_name))
+                },
+                text = {
+                    Column {
+                        TextFields.Name(
+                            value = uiState.editedName,
+                            onValueChange = { accountSettingsViewModel.onEditedNameChange(it) },
+                            isError = uiState.nameError != null
+                        )
+                        uiState.nameError?.let {
+                            TextError(text = it.toUiText().asString())
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = { accountSettingsViewModel.onConfirmEditNameDialog() },
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Texts.LabelMedium(text = stringResource(R.string.common_btn_update))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { accountSettingsViewModel.onDismissEditNameDialog() }) {
+                        Texts.LabelMedium(text = stringResource(R.string.common_btn_cancel))
+                    }
+                },
+                containerColor = MaterialTheme.colorScheme.surface
             )
         }
     }

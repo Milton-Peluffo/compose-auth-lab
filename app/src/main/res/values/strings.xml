@@ -6,6 +6,7 @@
     <string name="common_btn_confirm">Confirm</string>
     <string name="common_btn_send">Send</string>
     <string name="common_btn_cancel">Cancel</string>
+    <string name="common_btn_update">Update</string>
 
     <!-- Common user text field -->
     <string name="common_user_label_name">Name</string>

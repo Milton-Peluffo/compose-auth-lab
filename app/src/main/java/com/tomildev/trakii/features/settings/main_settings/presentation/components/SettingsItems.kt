@@ -42,6 +42,41 @@ object SettingsItems {
     }
 
     @Composable
+    fun SettingsLoadingNavigationItem(
+        leadingIcon: Int,
+        text: String,
+        supportingText: String? = null,
+        isWarning: Boolean = false,
+        isLoading: Boolean = false,
+        showDivider: Boolean = true,
+        onClick: () -> Unit
+    ) {
+        SettingsItemBase(
+            leadingIcon = leadingIcon,
+            text = text,
+            supportingText = supportingText,
+            onClick = onClick,
+            isWarning = isWarning,
+            showDivider = showDivider,
+            trailingContent = { color ->
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(Dimens.IconSizeNormal),
+                        color = color,
+                        strokeWidth = Dimens.BorderNormal
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_arrow_right),
+                        contentDescription = null,
+                        tint = color.copy(alpha = if (isWarning) Alpha.Full else Alpha.Overlay)
+                    )
+                }
+            }
+        )
+    }
+
+    @Composable
     fun SettingActionItem(
         leadingIcon: Int? = null,
         text: String,

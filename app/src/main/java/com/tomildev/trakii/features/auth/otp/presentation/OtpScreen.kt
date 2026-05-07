@@ -51,7 +51,8 @@ fun OtpScreen(
     onNavigateBack: () -> Unit,
     onNavigateToHabitList: () -> Unit,
     onNavigateToCompleteSignUp: (String) -> Unit,
-    onNavigateToUpdatePassword: () -> Unit
+    onNavigateToUpdatePassword: () -> Unit,
+    onNavigateToAccountPasswordUpdate: () -> Unit = {}
 ) {
     val uiState by otpViewModel.uiState.collectAsStateWithLifecycle()
     val digits by otpViewModel.digitList.collectAsStateWithLifecycle()
@@ -73,6 +74,7 @@ fun OtpScreen(
                 is OtpUiEvent.NavigateToCompleteSignUp -> onNavigateToCompleteSignUp(event.email)
                 
                 OtpUiEvent.NavigateToUpdatePassword -> onNavigateToUpdatePassword()
+                OtpUiEvent.NavigateToAccountPasswordUpdate -> onNavigateToAccountPasswordUpdate()
 
                 is OtpUiEvent.Error -> {
                     val errorUiText = event.error.toUiText()

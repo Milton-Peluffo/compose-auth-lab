@@ -21,4 +21,15 @@
     <string name="sub_settings_account_actions_subtitle">Acciones</string>
     <string name="sub_settings_account_logout">Cerrar Sesión</string>
     <string name="sub_settings_account_danger_zone">Zona roja</string>
+    <string name="sub_settings_account_edit_name">Editar nombre</string>
+
+    <!-- _________________ ACCOUNT SUB SETTINGS DIALOGS _________________ -->
+    <string name="sub_settings_account_update_password_dialog_title">Actualizar contraseña?</string>
+    <string name="sub_settings_account_update_password_dialog_message">Te enviaremos un codigo de confirmacion a tu correo antes de crear una nueva contraseña.</string>
+    <string name="sub_settings_account_update_password_title">Actualizar contraseña</string>
+    <string name="sub_settings_account_close_session_title">Cerrar sesion</string>
+
+    <string name="sub_settings_account_reauthenticate_required_message">Tu cuenta fue actualizada. Debes iniciar sesion nuevamente antes de continuar.</string>
+    <string name="sub_settings_account_cancel_password_update_title">Cancelar actualizacion de contraseña?</string>
+    <string name="sub_settings_account_cancel_password_update_message">Si vuelves atras, se cancelara la actualizacion de contraseña.</string>
 </resources>

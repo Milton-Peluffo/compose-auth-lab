@@ -8,6 +8,7 @@ import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import com.tomildev.trakii.core.domain.use_case.user.UserValidationUseCases
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountSettingsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
-    private val userValidationUseCases: UserValidationUseCases
+    private val userValidationUseCases: UserValidationUseCases,
+    private val accountSettingsUseCases: AccountSettingsUseCases
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignInUiState())
@@ -29,6 +31,18 @@ class SignInViewModel @Inject constructor(
 
     private val _uiEvents = Channel<SignInUiEvent>()
     val uiEvents = _uiEvents.receiveAsFlow()
+
+    init {
+        observeReauthenticationRequired()
+    }
+
+    private fun observeReauthenticationRequired() {
+        viewModelScope.launch {
+            accountSettingsUseCases.observeReauthenticationRequired().collect { required ->
+                _uiState.update { it.copy(showReauthenticationRequiredDialog = required) }
+            }
+        }
+    }
 
     fun onSignInClick() {
         if (validateFields()) {
@@ -143,5 +157,17 @@ class SignInViewModel @Inject constructor(
                 networkError = null
             )
         }
+    }
+
+    fun onConfirmReauthenticationRequiredDialog() {
+        viewModelScope.launch {
+            accountSettingsUseCases.logout()
+            accountSettingsUseCases.setReauthenticationRequired(false)
+            _uiState.update { it.copy(showReauthenticationRequiredDialog = false) }
+        }
+    }
+
+    fun onDismissReauthenticationRequiredDialog() {
+        // Mandatory dialog. The user must acknowledge before continuing.
     }
 }

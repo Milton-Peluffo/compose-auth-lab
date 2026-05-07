@@ -21,4 +21,12 @@
     <string name="sub_settings_account_actions_subtitle">Actions</string>
     <string name="sub_settings_account_logout">Log Out</string>
     <string name="sub_settings_account_danger_zone">Danger Zone</string>
+    <string name="sub_settings_account_edit_name">Edit name</string>
+    <string name="sub_settings_account_update_password_dialog_title">Update password?</string>
+    <string name="sub_settings_account_update_password_dialog_message">We will send a confirmation code to your email before you can create a new password.</string>
+    <string name="sub_settings_account_update_password_title">Update Password</string>
+    <string name="sub_settings_account_close_session_title">Close session</string>
+    <string name="sub_settings_account_reauthenticate_required_message">Your account was updated. You need to sign in again before continuing.</string>
+    <string name="sub_settings_account_cancel_password_update_title">Cancel password update?</string>
+    <string name="sub_settings_account_cancel_password_update_message">If you go back, the password update will be canceled.</string>
 </resources>

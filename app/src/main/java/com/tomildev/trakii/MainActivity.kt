@@ -34,6 +34,8 @@ class MainActivity : ComponentActivity() {
 
             val systemTheme = isSystemInDarkTheme()
             val isDarkTheme by userPreferences.isDarkMode.collectAsState(initial = systemTheme)
+            val isReauthenticationRequired by userPreferences.isReauthenticationRequired
+                .collectAsState(initial = false)
 
             val sessionState by sessionRepository.observeSession()
                 .collectAsState(initial = SessionState.Loading)
@@ -41,7 +43,13 @@ class MainActivity : ComponentActivity() {
             TrakiiTheme(darkTheme = true) {
                 if (sessionState !is SessionState.Loading) {
                     val startRoute: Any = when (sessionState) {
-                        is SessionState.Authenticated -> NavRoute.HabitList
+                        is SessionState.Authenticated -> {
+                            if (isReauthenticationRequired) {
+                                NavRoute.Auth.SignIn()
+                            } else {
+                                NavRoute.HabitList
+                            }
+                        }
                         else -> NavRoute.Auth.SignIn()
                     }
 

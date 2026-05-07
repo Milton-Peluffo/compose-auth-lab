@@ -11,6 +11,7 @@ data class SignInUiState(
     // STATES / VALIDATORS
     val isLoading: Boolean = false,
     val isGoogleLoading: Boolean = false,
+    val showReauthenticationRequiredDialog: Boolean = false,
 
     //ERRORS
     val networkError: DataError? = null,

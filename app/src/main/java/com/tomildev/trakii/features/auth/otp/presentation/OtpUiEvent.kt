@@ -6,6 +6,7 @@ sealed interface OtpUiEvent {
     data object NavigateToHabitList : OtpUiEvent
     data class NavigateToCompleteSignUp(val email: String) : OtpUiEvent
     data object NavigateToUpdatePassword : OtpUiEvent
+    data object NavigateToAccountPasswordUpdate : OtpUiEvent
     data class Error(val error: DataError) : OtpUiEvent
     data class Warning(val error: DataError) : OtpUiEvent
     data object CodeResent : OtpUiEvent
