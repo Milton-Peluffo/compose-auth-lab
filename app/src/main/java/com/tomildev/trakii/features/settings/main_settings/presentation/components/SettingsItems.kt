@@ -19,6 +19,7 @@ object SettingsItems {
     fun SettingsNavigationItem(
         leadingIcon: Int,
         text: String,
+        supportingText: String? = null,
         isWarning: Boolean = false,
         showDivider: Boolean = true,
         onClick: () -> Unit
@@ -26,23 +27,25 @@ object SettingsItems {
         SettingsItemBase(
             leadingIcon = leadingIcon,
             text = text,
+            supportingText = supportingText,
             onClick = onClick,
             isWarning = isWarning,
             showDivider = showDivider,
-            trailingContent = {
+            trailingContent = { color ->
                 Icon(
                     painter = painterResource(R.drawable.ic_arrow_right),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.Overlay)
+                    tint = color.copy(alpha = if (isWarning) Alpha.Full else Alpha.Overlay)
                 )
             }
         )
     }
 
     @Composable
-    fun SettingsStaticItem(
+    fun SettingActionItem(
         leadingIcon: Int? = null,
         text: String,
+        supportingText: String? = null,
         isWarning: Boolean = false,
         showDivider: Boolean = true,
         onClick: () -> Unit
@@ -50,7 +53,25 @@ object SettingsItems {
         SettingsItemBase(
             leadingIcon = leadingIcon,
             text = text,
+            supportingText = supportingText,
             onClick = onClick,
+            isWarning = isWarning,
+            showDivider = showDivider,
+            trailingContent = null
+        )
+    }
+    @Composable
+    fun SettingStaticItem(
+        leadingIcon: Int? = null,
+        text: String,
+        supportingText: String? = null,
+        isWarning: Boolean = false,
+        showDivider: Boolean = true,
+    ) {
+        SettingsItemBase(
+            leadingIcon = leadingIcon,
+            text = text,
+            supportingText = supportingText,
             isWarning = isWarning,
             showDivider = showDivider,
             trailingContent = null
@@ -58,9 +79,41 @@ object SettingsItems {
     }
 
     @Composable
+    fun SettingsTwoLineItem(
+        leadingIcon: Int,
+        title: String,
+        subtitle: String,
+        isWarning: Boolean = false,
+        showDivider: Boolean = true,
+        onClick: (() -> Unit)? = null
+    ) {
+        SettingsItemBase(
+            leadingIcon = leadingIcon,
+            text = title,
+            supportingText = subtitle,
+            onClick = onClick,
+            isWarning = isWarning,
+            showDivider = showDivider,
+            trailingContent = if (onClick != null) {
+                {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_arrow_right),
+                        contentDescription = null,
+                        tint = it.copy(alpha = Alpha.Overlay)
+                    )
+                }
+            } else {
+                null
+            }
+        )
+    }
+
+
+    @Composable
     fun SettingsLoadingActionItem(
         leadingIcon: Int,
         text: String,
+        supportingText: String? = null,
         isWarning: Boolean = false,
         isLoading: Boolean = false,
         showDivider: Boolean = true,
@@ -69,6 +122,7 @@ object SettingsItems {
         SettingsItemBase(
             leadingIcon = leadingIcon,
             text = text,
+            supportingText = supportingText,
             onClick = onClick,
             isWarning = isWarning,
             showDivider = showDivider,
@@ -89,6 +143,7 @@ object SettingsItems {
     fun SettingsToggleItem(
         leadingIcon: Int,
         text: String,
+        supportingText: String? = null,
         showDivider: Boolean = true,
         checked: Boolean,
         onCheckedChange: (Boolean) -> Unit,
@@ -96,6 +151,7 @@ object SettingsItems {
         SettingsItemBase(
             leadingIcon = leadingIcon,
             text = text,
+            supportingText = supportingText,
             showDivider = showDivider,
             onClick = { onCheckedChange(!checked) },
             trailingContent = {

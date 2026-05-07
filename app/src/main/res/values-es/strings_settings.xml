@@ -12,5 +12,13 @@
 
     <!-- ========================== ACCOUNT SUB SETTINGS SCREEN ========================== -->
     <string name="sub_settings_account_title">Mi cuenta</string>
-    <string name="sub_settings_account_member_since">Miembro desde el</string>
+    <string name="sub_settings_account_greeting">Hola,</string>
+    <string name="sub_settings_account_description">Administra tu cuenta y preferencias</string>
+    <string name="sub_settings_account_section">Cuenta</string>
+    <string name="sub_settings_account_email">Correo electronico</string>
+    <string name="sub_settings_account_password">Password</string>
+    <string name="sub_settings_account_member_since">Miembro desde</string>
+    <string name="sub_settings_account_actions_subtitle">Acciones</string>
+    <string name="sub_settings_account_logout">Cerrar Sesión</string>
+    <string name="sub_settings_account_danger_zone">Zona roja</string>
 </resources>

@@ -3,6 +3,7 @@ package com.tomildev.trakii.features.settings.subsettings.account.presentation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -46,43 +47,60 @@ fun AccountSettingsScreen(
                 .padding(20.dp)
         ) {
 
-            Texts.Headline(modifier = Modifier, text = uiState.name)
+            Texts.Headline(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.sub_settings_account_greeting)
+            )
+            Texts.Headline(
+                modifier = Modifier.fillMaxWidth(),
+                text = uiState.name
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Texts.Body(
+                text = stringResource(R.string.sub_settings_account_description),
+                isSecondary = true
+            )
+
+            Spacer(modifier = Modifier.height(34.dp))
+            Texts.TitleSmall(
+                text = stringResource(R.string.sub_settings_account_section)
+            )
             Spacer(modifier = Modifier.height(12.dp))
             SettingsItemContainer {
-                SettingsItems.SettingsStaticItem(
+                SettingsItems.SettingsTwoLineItem(
                     leadingIcon = R.drawable.ic_email_outlined,
-                    text = uiState.email,
+                    title = stringResource(R.string.sub_settings_account_email),
+                    subtitle = uiState.email,
                     onClick = {}
                 )
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_lock_outlined,
-                    text = "Password",
+                    text = stringResource(R.string.sub_settings_account_password),
                     onClick = {},
                 )
-                SettingsItems.SettingsStaticItem(
-                    text = "${stringResource(R.string.sub_settings_account_member_since)} ${uiState.accountCreationDate}",
-                    onClick = {}
+                SettingsItems.SettingsTwoLineItem(
+                    leadingIcon = R.drawable.ic_calendar_outlined,
+                    title = stringResource(R.string.sub_settings_account_member_since),
+                    subtitle = uiState.accountCreationDate,
+                    showDivider = false
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(26.dp))
             Texts.TitleSmall(
-                text = stringResource(R.string.settings_app_preferences),
-                isSecondary = true
+                text = stringResource(R.string.sub_settings_account_actions_subtitle),
             )
             Spacer(modifier = Modifier.height(12.dp))
             SettingsItemContainer {
                 SettingsItems.SettingsLoadingActionItem(
                     leadingIcon = R.drawable.ic_logout_outlined,
-                    text = "Log Out",
+                    text = stringResource(R.string.sub_settings_account_logout),
                     isLoading = uiState.loadingState is LoadingState.LoggingOut,
+                    showDivider = false,
                     onClick = { accountSettingsViewModel.onLogoutClick() }
                 )
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-            SettingsItemContainer {
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_alert_outlined,
-                    text = "Danger Zone",
+                    text = stringResource(R.string.sub_settings_account_danger_zone),
                     onClick = {},
                     isWarning = true,
                     showDivider = false
