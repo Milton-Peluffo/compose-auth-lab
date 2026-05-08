@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.tomildev.trakii.features.auth.forgot_password.email_request.presentation.EmailRequestScreen
-import com.tomildev.trakii.features.auth.forgot_password.update_password.presentation.UpdatePasswordScreen
+import com.tomildev.trakii.core.common.presentation.password_update.UpdatePasswordScreen
 import com.tomildev.trakii.features.auth.otp.presentation.OtpScreen
 import com.tomildev.trakii.features.auth.signin.presentation.SignInScreen
 import com.tomildev.trakii.features.auth.signup.presentation.complete_signup.CompleteSignUpScreen
@@ -45,13 +45,19 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
                 }
             },
             onNavigateToUpdatePassword = {
-                navController.navigate(NavRoute.Auth.ForgotPasswordReset()) {
-                    popUpTo(NavRoute.Auth.ForgotPasswordEmailRequest) { inclusive = true }
+                navController.navigate(
+                    NavRoute.Auth.ForgotPasswordReset(
+                        origin = NavRoute.PasswordUpdateOrigin.PasswordRecovery
+                    )
+                ) {
+                    popUpTo(0) { inclusive = true }
                 }
             },
             onNavigateToAccountPasswordUpdate = {
                 navController.navigate(
-                    NavRoute.Auth.ForgotPasswordReset(isAccountUpdate = true)
+                    NavRoute.Auth.ForgotPasswordReset(
+                        origin = NavRoute.PasswordUpdateOrigin.AccountSettings
+                    )
                 ) {
                     popUpTo(NavRoute.Settings.Account) { inclusive = false }
                 }
@@ -70,15 +76,17 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
     }
 
     composable<NavRoute.Auth.ForgotPasswordReset> { backStackEntry ->
-        val args = backStackEntry.toRoute<NavRoute.Auth.ForgotPasswordReset>()
         UpdatePasswordScreen(
-            isAccountUpdate = args.isAccountUpdate,
             onNavigateToSignIn = { showSnackbar ->
                 navController.navigate(NavRoute.Auth.SignIn(showSnackbar)) {
                     popUpTo(0) { inclusive = true }
                 }
             },
-            onNavigateBack = { navController.popBackStack() }
+            onNavigateToAccountSettings = {
+                if (!navController.popBackStack(NavRoute.Settings.Account, inclusive = false)) {
+                    navController.navigate(NavRoute.Settings.Account)
+                }
+            }
         )
     }
 

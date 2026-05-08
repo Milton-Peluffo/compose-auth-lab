@@ -5,10 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.model.user.UserValidationError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
+import com.tomildev.trakii.core.domain.use_case.session.LogoutUseCase
+import com.tomildev.trakii.core.domain.use_case.session.ObserveReauthenticationRequiredUseCase
+import com.tomildev.trakii.core.domain.use_case.session.SetPasswordRecoveryInProgressUseCase
+import com.tomildev.trakii.core.domain.use_case.session.SetReauthenticationRequiredUseCase
 import com.tomildev.trakii.core.domain.use_case.user.UserValidationUseCases
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountSettingsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +26,10 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
     private val userValidationUseCases: UserValidationUseCases,
-    private val accountSettingsUseCases: AccountSettingsUseCases
+    private val observeReauthenticationRequiredUseCase: ObserveReauthenticationRequiredUseCase,
+    private val setReauthenticationRequiredUseCase: SetReauthenticationRequiredUseCase,
+    private val setPasswordRecoveryInProgressUseCase: SetPasswordRecoveryInProgressUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignInUiState())
@@ -38,7 +44,7 @@ class SignInViewModel @Inject constructor(
 
     private fun observeReauthenticationRequired() {
         viewModelScope.launch {
-            accountSettingsUseCases.observeReauthenticationRequired().collect { required ->
+            observeReauthenticationRequiredUseCase().collect { required ->
                 _uiState.update { it.copy(showReauthenticationRequiredDialog = required) }
             }
         }
@@ -95,6 +101,8 @@ class SignInViewModel @Inject constructor(
 
             when (result) {
                 is Result.Success -> {
+                    setPasswordRecoveryInProgressUseCase(false)
+                    setReauthenticationRequiredUseCase(false)
                     _uiEvents.send(SignInUiEvent.NavigateToHabitList(_uiState.value.email))
                 }
 
@@ -125,6 +133,8 @@ class SignInViewModel @Inject constructor(
 
             when (result) {
                 is Result.Success -> {
+                    setPasswordRecoveryInProgressUseCase(false)
+                    setReauthenticationRequiredUseCase(false)
                     _uiEvents.send(SignInUiEvent.NavigateToHabitList(""))
                 }
 
@@ -161,8 +171,8 @@ class SignInViewModel @Inject constructor(
 
     fun onConfirmReauthenticationRequiredDialog() {
         viewModelScope.launch {
-            accountSettingsUseCases.logout()
-            accountSettingsUseCases.setReauthenticationRequired(false)
+            logoutUseCase()
+            setReauthenticationRequiredUseCase(false)
             _uiState.update { it.copy(showReauthenticationRequiredDialog = false) }
         }
     }

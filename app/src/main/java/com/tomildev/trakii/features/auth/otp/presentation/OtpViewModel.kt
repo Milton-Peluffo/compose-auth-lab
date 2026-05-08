@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.tomildev.trakii.core.domain.model.error.DataError
+import com.tomildev.trakii.core.domain.use_case.session.SetPasswordRecoveryInProgressUseCase
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.core.navigation.NavRoute
 import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
@@ -29,6 +30,7 @@ import javax.inject.Inject
 class OtpViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
     private val accountSettingsUseCases: AccountSettingsUseCases,
+    private val setPasswordRecoveryInProgress: SetPasswordRecoveryInProgressUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -118,6 +120,11 @@ class OtpViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, networkError = null) }
+            val isPasswordRecoveryFlow = purpose == NavRoute.OtpPurpose.Recovery
+
+            if (isPasswordRecoveryFlow) {
+                setPasswordRecoveryInProgress(true)
+            }
 
             val result = authUseCases.verifyOtp(
                 email = currentState.email,
@@ -128,6 +135,9 @@ class OtpViewModel @Inject constructor(
 
             when (result) {
                 is Result.Error -> {
+                    if (isPasswordRecoveryFlow) {
+                        setPasswordRecoveryInProgress(false)
+                    }
                     _uiState.update { it.copy(networkError = result.error) }
                     sendErrorEvent(result.error)
                 }

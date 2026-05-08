@@ -1,8 +1,14 @@
 package com.tomildev.trakii.core.di
 
-import com.tomildev.trakii.core.data.repository.SessionRepositoryImpl
 import com.tomildev.trakii.core.data.preferences.UserPreferences
+import com.tomildev.trakii.core.data.repository.AuthSessionStateRepositoryImpl
+import com.tomildev.trakii.core.data.repository.PasswordRepositoryImpl
+import com.tomildev.trakii.core.data.repository.SessionRepositoryImpl
+import com.tomildev.trakii.core.domain.repository.AuthSessionStateRepository
+import com.tomildev.trakii.core.domain.repository.PasswordRepository
 import com.tomildev.trakii.core.domain.repository.SessionRepository
+import com.tomildev.trakii.core.domain.use_case.UpdatePasswordUseCase
+import com.tomildev.trakii.core.domain.use_case.session.LogoutUseCase
 import com.tomildev.trakii.features.auth.common.data.AuthUserRepositoryImpl
 import com.tomildev.trakii.features.auth.common.data.OAuthRepositoryImpl
 import com.tomildev.trakii.features.auth.common.domain.AuthUserRepository
@@ -12,9 +18,6 @@ import com.tomildev.trakii.features.auth.common.domain.use_case.AuthWithGoogleUs
 import com.tomildev.trakii.features.auth.forgot_password.email_request.data.EmailRequestRepositoryImpl
 import com.tomildev.trakii.features.auth.forgot_password.email_request.domain.EmailRequestRepository
 import com.tomildev.trakii.features.auth.forgot_password.email_request.domain.use_case.SendResetOtpUseCase
-import com.tomildev.trakii.features.auth.forgot_password.update_password.data.UpdatePasswordRepositoryImpl
-import com.tomildev.trakii.features.auth.forgot_password.update_password.domain.UpdatePasswordRepository
-import com.tomildev.trakii.features.auth.forgot_password.update_password.domain.use_case.UpdatePasswordUseCase
 import com.tomildev.trakii.features.auth.otp.data.OtpRepositoryImpl
 import com.tomildev.trakii.features.auth.otp.domain.OtpRepository
 import com.tomildev.trakii.features.auth.otp.domain.use_case.ResendOtpUseCase
@@ -28,10 +31,7 @@ import com.tomildev.trakii.features.auth.signup.domain.use_case.SendOtpUseCase
 import com.tomildev.trakii.features.settings.subsettings.account.data.AccountSettingsRepositoryImpl
 import com.tomildev.trakii.features.settings.subsettings.account.domain.AccountSettingsRepository
 import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountSettingsUseCases
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.LogoutUseCase
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.ObserveReauthenticationRequiredUseCase
 import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.SendAccountUpdateOtpUseCase
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.SetReauthenticationRequiredUseCase
 import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.UpdateDisplayNameUseCase
 import dagger.Module
 import dagger.Provides
@@ -76,31 +76,36 @@ object AuthModule {
 
     @Provides
     @Singleton
-    fun provideUpdatePasswordRepository(supabaseClient: SupabaseClient): UpdatePasswordRepository {
-        return UpdatePasswordRepositoryImpl(supabaseClient)
+    fun providePasswordRepository(supabaseClient: SupabaseClient): PasswordRepository {
+        return PasswordRepositoryImpl(supabaseClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthSessionStateRepository(
+        userPreferences: UserPreferences
+    ): AuthSessionStateRepository {
+        return AuthSessionStateRepositoryImpl(userPreferences)
     }
 
     @Provides
     @Singleton
     fun provideAccountSettingsRepository(
-        supabaseClient: SupabaseClient,
-        sessionRepository: SessionRepository,
-        userPreferences: UserPreferences
+        supabaseClient: SupabaseClient
     ): AccountSettingsRepository {
-        return AccountSettingsRepositoryImpl(supabaseClient, sessionRepository, userPreferences)
+        return AccountSettingsRepositoryImpl(supabaseClient)
     }
 
     @Provides
     @Singleton
     fun provideAccountSettingsUseCases(
-        accountSettingsRepository: AccountSettingsRepository
+        accountSettingsRepository: AccountSettingsRepository,
+        logoutUseCase: LogoutUseCase
     ): AccountSettingsUseCases {
         return AccountSettingsUseCases(
             sendAccountUpdateOtp = SendAccountUpdateOtpUseCase(accountSettingsRepository),
             updateDisplayName = UpdateDisplayNameUseCase(accountSettingsRepository),
-            observeReauthenticationRequired = ObserveReauthenticationRequiredUseCase(accountSettingsRepository),
-            setReauthenticationRequired = SetReauthenticationRequiredUseCase(accountSettingsRepository),
-            logout = LogoutUseCase(accountSettingsRepository)
+            logout = logoutUseCase
         )
     }
 
@@ -113,18 +118,16 @@ object AuthModule {
         oauthRepository: OAuthRepository,
         authUserRepository: AuthUserRepository,
         emailRequestRepository: EmailRequestRepository,
-        updatePasswordRepository: UpdatePasswordRepository,
-        accountSettingsRepository: AccountSettingsRepository
+        passwordRepository: PasswordRepository
     ): AuthUseCases {
         return AuthUseCases(
             sendOtp = SendOtpUseCase(signUpRepository, authUserRepository),
             sendResetOtp = SendResetOtpUseCase(emailRequestRepository, authUserRepository),
-            updatePassword = UpdatePasswordUseCase(updatePasswordRepository),
+            updatePassword = UpdatePasswordUseCase(passwordRepository),
             verifyOtp = VerifyOtpUseCase(otpRepository, authUserRepository),
             resendOtp = ResendOtpUseCase(otpRepository),
             authWithGoogle = AuthWithGoogleUseCase(oauthRepository),
-            signInWithEmail = SignInWithEmailUseCase(signInRepository),
-            logout = LogoutUseCase(accountSettingsRepository)
+            signInWithEmail = SignInWithEmailUseCase(signInRepository)
         )
     }
 

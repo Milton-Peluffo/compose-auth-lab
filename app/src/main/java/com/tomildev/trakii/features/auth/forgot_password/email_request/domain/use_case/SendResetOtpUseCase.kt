@@ -14,15 +14,19 @@ class SendResetOtpUseCase @Inject constructor(
         val cleanEmail = email.trim().lowercase()
 
         val profileResult = authUserRepository.getProfileByEmail(cleanEmail)
-        
+
         if (profileResult is Result.Error) {
-            return profileResult
+            return when (profileResult.error) {
+                DataError.Network.NoInternet,
+                DataError.Network.Timeout -> profileResult
+
+                else -> emailRequestRepository.sendResetOtp(cleanEmail)
+            }
         }
 
-        val profile = (profileResult as Result.Success).data 
-            ?: return Result.Error(DataError.Network.Unknown)
+        val profile = (profileResult as Result.Success).data
 
-        if (profile.provider == "google") {
+        if (profile?.provider == "google") {
             return Result.Error(DataError.Network.GoogleAccountExists)
         }
 

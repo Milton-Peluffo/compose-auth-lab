@@ -12,6 +12,12 @@ sealed interface NavRoute {
         AccountPasswordUpdate
     }
 
+    @Serializable
+    enum class PasswordUpdateOrigin {
+        PasswordRecovery,
+        AccountSettings
+    }
+
     sealed interface Auth : NavRoute {
         @Serializable
         data class SignIn(
@@ -27,7 +33,9 @@ sealed interface NavRoute {
         @Serializable data class CompleteSignUp(val email: String) : Auth
         @Serializable data object ForgotPasswordEmailRequest : Auth
         @Serializable
-        data class ForgotPasswordReset(val isAccountUpdate: Boolean = false) : Auth
+        data class ForgotPasswordReset(
+            val origin: PasswordUpdateOrigin = PasswordUpdateOrigin.PasswordRecovery
+        ) : Auth
     }
     @Serializable data object HabitList : NavRoute
 

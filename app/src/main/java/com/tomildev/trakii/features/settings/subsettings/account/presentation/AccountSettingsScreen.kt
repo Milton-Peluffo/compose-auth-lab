@@ -9,14 +9,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,19 +27,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
-import com.tomildev.trakii.core.common.presentation.components.dialogs.ConfirmationDialogBase
-import com.tomildev.trakii.core.common.presentation.components.dialogs.Dialogs
 import com.tomildev.trakii.core.common.presentation.components.snackbars.AppSnackbarHost
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarType
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarVisualsCustom
-import com.tomildev.trakii.core.common.presentation.components.textfields.TextFields
-import com.tomildev.trakii.core.common.presentation.components.texts.TextError
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.components.topbars.BackbuttonTitleTopBar
 import com.tomildev.trakii.core.common.util.mappers.toUiText
 import com.tomildev.trakii.core.navigation.NavRoute
 import com.tomildev.trakii.features.settings.main_settings.presentation.components.SettingsItemContainer
 import com.tomildev.trakii.features.settings.main_settings.presentation.components.SettingsItems
+import com.tomildev.trakii.features.settings.subsettings.account.presentation.components.AccountEditNameDialog
+import com.tomildev.trakii.features.settings.subsettings.account.presentation.components.AccountLogoutDialog
+import com.tomildev.trakii.features.settings.subsettings.account.presentation.components.AccountUpdatePasswordDialog
 
 @Composable
 fun AccountSettingsScreen(
@@ -179,57 +175,26 @@ fun AccountSettingsScreen(
         }
 
         if (uiState.showLogoutDialog) {
-            Dialogs.LogOut(
+            AccountLogoutDialog(
                 onConfirm = { accountSettingsViewModel.onConfirmLogoutDialog() },
                 onDismiss = { accountSettingsViewModel.onDismissLogoutDialog() }
             )
         }
 
         if (uiState.showUpdatePasswordDialog) {
-            ConfirmationDialogBase(
-                title = stringResource(R.string.sub_settings_account_update_password_dialog_title),
-                message = stringResource(R.string.sub_settings_account_update_password_dialog_message),
-                confirmText = stringResource(R.string.common_btn_confirm),
-                dismissText = stringResource(R.string.common_btn_cancel),
+            AccountUpdatePasswordDialog(
                 onConfirm = { accountSettingsViewModel.onConfirmUpdatePasswordDialog() },
                 onDismiss = { accountSettingsViewModel.onDismissUpdatePasswordDialog() }
             )
         }
 
         if (uiState.showEditNameDialog) {
-            AlertDialog(
-                onDismissRequest = { accountSettingsViewModel.onDismissEditNameDialog() },
-                title = {
-                    Texts.TitleMedium(text = stringResource(R.string.sub_settings_account_edit_name))
-                },
-                text = {
-                    Column {
-                        TextFields.Name(
-                            value = uiState.editedName,
-                            onValueChange = { accountSettingsViewModel.onEditedNameChange(it) },
-                            isError = uiState.nameError != null
-                        )
-                        uiState.nameError?.let {
-                            TextError(text = it.toUiText().asString())
-                        }
-                    }
-                },
-                confirmButton = {
-                    TextButton(
-                        onClick = { accountSettingsViewModel.onConfirmEditNameDialog() },
-                        colors = ButtonDefaults.textButtonColors(
-                            contentColor = MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Texts.LabelMedium(text = stringResource(R.string.common_btn_update))
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { accountSettingsViewModel.onDismissEditNameDialog() }) {
-                        Texts.LabelMedium(text = stringResource(R.string.common_btn_cancel))
-                    }
-                },
-                containerColor = MaterialTheme.colorScheme.surface
+            AccountEditNameDialog(
+                editedName = uiState.editedName,
+                nameError = uiState.nameError,
+                onNameChange = { accountSettingsViewModel.onEditedNameChange(it) },
+                onConfirm = { accountSettingsViewModel.onConfirmEditNameDialog() },
+                onDismiss = { accountSettingsViewModel.onDismissEditNameDialog() }
             )
         }
     }

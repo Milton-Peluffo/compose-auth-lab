@@ -1,12 +1,11 @@
 package com.tomildev.trakii.features.auth.common.domain.use_case
 
 import com.tomildev.trakii.features.auth.forgot_password.email_request.domain.use_case.SendResetOtpUseCase
-import com.tomildev.trakii.features.auth.forgot_password.update_password.domain.use_case.UpdatePasswordUseCase
+import com.tomildev.trakii.core.domain.use_case.UpdatePasswordUseCase
 import com.tomildev.trakii.features.auth.otp.domain.use_case.ResendOtpUseCase
 import com.tomildev.trakii.features.auth.otp.domain.use_case.VerifyOtpUseCase
 import com.tomildev.trakii.features.auth.signin.domain.use_case.SignInWithEmailUseCase
 import com.tomildev.trakii.features.auth.signup.domain.use_case.SendOtpUseCase
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.LogoutUseCase
 import javax.inject.Inject
 
 /**
@@ -20,6 +19,5 @@ data class AuthUseCases @Inject constructor(
     val verifyOtp: VerifyOtpUseCase,
     val resendOtp: ResendOtpUseCase,
     val authWithGoogle: AuthWithGoogleUseCase,
-    val signInWithEmail: SignInWithEmailUseCase,
-    val logout: LogoutUseCase
+    val signInWithEmail: SignInWithEmailUseCase
 )

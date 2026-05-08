@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
 import com.tomildev.trakii.core.data.preferences.UserPreferences
+import com.tomildev.trakii.core.domain.repository.AuthSessionStateRepository
 import com.tomildev.trakii.core.domain.repository.SessionRepository
 import com.tomildev.trakii.core.domain.repository.SessionState
 import com.tomildev.trakii.core.navigation.NavRoute
@@ -25,6 +26,9 @@ class MainActivity : ComponentActivity() {
     lateinit var userPreferences: UserPreferences
 
     @Inject
+    lateinit var authSessionStateRepository: AuthSessionStateRepository
+
+    @Inject
     lateinit var sessionRepository: SessionRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +38,9 @@ class MainActivity : ComponentActivity() {
 
             val systemTheme = isSystemInDarkTheme()
             val isDarkTheme by userPreferences.isDarkMode.collectAsState(initial = systemTheme)
-            val isReauthenticationRequired by userPreferences.isReauthenticationRequired
+            val isReauthenticationRequired by authSessionStateRepository.observeReauthenticationRequired()
+                .collectAsState(initial = false)
+            val isPasswordRecoveryInProgress by authSessionStateRepository.observePasswordRecoveryInProgress()
                 .collectAsState(initial = false)
 
             val sessionState by sessionRepository.observeSession()
@@ -44,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 if (sessionState !is SessionState.Loading) {
                     val startRoute: Any = when (sessionState) {
                         is SessionState.Authenticated -> {
-                            if (isReauthenticationRequired) {
+                            if (isReauthenticationRequired || isPasswordRecoveryInProgress) {
                                 NavRoute.Auth.SignIn()
                             } else {
                                 NavRoute.HabitList
