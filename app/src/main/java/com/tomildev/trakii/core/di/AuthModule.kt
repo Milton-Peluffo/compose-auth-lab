@@ -121,7 +121,7 @@ object AuthModule {
         passwordRepository: PasswordRepository
     ): AuthUseCases {
         return AuthUseCases(
-            sendOtp = SendOtpUseCase(signUpRepository, authUserRepository),
+            sendOtp = SendOtpUseCase(signUpRepository),
             sendResetOtp = SendResetOtpUseCase(emailRequestRepository, authUserRepository),
             updatePassword = UpdatePasswordUseCase(passwordRepository),
             verifyOtp = VerifyOtpUseCase(otpRepository, authUserRepository),

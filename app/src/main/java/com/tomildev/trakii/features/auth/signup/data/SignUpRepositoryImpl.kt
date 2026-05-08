@@ -17,22 +17,12 @@ class SignUpRepositoryImpl @Inject constructor(
 
     override suspend fun signUpWithOtp(email: String): Result<Unit, DataError.Network> {
         return try {
-            supabaseClient.auth.signUpWith(OTP) {
-                this.email = email
-            }
-            Result.Success(Unit)
-        } catch (e: Exception) {
-            Result.Error(mapSupabaseError(e))
-        }
-    }
-
-    override suspend fun signInWithOtp(email: String): Result<Unit, DataError.Network> {
-        return try {
             supabaseClient.auth.signInWith(OTP) {
                 this.email = email
             }
             Result.Success(Unit)
         } catch (e: Exception) {
+            e.printStackTrace()
             Result.Error(mapSupabaseError(e))
         }
     }

@@ -5,6 +5,5 @@ import com.tomildev.trakii.core.domain.util.Result
 
 interface SignUpRepository {
     suspend fun signUpWithOtp(email: String): Result<Unit, DataError.Network>
-    suspend fun signInWithOtp(email: String): Result<Unit, DataError.Network>
     suspend fun completeRegistration(name: String, password: String): Result<Unit, DataError.Network>
 }
