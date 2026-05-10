@@ -6,10 +6,9 @@ import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import com.tomildev.trakii.core.domain.repository.SessionRepository
 import com.tomildev.trakii.core.domain.repository.SessionState
-import com.tomildev.trakii.core.domain.use_case.user.UserValidationUseCases
+import com.tomildev.trakii.core.domain.use_case.user.ValidateName
 import com.tomildev.trakii.core.domain.util.formatDate
 import com.tomildev.trakii.core.domain.util.Result
-import com.tomildev.trakii.core.navigation.NavRoute
 import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountSettingsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -26,7 +25,7 @@ import javax.inject.Inject
 class AccountSettingsViewModel @Inject constructor(
     private val sessionRepository: SessionRepository,
     private val accountSettingsUseCases: AccountSettingsUseCases,
-    private val userValidationUseCases: UserValidationUseCases
+    private val validateName: ValidateName
 ) : ViewModel() {
 
 
@@ -88,50 +87,6 @@ class AccountSettingsViewModel @Inject constructor(
         _uiState.update { it.copy(showLogoutDialog = false) }
     }
 
-    fun onPasswordClick() {
-        _uiState.update { it.copy(showUpdatePasswordDialog = true) }
-    }
-
-    fun onDismissUpdatePasswordDialog() {
-        _uiState.update { it.copy(showUpdatePasswordDialog = false) }
-    }
-
-    fun onConfirmUpdatePasswordDialog() {
-        sendAccountUpdateOtp(
-            loadingState = LoadingState.SendingPasswordOtp,
-            purpose = NavRoute.OtpPurpose.AccountPasswordUpdate
-        )
-    }
-
-    private fun sendAccountUpdateOtp(
-        loadingState: LoadingState,
-        purpose: NavRoute.OtpPurpose
-    ) {
-        viewModelScope.launch {
-            val email = _uiState.value.email
-            _uiState.update {
-                it.copy(
-                    loadingState = loadingState,
-                    showUpdatePasswordDialog = false
-                )
-            }
-
-            val result = accountSettingsUseCases.sendAccountUpdateOtp(email)
-            _uiState.update { it.copy(loadingState = LoadingState.None) }
-
-            when (result) {
-                is Result.Success -> _eventChannel.send(
-                    AccountSettingsUiEvent.NavigateToOtp(
-                        email = email,
-                        purpose = purpose
-                    )
-                )
-
-                is Result.Error -> sendErrorEvent(result.error)
-            }
-        }
-    }
-
     fun onEditNameClick() {
         _uiState.update {
             it.copy(
@@ -151,7 +106,7 @@ class AccountSettingsViewModel @Inject constructor(
     }
 
     fun onConfirmEditNameDialog() {
-        val nameResult = userValidationUseCases.validateName(_uiState.value.editedName)
+        val nameResult = validateName(_uiState.value.editedName)
         if (nameResult is UserValidationResult.Error) {
             _uiState.update { it.copy(nameError = nameResult.error) }
             return

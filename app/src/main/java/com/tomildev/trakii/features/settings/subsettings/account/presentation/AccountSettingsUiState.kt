@@ -11,7 +11,6 @@ data class AccountSettingsUiState(
     val loadingState: LoadingState = LoadingState.None,
     val showLogoutDialog: Boolean = false,
     val showDeleteAccountDialog: Boolean = false,
-    val showUpdatePasswordDialog: Boolean = false,
     val showEditNameDialog: Boolean = false,
     val nameError: UserValidationError? = null
 )
@@ -20,6 +19,5 @@ sealed class LoadingState {
     object None : LoadingState()
     object LoggingOut : LoadingState()
     object DeletingAccount : LoadingState()
-    object SendingPasswordOtp : LoadingState()
     object UpdatingName : LoadingState()
 }

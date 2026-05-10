@@ -9,7 +9,7 @@ import com.tomildev.trakii.features.habit.habit_list.presentation.HabitListScree
 @Composable
 fun NavigationRoot(
     navController: NavHostController,
-    startDestination: Any = NavRoute.Auth.SignIn()
+    startDestination: Any = NavRoute.Auth.SignIn
 ) {
     NavHost(
         navController = navController,

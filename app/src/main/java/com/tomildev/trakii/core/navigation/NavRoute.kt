@@ -4,38 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface NavRoute {
-
-    @Serializable
-    enum class OtpPurpose {
-        Auth,
-        Recovery,
-        AccountPasswordUpdate
-    }
-
-    @Serializable
-    enum class PasswordUpdateOrigin {
-        PasswordRecovery,
-        AccountSettings
-    }
-
     sealed interface Auth : NavRoute {
-        @Serializable
-        data class SignIn(
-            val showPasswordUpdatedSnackbar: Boolean = false
-        ) : Auth
-        @Serializable data object SignUp : Auth
-        @Serializable
-        data class Otp(
-            val email: String,
-            val isRecovery: Boolean = false,
-            val purpose: OtpPurpose = OtpPurpose.Auth
-        ) : Auth
-        @Serializable data class CompleteSignUp(val email: String) : Auth
-        @Serializable data object ForgotPasswordEmailRequest : Auth
-        @Serializable
-        data class ForgotPasswordReset(
-            val origin: PasswordUpdateOrigin = PasswordUpdateOrigin.PasswordRecovery
-        ) : Auth
+        @Serializable data object SignIn : Auth
     }
     @Serializable data object HabitList : NavRoute
 

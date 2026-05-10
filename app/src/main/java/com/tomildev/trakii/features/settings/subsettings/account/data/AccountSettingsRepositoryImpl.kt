@@ -14,15 +14,6 @@ class AccountSettingsRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient
 ) : AccountSettingsRepository {
 
-    override suspend fun sendAccountUpdateOtp(email: String): Result<Unit, DataError.Network> {
-        return try {
-            supabaseClient.auth.resetPasswordForEmail(email.trim().lowercase())
-            Result.Success(Unit)
-        } catch (e: Exception) {
-            Result.Error(mapSupabaseError(e))
-        }
-    }
-
     override suspend fun updateDisplayName(name: String): Result<Unit, DataError.Network> {
         return try {
             supabaseClient.auth.updateUser {

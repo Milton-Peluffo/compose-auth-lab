@@ -33,19 +33,16 @@ import com.tomildev.trakii.core.common.presentation.components.snackbars.Snackba
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.components.topbars.BackbuttonTitleTopBar
 import com.tomildev.trakii.core.common.util.mappers.toUiText
-import com.tomildev.trakii.core.navigation.NavRoute
 import com.tomildev.trakii.features.settings.main_settings.presentation.components.SettingsItemContainer
 import com.tomildev.trakii.features.settings.main_settings.presentation.components.SettingsItems
 import com.tomildev.trakii.features.settings.subsettings.account.presentation.components.AccountEditNameDialog
 import com.tomildev.trakii.features.settings.subsettings.account.presentation.components.AccountLogoutDialog
-import com.tomildev.trakii.features.settings.subsettings.account.presentation.components.AccountUpdatePasswordDialog
 
 @Composable
 fun AccountSettingsScreen(
     modifier: Modifier = Modifier,
     accountSettingsViewModel: AccountSettingsViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit,
-    onNavigateToOtp: (String, NavRoute.OtpPurpose) -> Unit,
     onNavigateToSignIn: () -> Unit
 ) {
     val uiState by accountSettingsViewModel.uiState.collectAsStateWithLifecycle()
@@ -56,7 +53,6 @@ fun AccountSettingsScreen(
         accountSettingsViewModel.events.collect { event ->
             when (event) {
                 AccountSettingsUiEvent.NavigateToSignIn -> onNavigateToSignIn()
-                is AccountSettingsUiEvent.NavigateToOtp -> onNavigateToOtp(event.email, event.purpose)
                 is AccountSettingsUiEvent.Error -> {
                     val errorUiText = event.error.toUiText()
                     snackbarHostState.showSnackbar(
@@ -138,12 +134,6 @@ fun AccountSettingsScreen(
                     title = stringResource(R.string.sub_settings_account_email),
                     subtitle = uiState.email,
                 )
-                SettingsItems.SettingsLoadingNavigationItem(
-                    leadingIcon = R.drawable.ic_lock_outlined,
-                    text = stringResource(R.string.sub_settings_account_password),
-                    isLoading = uiState.loadingState is LoadingState.SendingPasswordOtp,
-                    onClick = { accountSettingsViewModel.onPasswordClick() },
-                )
                 SettingsItems.SettingsTwoLineItem(
                     leadingIcon = R.drawable.ic_calendar_outlined,
                     title = stringResource(R.string.sub_settings_account_member_since),
@@ -178,13 +168,6 @@ fun AccountSettingsScreen(
             AccountLogoutDialog(
                 onConfirm = { accountSettingsViewModel.onConfirmLogoutDialog() },
                 onDismiss = { accountSettingsViewModel.onDismissLogoutDialog() }
-            )
-        }
-
-        if (uiState.showUpdatePasswordDialog) {
-            AccountUpdatePasswordDialog(
-                onConfirm = { accountSettingsViewModel.onConfirmUpdatePasswordDialog() },
-                onDismiss = { accountSettingsViewModel.onDismissUpdatePasswordDialog() }
             )
         }
 

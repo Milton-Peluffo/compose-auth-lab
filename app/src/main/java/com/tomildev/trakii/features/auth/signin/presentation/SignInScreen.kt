@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.tomildev.trakii.features.auth.signin.presentation
 
 import androidx.compose.foundation.layout.Arrangement
@@ -7,13 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,19 +19,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
-import com.tomildev.trakii.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.trakii.core.common.presentation.components.snackbars.AppSnackbarHost
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarType
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarVisualsCustom
 import com.tomildev.trakii.core.common.presentation.components.spacers.VerticalSpacer
-import com.tomildev.trakii.core.common.presentation.components.textfields.TextFields
-import com.tomildev.trakii.core.common.presentation.components.texts.TextError
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.util.mappers.toUiText
-import com.tomildev.trakii.core.domain.model.error.DataError
-import com.tomildev.trakii.features.auth.common.components.buttons.AuthTextAction
 import com.tomildev.trakii.features.auth.common.components.buttons.SocialAuthButtons
-import com.tomildev.trakii.features.auth.common.components.dividers.AuthHorizontalDivider
 import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
 import com.tomildev.trakii.ui.theme.Dimens
 import kotlinx.coroutines.launch
@@ -46,11 +33,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
-    showPasswordUpdatedSnackbar: Boolean = false,
     signInViewModel: SignInViewModel = hiltViewModel(),
-    onNavigateToRegister: () -> Unit,
-    onNavigateToHabitList: (String) -> Unit,
-    onNavigateToForgotPassword: () -> Unit
+    onNavigateToHabitList: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val uiState by signInViewModel.uiState.collectAsStateWithLifecycle()
@@ -58,25 +42,10 @@ fun SignInScreen(
     val googleAuthClient = remember { GoogleAuthClient(context) }
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val passwordUpdatedMessage = stringResource(R.string.auth_signin_password_updated_success)
-
-    LaunchedEffect(showPasswordUpdatedSnackbar) {
-        if (showPasswordUpdatedSnackbar) {
-            snackbarHostState.showSnackbar(
-                SnackbarVisualsCustom(
-                    message = passwordUpdatedMessage,
-                    type = SnackbarType.Success
-                )
-            )
-        }
-    }
-
     LaunchedEffect(Unit) {
         signInViewModel.uiEvents.collect { uiEvent ->
             when (uiEvent) {
-                is SignInUiEvent.NavigateToHabitList -> {
-                    onNavigateToHabitList(uiEvent.email)
-                }
+                SignInUiEvent.NavigateToHabitList -> onNavigateToHabitList()
 
                 is SignInUiEvent.Error, is SignInUiEvent.Warning -> {
                     val (errorData, snackbarType) = when (uiEvent) {
@@ -84,20 +53,14 @@ fun SignInScreen(
                         is SignInUiEvent.Warning -> uiEvent.error to SnackbarType.Warning
                     }
 
-                    if (errorData != DataError.Network.InvalidCredentials) {
-                        val errorUiText = errorData.toUiText()
-                        snackbarHostState.showSnackbar(
-                            SnackbarVisualsCustom(
-                                message = errorUiText.title.asString(context),
-                                description = errorUiText.description?.asString(context),
-                                type = snackbarType
-                            )
+                    val errorUiText = errorData.toUiText()
+                    snackbarHostState.showSnackbar(
+                        SnackbarVisualsCustom(
+                            message = errorUiText.title.asString(context),
+                            description = errorUiText.description?.asString(context),
+                            type = snackbarType
                         )
-                    }
-                }
-
-                SignInUiEvent.NavigateToSignUp -> {
-                    onNavigateToRegister()
+                    )
                 }
             }
         }
@@ -123,42 +86,6 @@ fun SignInScreen(
                 text = stringResource(R.string.auth_signin_title),
             )
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
-            TextFields.Email(
-                modifier = Modifier,
-                value = uiState.email,
-                onValueChange = { signInViewModel.onEmailChange(email = it) },
-                isError = uiState.emailError != null
-            )
-            if (uiState.emailError != null) {
-                TextError(text = uiState.emailError!!.toUiText().asString())
-            }
-            VerticalSpacer(height = Dimens.SpacingMedium)
-            TextFields.Password(
-                modifier = Modifier,
-                value = uiState.password,
-                onValueChange = { signInViewModel.onPasswordChange(password = it) },
-                isError = uiState.passwordError != null || uiState.networkError == DataError.Network.InvalidCredentials
-            )
-            if (uiState.passwordError != null) {
-                TextError(text = uiState.passwordError!!.toUiText().asString())
-            } else if (uiState.networkError == DataError.Network.InvalidCredentials) {
-                TextError(text = stringResource(R.string.auth_signin_network_error_invalid_credentials))
-            }
-            VerticalSpacer(height = Dimens.SpacingMedium)
-            AuthTextAction(
-                text = stringResource(R.string.auth_signin_btn_forgot_password),
-                onClick = { onNavigateToForgotPassword() },
-                horizontalArrangement = Arrangement.End
-            )
-            VerticalSpacer(height = Dimens.SpacingLarge)
-            PrimaryButton(
-                text = stringResource(R.string.auth_signin_btn),
-                isLoading = uiState.isLoading,
-                onClick = { signInViewModel.onSignInClick() }
-            )
-            VerticalSpacer(height = Dimens.SpacingExtraLarge)
-            AuthHorizontalDivider()
-            VerticalSpacer(height = Dimens.SpacingLarge)
             SocialAuthButtons.Google(
                 onClick = {
                     scope.launch {
@@ -173,38 +100,6 @@ fun SignInScreen(
                 },
                 isLoading = uiState.isGoogleLoading
             )
-            VerticalSpacer(height = Dimens.SpacingLarge)
-            AuthTextAction(
-                text = stringResource(R.string.auth_signin_dont_have_account),
-                actionText = stringResource(R.string.auth_signin_btn_sign_up),
-                onClick = { onNavigateToRegister() },
-            )
         }
-    }
-
-    if (uiState.showReauthenticationRequiredDialog) {
-        AlertDialog(
-            onDismissRequest = { signInViewModel.onDismissReauthenticationRequiredDialog() },
-            title = {
-                Texts.TitleMedium(text = stringResource(R.string.sub_settings_account_close_session_title))
-            },
-            text = {
-                Texts.Body(
-                    text = stringResource(R.string.sub_settings_account_reauthenticate_required_message),
-                    isSecondary = true
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = { signInViewModel.onConfirmReauthenticationRequiredDialog() },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
-                ) {
-                    Texts.LabelMedium(text = stringResource(R.string.common_btn_confirm))
-                }
-            },
-            containerColor = MaterialTheme.colorScheme.surface
-        )
     }
 }

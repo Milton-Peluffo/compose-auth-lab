@@ -26,8 +26,6 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
     private object PreferencesKeys {
         val DARK_MODE = booleanPreferencesKey("dark_mode")
         val LANGUAGE = stringPreferencesKey("language")
-        val REAUTHENTICATION_REQUIRED = booleanPreferencesKey("reauthentication_required")
-        val PASSWORD_RECOVERY_IN_PROGRESS = booleanPreferencesKey("password_recovery_in_progress")
     }
 
     //-------- LANGUAGE --------
@@ -49,30 +47,6 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
     suspend fun logOut() {
         context.dataStore.edit { preferences ->
             preferences.clear()
-        }
-    }
-
-    val isReauthenticationRequired: Flow<Boolean> = context.dataStore.data
-        .handleErrors()
-        .map { preferences ->
-            preferences[PreferencesKeys.REAUTHENTICATION_REQUIRED] ?: false
-        }
-
-    suspend fun setReauthenticationRequired(required: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.REAUTHENTICATION_REQUIRED] = required
-        }
-    }
-
-    val isPasswordRecoveryInProgress: Flow<Boolean> = context.dataStore.data
-        .handleErrors()
-        .map { preferences ->
-            preferences[PreferencesKeys.PASSWORD_RECOVERY_IN_PROGRESS] ?: false
-        }
-
-    suspend fun setPasswordRecoveryInProgress(inProgress: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.PASSWORD_RECOVERY_IN_PROGRESS] = inProgress
         }
     }
 

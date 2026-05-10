@@ -30,17 +30,8 @@ fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
         composable<NavRoute.Settings.Account> {
             AccountSettingsScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToOtp = { email, purpose ->
-                    navController.navigate(
-                        NavRoute.Auth.Otp(
-                            email = email,
-                            isRecovery = true,
-                            purpose = purpose
-                        )
-                    )
-                },
                 onNavigateToSignIn = {
-                    navController.navigate(NavRoute.Auth.SignIn()) {
+                    navController.navigate(NavRoute.Auth.SignIn) {
                         popUpTo(0) { inclusive = true }
                     }
                 }

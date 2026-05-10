@@ -4,6 +4,5 @@ import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.util.Result
 
 interface AccountSettingsRepository {
-    suspend fun sendAccountUpdateOtp(email: String): Result<Unit, DataError.Network>
     suspend fun updateDisplayName(name: String): Result<Unit, DataError.Network>
 }

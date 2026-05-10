@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Trakii</string>
 
-    <!-- ========================== COMMON ========================== -->
     <!-- Common texts -->
     <string name="common_btn_confirm">Confirmar</string>
     <string name="common_btn_send">Enviar</string>
@@ -10,33 +9,25 @@
 
     <!-- Common user text field -->
     <string name="common_user_label_name">Nombre</string>
-    <string name="common_user_label_email">Correo electrónico</string>
-    <string name="common_user_label_password">Contraseña</string>
-    <string name="common_user_label_confirm_password">Confirmar contraseña</string>
 
     <!-- Accessibility -->
-    <string name="a11y_show_password">Mostrar contraseña</string>
-    <string name="a11y_hide_password">Ocultar contraseña</string>
-    <string name="a11y_go_back_button">Volver a atrás"</string>
+    <string name="a11y_show_password">Mostrar contrasena</string>
+    <string name="a11y_hide_password">Ocultar contrasena</string>
+    <string name="a11y_go_back_button">Volver atras"</string>
 
     <!-- Common Domain errors -->
     <string name="common_error_empty_field">Este campo no puede estar vacio</string>
     <string name="common_error_user_name_too_short">El nombre de usuario debe tener al menos 3 caracteres</string>
     <string name="common_error_user_name_too_long">El nombre de usuario no puede exceder los 20 caracteres</string>
-    <string name="common_error_user_name_invalid">El nombre debe contener solo letras, números, espacios, guiones bajos o ø</string>
-    <string name="common_error_email_invalid">Formato de correo invalido</string>
-    <string name="common_error_password_too_short">La contraseña debe tener al menos 8 caracteres</string>
-    <string name="common_error_password_format">La contraseña debe incluir al menos una mayúscula, una minúscula y un carácter especial</string>
-    <string name="common_error_password_match">Las contraseñas deben coincidir</string>
+    <string name="common_error_user_name_invalid">El nombre debe contener solo letras, numeros, espacios o guiones bajos</string>
 
     <!-- Common Network errors -->
-    <string name="common_error_network_no_internet">Sin conexión a internet</string>
+    <string name="common_error_network_no_internet">Sin conexion a internet</string>
     <string name="common_error_network_timeout">La solicitud ha expirado</string>
-    <string name="common_error_network_email_exists">Este correo ya se encuentra registrado</string>
-    <string name="common_error_network_unknown">Ha ocurrio un error desconocido</string>
+    <string name="common_error_network_unknown">Ha ocurrido un error desconocido</string>
     <string name="common_error_network_service_unavailable">Servicio no disponible</string>
 
     <!-- Subtitles for errors -->
-    <string name="common_error_subtitle_try_later">Inténtelo más tarde</string>
-    <string name="common_error_subtitle_check_connection">Por favor verifique su conexión</string>
+    <string name="common_error_subtitle_try_later">Intentelo mas tarde</string>
+    <string name="common_error_subtitle_check_connection">Por favor verifique su conexion</string>
 </resources>

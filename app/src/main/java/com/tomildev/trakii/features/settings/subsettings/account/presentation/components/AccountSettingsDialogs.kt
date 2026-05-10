@@ -8,7 +8,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.tomildev.trakii.R
-import com.tomildev.trakii.core.common.presentation.components.dialogs.ConfirmationDialogBase
 import com.tomildev.trakii.core.common.presentation.components.dialogs.Dialogs
 import com.tomildev.trakii.core.common.presentation.components.textfields.TextFields
 import com.tomildev.trakii.core.common.presentation.components.texts.TextError
@@ -22,21 +21,6 @@ fun AccountLogoutDialog(
     onDismiss: () -> Unit
 ) {
     Dialogs.LogOut(
-        onConfirm = onConfirm,
-        onDismiss = onDismiss
-    )
-}
-
-@Composable
-fun AccountUpdatePasswordDialog(
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    ConfirmationDialogBase(
-        title = stringResource(R.string.sub_settings_account_update_password_dialog_title),
-        message = stringResource(R.string.sub_settings_account_update_password_dialog_message),
-        confirmText = stringResource(R.string.common_btn_confirm),
-        dismissText = stringResource(R.string.common_btn_cancel),
         onConfirm = onConfirm,
         onDismiss = onDismiss
     )
