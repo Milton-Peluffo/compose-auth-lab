@@ -25,6 +25,7 @@ import com.tomildev.trakii.core.common.presentation.components.snackbars.Snackba
 import com.tomildev.trakii.core.common.presentation.components.spacers.VerticalSpacer
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.util.mappers.toUiText
+import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.signin.presentation.components.buttons.SocialAuthButtons
 import com.tomildev.trakii.features.auth.signin.util.GoogleAuthClient
 import com.tomildev.trakii.ui.theme.Dimens
@@ -89,11 +90,22 @@ fun SignInScreen(
                 onClick = {
                     scope.launch {
                         signInViewModel.onGoogleSignInStart()
-                        val idToken = googleAuthClient.signIn()
-                        if (idToken != null) {
-                            signInViewModel.onGoogleSignIn(idToken)
-                        } else {
-                            signInViewModel.onGoogleSignInCancel()
+                        when (val result = googleAuthClient.signIn()) {
+
+                            is Result.Success -> {
+
+                                val idToken = result.data
+
+                                if (idToken != null) {
+                                    signInViewModel.onGoogleSignIn(idToken)
+                                } else {
+                                    signInViewModel.onGoogleSignInCancelled()
+                                }
+                            }
+
+                            is Result.Error -> {
+                                signInViewModel.onGoogleSignInError(result.error)
+                            }
                         }
                     }
                 },

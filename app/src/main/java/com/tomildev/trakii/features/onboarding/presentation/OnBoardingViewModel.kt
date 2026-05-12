@@ -6,6 +6,7 @@ import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.onboarding.domain.use_case.CompleteOnboardingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +29,7 @@ class OnBoardingViewModel @Inject constructor(
     fun onFinishOnboarding() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
+            delay(1500)
 
             val result = completeOnboardingUseCase()
             when (result) {

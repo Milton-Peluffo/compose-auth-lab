@@ -10,6 +10,9 @@ class LogoutUseCase @Inject constructor(
 ) {
     suspend operator fun invoke() {
         userPreferences.logOut()
-        sessionRepository.logOut()
+        try {
+            sessionRepository.logOut()
+        } catch (_: Exception) {
+        }
     }
 }

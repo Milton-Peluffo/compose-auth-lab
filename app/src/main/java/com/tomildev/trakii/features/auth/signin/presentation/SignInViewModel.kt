@@ -30,8 +30,29 @@ class SignInViewModel @Inject constructor(
         _uiState.update { it.copy(isGoogleLoading = true) }
     }
 
-    fun onGoogleSignInCancel() {
-        _uiState.update { it.copy(isGoogleLoading = false) }
+    fun onGoogleSignInCancelled() {
+        _uiState.update {
+            it.copy(isGoogleLoading = false)
+        }
+    }
+    fun onGoogleSignInError(error: DataError.Network) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isGoogleLoading = false)
+            }
+            if (
+                error == DataError.Network.NoInternet ||
+                error == DataError.Network.Timeout
+            ) {
+                _uiEvents.send(
+                    SignInUiEvent.Warning(error)
+                )
+            } else {
+                _uiEvents.send(
+                    SignInUiEvent.Error(error)
+                )
+            }
+        }
     }
 
     fun onGoogleSignIn(idToken: String) {

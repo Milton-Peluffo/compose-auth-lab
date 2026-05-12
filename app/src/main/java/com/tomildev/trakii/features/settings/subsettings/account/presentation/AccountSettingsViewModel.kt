@@ -59,10 +59,9 @@ class AccountSettingsViewModel @Inject constructor(
     fun logout() {
         viewModelScope.launch {
             _uiState.update { it.copy(loadingState = LoadingState.LoggingOut) }
-
+            delay(1500)
             try {
                 accountUseCasesWrapper.logout()
-                delay(500)
                 _eventChannel.send(AccountSettingsUiEvent.NavigateToSignIn)
 
             } catch (e: Exception) {
