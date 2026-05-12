@@ -6,10 +6,9 @@ import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import com.tomildev.trakii.core.domain.repository.SessionRepository
 import com.tomildev.trakii.core.domain.repository.SessionState
-import com.tomildev.trakii.core.domain.use_case.user.ValidateName
-import com.tomildev.trakii.core.domain.util.formatDate
 import com.tomildev.trakii.core.domain.util.Result
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountSettingsUseCases
+import com.tomildev.trakii.core.domain.util.formatDate
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountUseCasesWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -24,8 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountSettingsViewModel @Inject constructor(
     private val sessionRepository: SessionRepository,
-    private val accountSettingsUseCases: AccountSettingsUseCases,
-    private val validateName: ValidateName
+    private val accountUseCasesWrapper: AccountUseCasesWrapper,
 ) : ViewModel() {
 
 
@@ -47,8 +45,8 @@ class AccountSettingsViewModel @Inject constructor(
                 if (sessionState is SessionState.Authenticated) {
                     _uiState.update { settingsUiState ->
                         settingsUiState.copy(
-                            name = sessionState.user.name,
-                            editedName = sessionState.user.name,
+                            name = sessionState.user.displayName,
+                            editedName = sessionState.user.displayName,
                             email = sessionState.user.email,
                             accountCreationDate = formatDate(sessionState.user.createdAt.toString()),
                         )
@@ -63,7 +61,7 @@ class AccountSettingsViewModel @Inject constructor(
             _uiState.update { it.copy(loadingState = LoadingState.LoggingOut) }
 
             try {
-                accountSettingsUseCases.logout()
+                accountUseCasesWrapper.logout()
                 delay(500)
                 _eventChannel.send(AccountSettingsUiEvent.NavigateToSignIn)
 
@@ -106,7 +104,7 @@ class AccountSettingsViewModel @Inject constructor(
     }
 
     fun onConfirmEditNameDialog() {
-        val nameResult = validateName(_uiState.value.editedName)
+        val nameResult = accountUseCasesWrapper.validateNameUseCase(_uiState.value.editedName)
         if (nameResult is UserValidationResult.Error) {
             _uiState.update { it.copy(nameError = nameResult.error) }
             return
@@ -114,7 +112,7 @@ class AccountSettingsViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(loadingState = LoadingState.UpdatingName) }
-            val result = accountSettingsUseCases.updateDisplayName(_uiState.value.editedName)
+            val result = accountUseCasesWrapper.updateDisplayName(_uiState.value.editedName)
             _uiState.update { it.copy(loadingState = LoadingState.None) }
 
             when (result) {

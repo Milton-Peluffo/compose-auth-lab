@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.util.Result
-import com.tomildev.trakii.features.auth.common.domain.use_case.AuthUseCases
+import com.tomildev.trakii.features.auth.signin.domain.use_case.AuthWithGoogleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val authUseCases: AuthUseCases
+    private val authWithGoogleUseCase: AuthWithGoogleUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignInUiState())
@@ -36,7 +36,7 @@ class SignInViewModel @Inject constructor(
 
     fun onGoogleSignIn(idToken: String) {
         viewModelScope.launch {
-            val result = authUseCases.authWithGoogle(idToken)
+            val result = authWithGoogleUseCase(idToken)
             _uiState.update { it.copy(isGoogleLoading = false) }
 
             when (result) {

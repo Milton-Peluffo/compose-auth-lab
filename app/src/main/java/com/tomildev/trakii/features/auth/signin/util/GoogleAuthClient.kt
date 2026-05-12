@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.auth.common.util
+package com.tomildev.trakii.features.auth.signin.util
 
 import android.content.Context
 import androidx.credentials.CredentialManager

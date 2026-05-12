@@ -1,9 +1,9 @@
-package com.tomildev.trakii.features.auth.common.data
+package com.tomildev.trakii.features.auth.signin.data
 
 import com.tomildev.trakii.core.common.util.mappers.mapSupabaseError
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.util.Result
-import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
+import com.tomildev.trakii.features.auth.signin.domain.OAuthRepository
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Google

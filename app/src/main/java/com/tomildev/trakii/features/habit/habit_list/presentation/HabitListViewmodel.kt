@@ -29,7 +29,7 @@ class HabitListViewmodel @Inject constructor(
                 if (sessionState is SessionState.Authenticated) {
                     _uiState.update { habitListUiState ->
                         habitListUiState.copy(
-                            name = sessionState.user.name
+                            name = sessionState.user.displayName
                         )
                     }
                 }

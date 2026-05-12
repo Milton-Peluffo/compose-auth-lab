@@ -1,13 +1,16 @@
 package com.tomildev.trakii.core.di
 
-import android.content.Context
-import com.tomildev.trakii.core.domain.use_case.user.ValidateName
-import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
+import com.tomildev.trakii.features.settings.subsettings.account.data.AccountSettingsRepositoryImpl
+import com.tomildev.trakii.features.settings.subsettings.account.domain.AccountSettingsRepository
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountUseCasesWrapper
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.LogoutUseCase
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.UpdateDisplayNameUseCase
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.ValidateNameUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.jan.supabase.SupabaseClient
 import javax.inject.Singleton
 
 @Module
@@ -17,13 +20,29 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideValidateName(): ValidateName {
-        return ValidateName()
+    fun provideValidateName(): ValidateNameUseCase {
+        return ValidateNameUseCase()
     }
 
     @Provides
     @Singleton
-    fun provideGoogleAuthClient(@ApplicationContext context: Context): GoogleAuthClient {
-        return GoogleAuthClient(context)
+    fun provideAccountSettingsUseCases(
+        accountSettingsRepository: AccountSettingsRepository,
+        validateNameUseCase: ValidateNameUseCase,
+        logoutUseCase: LogoutUseCase
+    ): AccountUseCasesWrapper {
+        return AccountUseCasesWrapper(
+            updateDisplayName = UpdateDisplayNameUseCase(accountSettingsRepository),
+            validateNameUseCase = validateNameUseCase,
+            logout = logoutUseCase
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccountSettingsRepository(
+        supabaseClient: SupabaseClient
+    ): AccountSettingsRepository {
+        return AccountSettingsRepositoryImpl(supabaseClient)
     }
 }

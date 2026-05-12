@@ -7,7 +7,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,7 +25,26 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
     private object PreferencesKeys {
         val DARK_MODE = booleanPreferencesKey("dark_mode")
         val LANGUAGE = stringPreferencesKey("language")
+
+        val ONBOARDING_COMPLETED =
+            booleanPreferencesKey("onboarding_completed")
     }
+
+    //-------- ONBOARDING --------
+
+    val onboardingCompleted: Flow<Boolean> =
+        context.dataStore.data
+            .handleErrors()
+            .map { preferences ->
+                preferences[PreferencesKeys.ONBOARDING_COMPLETED] ?: false
+            }
+
+    suspend fun setOnboardingCompleted(completed: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.ONBOARDING_COMPLETED] = completed
+        }
+    }
+
 
     //-------- LANGUAGE --------
     private val systemLanguage: String
@@ -46,7 +64,7 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
 
     suspend fun logOut() {
         context.dataStore.edit { preferences ->
-            preferences.clear()
+            preferences.remove(PreferencesKeys.ONBOARDING_COMPLETED)
         }
     }
 

@@ -25,14 +25,13 @@ import com.tomildev.trakii.core.common.presentation.components.snackbars.Snackba
 import com.tomildev.trakii.core.common.presentation.components.spacers.VerticalSpacer
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.util.mappers.toUiText
-import com.tomildev.trakii.features.auth.common.components.buttons.SocialAuthButtons
-import com.tomildev.trakii.features.auth.common.util.GoogleAuthClient
+import com.tomildev.trakii.features.auth.signin.presentation.components.buttons.SocialAuthButtons
+import com.tomildev.trakii.features.auth.signin.util.GoogleAuthClient
 import com.tomildev.trakii.ui.theme.Dimens
 import kotlinx.coroutines.launch
 
 @Composable
 fun SignInScreen(
-    modifier: Modifier = Modifier,
     signInViewModel: SignInViewModel = hiltViewModel(),
     onNavigateToHabitList: () -> Unit
 ) {
@@ -74,7 +73,7 @@ fun SignInScreen(
         }
     ) { innerPadding ->
         Column(
-            modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(horizontal = Dimens.ScreenHorizontalPadding),

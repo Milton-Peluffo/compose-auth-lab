@@ -1,8 +1,8 @@
-package com.tomildev.trakii.features.auth.common.domain.use_case
+package com.tomildev.trakii.features.auth.signin.domain.use_case
 
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.util.Result
-import com.tomildev.trakii.features.auth.common.domain.OAuthRepository
+import com.tomildev.trakii.features.auth.signin.domain.OAuthRepository
 import javax.inject.Inject
 
 class AuthWithGoogleUseCase @Inject constructor(

@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface NavRoute {
+    @Serializable data object OnBoarding : NavRoute
+
     sealed interface Auth : NavRoute {
         @Serializable data object SignIn : Auth
     }

@@ -1,10 +1,10 @@
-package com.tomildev.trakii.core.domain.use_case.user
+package com.tomildev.trakii.features.settings.subsettings.account.domain.use_case
 
 import com.tomildev.trakii.core.domain.model.user.UserValidationError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import javax.inject.Inject
 
-class ValidateName @Inject constructor() {
+class ValidateNameUseCase @Inject constructor() {
 
     operator fun invoke(name: String): UserValidationResult {
         val nameRegex = Regex("^[A-Za-z0-9_]+$")

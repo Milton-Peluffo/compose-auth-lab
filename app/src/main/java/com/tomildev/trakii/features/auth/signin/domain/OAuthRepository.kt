@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.auth.common.domain
+package com.tomildev.trakii.features.auth.signin.domain
 
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.util.Result

@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.auth.common.components.buttons
+package com.tomildev.trakii.features.auth.signin.presentation.components.buttons
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

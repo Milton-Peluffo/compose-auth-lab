@@ -36,7 +36,7 @@ class SettingsViewModel @Inject constructor(
                 if (sessionState is SessionState.Authenticated) {
                     _uiState.update { settingsUiState ->
                         settingsUiState.copy(
-                            name = sessionState.user.name,
+                            name = sessionState.user.displayName,
                             email = sessionState.user.email
                         )
                     }
