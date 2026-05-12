@@ -5,8 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import com.tomildev.trakii.ui.theme.Alpha
 
 object Texts {
+
 
     @Composable
     fun Headline(
@@ -26,8 +28,8 @@ object Texts {
     fun TitleLarge(
         modifier: Modifier = Modifier,
         text: String,
-        color: Color,
-        isSecondary: Boolean? = false,
+        color: Color = Color.Unspecified,
+        isSecondary: Boolean = false,
         textAlign: TextAlign = TextAlign.Start
     ) {
         AppText(
@@ -35,7 +37,7 @@ object Texts {
             text = text,
             color = color,
             style = MaterialTheme.typography.titleLarge,
-            alpha = if (isSecondary!!) 0.6f else 1f,
+            alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
             textAlign = textAlign
         )
     }
@@ -53,7 +55,25 @@ object Texts {
             text = text,
             color = color,
             style = MaterialTheme.typography.titleMedium,
-            alpha = if (isSecondary) 0.6f else 1f,
+            alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
+            textAlign = textAlign
+        )
+    }
+
+    @Composable
+    fun TitleSmall(
+        modifier: Modifier = Modifier,
+        text: String,
+        color: Color = Color.Unspecified,
+        isSecondary: Boolean = false,
+        textAlign: TextAlign = TextAlign.Start
+    ) {
+        AppText(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = MaterialTheme.typography.titleSmall,
+            alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
             textAlign = textAlign
         )
     }
@@ -71,13 +91,31 @@ object Texts {
             text = text,
             color = color,
             style = MaterialTheme.typography.bodyMedium,
-            alpha = if (isSecondary) 0.6f else 1f,
+            alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
             textAlign = textAlign
         )
     }
 
     @Composable
-    fun Label(
+    fun BodySmall(
+        modifier: Modifier = Modifier,
+        text: String,
+        color: Color = Color.Unspecified,
+        isSecondary: Boolean = false,
+        textAlign: TextAlign = TextAlign.Start
+    ) {
+        AppText(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = MaterialTheme.typography.bodySmall,
+            alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
+            textAlign = textAlign
+        )
+    }
+
+    @Composable
+    fun LabelLarge(
         modifier: Modifier = Modifier,
         text: String,
         color: Color = Color.Unspecified,
@@ -88,6 +126,24 @@ object Texts {
             text = text,
             style = MaterialTheme.typography.labelLarge,
             color = color,
+            textAlign = textAlign
+        )
+    }
+
+    @Composable
+    fun LabelMedium(
+        modifier: Modifier = Modifier,
+        text: String,
+        color: Color = Color.Unspecified,
+        isSecondary: Boolean = false,
+        textAlign: TextAlign = TextAlign.Center
+    ) {
+        AppText(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = MaterialTheme.typography.labelMedium,
+            alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
             textAlign = textAlign
         )
     }

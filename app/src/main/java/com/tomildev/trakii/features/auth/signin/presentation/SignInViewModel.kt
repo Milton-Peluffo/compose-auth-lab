@@ -1,105 +1,78 @@
 package com.tomildev.trakii.features.auth.signin.presentation
 
 import androidx.lifecycle.ViewModel
-import com.tomildev.trakii.core.data.preferences.UserPreferences
-import com.tomildev.trakii.core.domain.model.user.UserValidationError
-import com.tomildev.trakii.core.domain.model.user.UserValidationResult
-import com.tomildev.trakii.core.domain.use_case.user.UserUseCases
+import androidx.lifecycle.viewModelScope
+import com.tomildev.trakii.core.domain.model.error.DataError
+import com.tomildev.trakii.core.domain.util.Result
+import com.tomildev.trakii.features.auth.signin.domain.use_case.AuthWithGoogleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val userUseCases: UserUseCases,
-    private val userPreferences: UserPreferences
+    private val authWithGoogleUseCase: AuthWithGoogleUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignInUiState())
     val uiState: StateFlow<SignInUiState> = _uiState.asStateFlow()
 
+    private val _uiEvents = Channel<SignInUiEvent>()
+    val uiEvents = _uiEvents.receiveAsFlow()
 
-    fun onLoginClick() {
-        if (validateFields()) {
-            userLogin()
-        }
+    fun onGoogleSignInStart() {
+        _uiState.update { it.copy(isGoogleLoading = true) }
     }
 
-    private fun validateFields(): Boolean {
-        val state = _uiState.value
-
-        val emailResult = userUseCases.validateEmail.execute(email = state.email)
-        if (emailResult is UserValidationResult.Error) {
-            updateErrorState(emailError = emailResult.error)
-            return false
-        }
-
-        val passwordResult = userUseCases.validatePassword.execute(password = state.password)
-        if (passwordResult is UserValidationResult.Error) {
-            updateErrorState(passwordError = passwordResult.error)
-            return false
-        }
-
-        updateErrorState()
-        return true
-    }
-
-    private fun updateErrorState(
-        emailError: UserValidationError? = null,
-        passwordError: UserValidationError? = null,
-    ) {
+    fun onGoogleSignInCancelled() {
         _uiState.update {
-            it.copy(
-                emailError = emailError,
-                passwordError = passwordError,
-            )
+            it.copy(isGoogleLoading = false)
+        }
+    }
+    fun onGoogleSignInError(error: DataError.Network) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isGoogleLoading = false)
+            }
+            if (
+                error == DataError.Network.NoInternet ||
+                error == DataError.Network.Timeout
+            ) {
+                _uiEvents.send(
+                    SignInUiEvent.Warning(error)
+                )
+            } else {
+                _uiEvents.send(
+                    SignInUiEvent.Error(error)
+                )
+            }
         }
     }
 
-    private fun userLogin() {
-//
-//        viewModelScope.launch {
-//            _uiState.update { it.copy(isLoading = true) }
-//            val result = userRepository.getUserByEmail(_uiState.value.email)
-//
-//            result.onSuccess { user ->
-//                if (user != null && user.password == _uiState.value.password) {
-//                    delay(2500)
-//                    userRepository.saveUserSession(user.id)
-//                    _uiState.update { it.copy(isLoginSuccess = true) }
-//
-//                } else {
-//                    _uiState.update {
-//                        it.copy(errorMessage = "Email or password incorrect")
-//                    }
-//                }
-//            }.onFailure {
-//                _uiState.update { it.copy(errorMessage = "An error occurred") }
-//            }
-//            _uiState.update { it.copy(isLoading = false) }
-//        }
-    }
+    fun onGoogleSignIn(idToken: String) {
+        viewModelScope.launch {
+            val result = authWithGoogleUseCase(idToken)
+            _uiState.update { it.copy(isGoogleLoading = false) }
 
-    fun onEmailChange(email: String) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                email = email,
-                emailError = null,
-                errorMessage = null,
-            )
-        }
-    }
+            when (result) {
+                is Result.Success -> {
+                    _uiEvents.send(SignInUiEvent.NavigateToHabitList)
+                }
 
-    fun onPasswordChange(password: String) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                password = password,
-                passwordError = null,
-                errorMessage = null,
-            )
+                is Result.Error -> {
+                    if (result.error == DataError.Network.NoInternet || result.error == DataError.Network.Timeout) {
+                        _uiEvents.send(SignInUiEvent.Warning(result.error))
+                    } else {
+                        _uiEvents.send(SignInUiEvent.Error(result.error))
+                    }
+                }
+            }
         }
     }
 }

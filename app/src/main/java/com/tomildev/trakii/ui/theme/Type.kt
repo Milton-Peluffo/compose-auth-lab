@@ -5,7 +5,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Set of Material typography styles to start with
 val Typography = Typography(
     headlineLarge = TextStyle(
         fontSize = 43.sp,
@@ -13,28 +12,33 @@ val Typography = Typography(
         fontWeight = FontWeight.SemiBold,
     ),
     titleLarge = TextStyle(
-        fontSize = 22.sp,
+        fontSize = 25.sp,
         fontWeight = FontWeight.Bold
     ),
     titleMedium = TextStyle(
         fontSize = 18.sp,
         fontWeight = FontWeight.SemiBold
     ),
+    titleSmall = TextStyle(
+        fontSize = 17.sp,
+        fontWeight = FontWeight.Normal,
+        letterSpacing = 0.1.sp
+    ),
     bodyMedium = TextStyle(
         fontSize = 16.sp,
         fontWeight = FontWeight.Normal,
         lineHeight = 24.sp
     ),
-    labelMedium = TextStyle(
+    bodySmall = TextStyle(
         fontSize = 14.sp,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Light
     ),
     labelLarge = TextStyle(
-        fontSize = 17.sp,
+        fontSize = 16.sp,
         fontWeight = FontWeight.Normal
     ),
-    bodySmall = TextStyle(
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Light
+    labelMedium = TextStyle(
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Normal
     )
 )

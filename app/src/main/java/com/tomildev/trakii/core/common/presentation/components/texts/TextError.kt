@@ -9,12 +9,10 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun TextError(modifier: Modifier = Modifier, text: String) {
-
     Text(
         modifier = modifier.fillMaxWidth(),
         text = text,
         fontSize = 15.sp,
         color = MaterialTheme.colorScheme.error
     )
-
 }

@@ -7,7 +7,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,10 +23,28 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class UserPreferences @Inject constructor(@ApplicationContext private val context: Context) {
 
     private object PreferencesKeys {
-        val USER_ID = intPreferencesKey("user_id")
         val DARK_MODE = booleanPreferencesKey("dark_mode")
         val LANGUAGE = stringPreferencesKey("language")
+
+        val ONBOARDING_COMPLETED =
+            booleanPreferencesKey("onboarding_completed")
     }
+
+    //-------- ONBOARDING --------
+
+    val onboardingCompleted: Flow<Boolean> =
+        context.dataStore.data
+            .handleErrors()
+            .map { preferences ->
+                preferences[PreferencesKeys.ONBOARDING_COMPLETED] ?: false
+            }
+
+    suspend fun setOnboardingCompleted(completed: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.ONBOARDING_COMPLETED] = completed
+        }
+    }
+
 
     //-------- LANGUAGE --------
     private val systemLanguage: String
@@ -45,22 +62,9 @@ class UserPreferences @Inject constructor(@ApplicationContext private val contex
         }
     }
 
-    //-------- SESSION --------
-    val userId: Flow<Int> = context.dataStore.data
-        .handleErrors()
-        .map { preferences ->
-            preferences[PreferencesKeys.USER_ID] ?: -1
-        }
-
-    suspend fun saveSession(userId: Int) {
-        context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.USER_ID] = userId
-        }
-    }
-
     suspend fun logOut() {
         context.dataStore.edit { preferences ->
-            preferences.clear()
+            preferences.remove(PreferencesKeys.ONBOARDING_COMPLETED)
         }
     }
 

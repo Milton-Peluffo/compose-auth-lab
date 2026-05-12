@@ -1,34 +1,33 @@
 <resources>
     <string name="app_name">Trakii</string>
 
-    <!-- ========================== COMMON ========================== -->
     <!-- Common texts -->
     <string name="common_btn_confirm">Confirm</string>
+    <string name="common_btn_send">Send</string>
     <string name="common_btn_cancel">Cancel</string>
+    <string name="common_btn_update">Update</string>
 
     <!-- Common user text field -->
     <string name="common_user_label_name">Name</string>
-    <string name="common_user_label_email">Email</string>
-    <string name="common_user_label_password">Password</string>
-    <string name="common_user_label_confirm_password">Confirm Password</string>\
 
     <!-- Accessibility -->
     <string name="a11y_show_password">Show password</string>
     <string name="a11y_hide_password">Hide password</string>
+    <string name="a11y_go_back_button">Go back"</string>
 
     <!-- Common Domain errors -->
     <string name="common_error_empty_field">This field cannot be empty</string>
     <string name="common_error_user_name_too_short">Username must have 3 characters at least</string>
-    <string name="common_error_user_name_invalid">Username must have only letters, numbers and underscores</string>
-    <string name="common_error_email_invalid">Invalid email format</string>
-    <string name="common_error_password_too_short">Password must have 8 characters at least</string>
-    <string name="common_error_password_format">Password needs uppercase, lowercase and a special character</string>
-    <string name="common_error_password_match">Passwords should match</string>
+    <string name="common_error_user_name_too_long">Username cannot exceed 20 characters</string>
+    <string name="common_error_user_name_invalid">Username must have only letters, numbers, spaces or underscores</string>
 
     <!-- Common Network errors -->
     <string name="common_error_network_no_internet">No internet connection</string>
     <string name="common_error_network_timeout">Request timed out</string>
-    <string name="common_error_network_email_exists">This email is already registered</string>
     <string name="common_error_network_unknown">An unknown error occurred</string>
     <string name="common_error_network_service_unavailable">Application service unavailable</string>
+
+    <!-- Subtitles for errors -->
+    <string name="common_error_subtitle_try_later">Please try again later</string>
+    <string name="common_error_subtitle_check_connection">Please check your connection</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.tomildev.trakii.core.common.presentation.components.dialogs
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.tomildev.trakii.R
 
 object Dialogs {
 
@@ -10,10 +12,10 @@ object Dialogs {
         onDismiss: () -> Unit,
     ) {
         ConfirmationDialogBase(
-            title = "Confirm logout",
-            message = "Are you sure you want to log out of your account?",
-            confirmText = "Log out",
-            dismissText = "Cancel",
+            title = stringResource(R.string.dialog_logout_title),
+            message = stringResource(R.string.dialog_logout_message),
+            confirmText = stringResource(R.string.common_btn_confirm),
+            dismissText = stringResource(R.string.common_btn_cancel),
             onConfirm = onConfirm,
             onDismiss = onDismiss
         )
@@ -25,10 +27,10 @@ object Dialogs {
         onDismiss: () -> Unit,
     ) {
         ConfirmationDialogBase(
-            title = "Delete account",
-            message = "This action will permanently delete your account and all associated data. Are you sure you want to continue?",
-            confirmText = "Delete account",
-            dismissText = "Cancel",
+            title = stringResource(R.string.dialog_delete_account_title),
+            message = stringResource(R.string.dialog_delete_account_message),
+            confirmText = stringResource(R.string.dialog_delete_account_confirm),
+            dismissText = stringResource(R.string.common_btn_cancel),
             isWarning = true,
             onConfirm = onConfirm,
             onDismiss = onDismiss

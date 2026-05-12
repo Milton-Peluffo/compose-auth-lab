@@ -29,6 +29,11 @@ android {
 
         buildConfigField(
             "String",
+            "GOOGLE_WEB_CLIENT_ID",
+            "\"${properties.getProperty("GOOGLE_WEB_CLIENT_ID") ?: ""}\""
+        )
+        buildConfigField(
+            "String",
             "SUPABASE_URL",
             "\"${properties.getProperty("SUPABASE_URL") ?: ""}\""
         )
@@ -50,6 +55,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -76,8 +82,19 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
+    implementation(libs.google.material)
+
+    //SPLASH SCREEN
+    implementation(libs.androidx.core.splashscreen)
+
+    //GOOGLE AUTH
+    implementation(libs.google.id)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services)
+
     //SUPABASE
     implementation(libs.supabase.auth)
+    implementation(libs.supabase.postgrest)
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)
 
@@ -108,6 +125,7 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.okhttp.logging)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

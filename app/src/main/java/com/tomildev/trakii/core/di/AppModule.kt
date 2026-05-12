@@ -1,20 +1,14 @@
 package com.tomildev.trakii.core.di
 
-import android.content.Context
-import androidx.room.Room
-import com.tomildev.trakii.core.data.dao.UserDao
-import com.tomildev.trakii.core.data.local.db.AppDatabase
-import com.tomildev.trakii.core.data.preferences.UserPreferences
-import com.tomildev.trakii.core.data.repository.UserRepositoryImpl
-import com.tomildev.trakii.core.domain.repository.UserRepository
-import com.tomildev.trakii.features.auth.otp.data.OtpRepositoryImpl
-import com.tomildev.trakii.features.auth.otp.domain.OtpRepository
-import com.tomildev.trakii.features.auth.signup.data.SignUpRepositoryImpl
-import com.tomildev.trakii.features.auth.signup.domain.SignUpRepository
+import com.tomildev.trakii.features.settings.subsettings.account.data.AccountSettingsRepositoryImpl
+import com.tomildev.trakii.features.settings.subsettings.account.domain.AccountSettingsRepository
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountUseCasesWrapper
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.LogoutUseCase
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.UpdateDisplayNameUseCase
+import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.ValidateNameUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.jan.supabase.SupabaseClient
 import javax.inject.Singleton
@@ -26,32 +20,29 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "user_database"
-        ).fallbackToDestructiveMigration().build()
-    }
-
-    @Provides
-    fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
-
-    @Provides
-    @Singleton
-    fun provideSignUpRepository(supabaseClient: SupabaseClient): SignUpRepository {
-        return SignUpRepositoryImpl(supabaseClient)
+    fun provideValidateName(): ValidateNameUseCase {
+        return ValidateNameUseCase()
     }
 
     @Provides
     @Singleton
-    fun provideOtpRepository(supabaseClient: SupabaseClient): OtpRepository {
-        return OtpRepositoryImpl(supabaseClient)
+    fun provideAccountSettingsUseCases(
+        accountSettingsRepository: AccountSettingsRepository,
+        validateNameUseCase: ValidateNameUseCase,
+        logoutUseCase: LogoutUseCase
+    ): AccountUseCasesWrapper {
+        return AccountUseCasesWrapper(
+            updateDisplayName = UpdateDisplayNameUseCase(accountSettingsRepository),
+            validateNameUseCase = validateNameUseCase,
+            logout = logoutUseCase
+        )
     }
 
     @Provides
     @Singleton
-    fun provideUserRepository(userDao: UserDao, userPreferences: UserPreferences): UserRepository {
-        return UserRepositoryImpl(userDao, userPreferences)
+    fun provideAccountSettingsRepository(
+        supabaseClient: SupabaseClient
+    ): AccountSettingsRepository {
+        return AccountSettingsRepositoryImpl(supabaseClient)
     }
 }

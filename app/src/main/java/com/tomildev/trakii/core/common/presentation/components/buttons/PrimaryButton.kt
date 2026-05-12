@@ -7,12 +7,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.tomildev.trakii.core.common.presentation.components.texts.Texts
+import com.tomildev.trakii.ui.theme.Alpha
+import com.tomildev.trakii.ui.theme.Dimens
 
 @Composable
 fun PrimaryButton(
@@ -23,27 +22,33 @@ fun PrimaryButton(
     isLoading: Boolean = false
 ) {
 
+    val alpha = Alpha.Secondary
+
     Button(
         modifier = modifier
             .fillMaxWidth()
-            .height(45.dp),
+            .height(Dimens.ButtonHeight),
         onClick = { onClick() },
+        shape = MaterialTheme.shapes.extraLarge,
         enabled = enabled && !isLoading,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-            disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
+            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = alpha),
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = alpha)
         )
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(Dimens.IconSizeNormal),
                 color = MaterialTheme.colorScheme.onPrimary,
-                strokeWidth = 2.dp
+                strokeWidth = Dimens.BorderNormal
             )
         } else {
-            Text(text = text, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+            Texts.LabelLarge(
+                text = text,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 }

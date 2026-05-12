@@ -5,47 +5,76 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
-import com.tomildev.trakii.core.common.presentation.components.buttons.PrimaryButton
+import com.tomildev.trakii.core.common.presentation.components.snackbars.AppSnackbarHost
+import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarType
+import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarVisualsCustom
 import com.tomildev.trakii.core.common.presentation.components.spacers.VerticalSpacer
-import com.tomildev.trakii.core.common.presentation.components.textfields.TextFields
-import com.tomildev.trakii.core.common.presentation.components.texts.TextError
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
-import com.tomildev.trakii.core.common.presentation.mapper.toUiText
-import com.tomildev.trakii.features.auth.common.components.AuthHorizontalDivider
-import com.tomildev.trakii.features.auth.common.components.AuthTextAction
-import com.tomildev.trakii.features.auth.common.components.social.SocialAuthButtons
+import com.tomildev.trakii.core.common.util.mappers.toUiText
+import com.tomildev.trakii.core.domain.util.Result
+import com.tomildev.trakii.features.auth.signin.presentation.components.buttons.SocialAuthButtons
+import com.tomildev.trakii.features.auth.signin.util.GoogleAuthClient
 import com.tomildev.trakii.ui.theme.Dimens
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(
-    modifier: Modifier = Modifier,
     signInViewModel: SignInViewModel = hiltViewModel(),
-    onNavigateToRegister: () -> Unit,
-    onNavigateToHome: (String) -> Unit
+    onNavigateToHabitList: () -> Unit
 ) {
-
+    val scope = rememberCoroutineScope()
     val uiState by signInViewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val googleAuthClient = remember { GoogleAuthClient(context) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
-//    LaunchedEffect(uiState.isLoginSuccess) {
-//        if (uiState.isLoginSuccess) {
-//            onNavigateToHome(uiState.email)
-//        }
-//    }
+    LaunchedEffect(Unit) {
+        signInViewModel.uiEvents.collect { uiEvent ->
+            when (uiEvent) {
+                SignInUiEvent.NavigateToHabitList -> onNavigateToHabitList()
 
-    Scaffold { innerPadding ->
+                is SignInUiEvent.Error, is SignInUiEvent.Warning -> {
+                    val (errorData, snackbarType) = when (uiEvent) {
+                        is SignInUiEvent.Error -> uiEvent.error to SnackbarType.Error
+                        is SignInUiEvent.Warning -> uiEvent.error to SnackbarType.Warning
+                    }
+
+                    val errorUiText = errorData.toUiText()
+                    snackbarHostState.showSnackbar(
+                        SnackbarVisualsCustom(
+                            message = errorUiText.title.asString(context),
+                            description = errorUiText.description?.asString(context),
+                            type = snackbarType
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    Scaffold(
+        snackbarHost = {
+            AppSnackbarHost(
+                hostState = snackbarHostState
+            )
+        }
+    ) { innerPadding ->
         Column(
-            modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(horizontal = Dimens.ScreenHorizontalPadding),
@@ -57,46 +86,30 @@ fun SignInScreen(
                 text = stringResource(R.string.auth_signin_title),
             )
             VerticalSpacer(height = Dimens.SpacingExtraLarge)
-            TextFields.Email(
-                modifier = Modifier,
-                value = uiState.email,
-                onValueChange = { signInViewModel.onEmailChange(email = it) },
-                isError = uiState.emailError != null
-            )
-            if (uiState.emailError != null) {
-                TextError(text = uiState.emailError!!.toUiText().asString())
-            }
-            VerticalSpacer(height = Dimens.SpacingMedium)
-            TextFields.Password(
-                modifier = Modifier,
-                value = uiState.password,
-                onValueChange = { signInViewModel.onPasswordChange(password = it) },
-                isError = uiState.passwordError != null
-            )
-            if (uiState.passwordError != null) {
-                TextError(text = uiState.passwordError!!.toUiText().asString())
-            }
-            VerticalSpacer(height = Dimens.SpacingMedium)
-            AuthTextAction(
-                text = stringResource(R.string.auth_signin_btn_forgot_password),
-                onClick = { },
-                horizontalArrangement = Arrangement.End
-            )
-            VerticalSpacer(height = Dimens.SpacingLarge)
-            PrimaryButton(
-                text = stringResource(R.string.auth_signin_btn),
-                isLoading = uiState.isLoading,
-                onClick = { signInViewModel.onLoginClick() }
-            )
-            VerticalSpacer(height = Dimens.SpacingExtraLarge)
-            AuthHorizontalDivider()
-            VerticalSpacer(height = Dimens.SpacingLarge)
-            SocialAuthButtons.Google(onClick = {})
-            VerticalSpacer(height = Dimens.SpacingLarge)
-            AuthTextAction(
-                text = stringResource(R.string.auth_signin_dont_have_account),
-                actionText = stringResource(R.string.auth_signin_btn_sign_up),
-                onClick = { onNavigateToRegister() },
+            SocialAuthButtons.Google(
+                onClick = {
+                    scope.launch {
+                        signInViewModel.onGoogleSignInStart()
+                        when (val result = googleAuthClient.signIn()) {
+
+                            is Result.Success -> {
+
+                                val idToken = result.data
+
+                                if (idToken != null) {
+                                    signInViewModel.onGoogleSignIn(idToken)
+                                } else {
+                                    signInViewModel.onGoogleSignInCancelled()
+                                }
+                            }
+
+                            is Result.Error -> {
+                                signInViewModel.onGoogleSignInError(result.error)
+                            }
+                        }
+                    }
+                },
+                isLoading = uiState.isGoogleLoading
             )
         }
     }
