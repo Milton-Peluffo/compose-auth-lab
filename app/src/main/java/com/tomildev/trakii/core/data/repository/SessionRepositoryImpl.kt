@@ -31,9 +31,12 @@ class SessionRepositoryImpl @Inject constructor(
     private val userPreferences: UserPreferences
 ) : SessionRepository {
 
+    private var cachedUser: User? = null
+
+    override fun getCachedUser(): User? = cachedUser
+
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun observeSession(): Flow<SessionState> {
-
         return supabaseClient.auth.sessionStatus
             .flatMapLatest { status ->
                 when (status) {
@@ -45,60 +48,49 @@ class SessionRepositoryImpl @Inject constructor(
 
                     is SessionStatus.Authenticated -> {
                         flow {
-
                             val authUser = status.session.user
                                 ?: supabaseClient.auth.currentUserOrNull()
                             if (authUser == null) {
                                 emit(SessionState.Unauthenticated)
                                 return@flow
                             }
+
                             val domainUser = authUser.toDomainUser()
+
                             val finalUser = try {
                                 val profile = supabaseClient
                                     .from("profiles")
-                                    .select {
-                                        filter {
-                                            eq("id", authUser.id)
-                                        }
-                                    }
+                                    .select { filter { eq("id", authUser.id) } }
                                     .decodeSingle<ProfileDto>()
-                                val localOnboarding =
-                                    userPreferences.onboardingCompleted.first()
 
-                                if (
-                                    localOnboarding &&
-                                    !profile.onboarding_completed
-                                ) {
+                                val localOnboarding = userPreferences.onboardingCompleted.first()
+
+                                if (localOnboarding && !profile.onboarding_completed) {
                                     try {
-                                        supabaseClient
-                                            .from("profiles")
-                                            .update(
-                                                { set("onboarding_completed", true) }
-                                            ) {
+                                        supabaseClient.from("profiles")
+                                            .update({ set("onboarding_completed", true) }) {
                                                 filter { eq("id", authUser.id) }
                                             }
-                                    } catch (_: Exception) {
-                                    }
+                                    } catch (_: Exception) {}
                                 }
+
                                 domainUser.copy(
-                                    onBoardingCompleted =
-                                        profile.onboarding_completed || localOnboarding
+                                    onBoardingCompleted = profile.onboarding_completed || localOnboarding
                                 )
                             } catch (e: Exception) {
                                 e.printStackTrace()
-                                val localOnboarding =
-                                    userPreferences.onboardingCompleted.first()
-
-                                domainUser.copy(
-                                    onBoardingCompleted = localOnboarding
-                                )
+                                val localOnboarding = userPreferences.onboardingCompleted.first()
+                                domainUser.copy(onBoardingCompleted = localOnboarding)
                             }
+
+                            cachedUser = finalUser
                             emit(SessionState.Authenticated(finalUser))
                         }
                     }
 
                     is SessionStatus.NotAuthenticated -> {
                         flow {
+                            cachedUser = null
                             emit(SessionState.Unauthenticated)
                         }
                     }
@@ -124,7 +116,6 @@ class SessionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCurrentUser(): User? {
-
         supabaseClient.auth.awaitInitialization()
         val authUser = supabaseClient.auth.currentUserOrNull()
             ?: return null
@@ -132,11 +123,7 @@ class SessionRepositoryImpl @Inject constructor(
         return try {
             val profile = supabaseClient
                 .from("profiles")
-                .select {
-                    filter {
-                        eq("id", authUser.id)
-                    }
-                }
+                .select { filter { eq("id", authUser.id) } }
                 .decodeSingle<ProfileDto>()
             domainUser.copy(
                 onBoardingCompleted = profile.onboarding_completed
@@ -157,11 +144,11 @@ class SessionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logOut() {
+        cachedUser = null
         supabaseClient.auth.signOut(SignOutScope.LOCAL)
     }
 
     private fun UserInfo.toDomainUser(): User {
-
         val displayName = userMetadata
             ?.get("full_name")
             ?.jsonPrimitive

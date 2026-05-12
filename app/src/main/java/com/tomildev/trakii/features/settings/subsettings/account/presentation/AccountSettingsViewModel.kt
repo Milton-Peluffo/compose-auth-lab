@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import com.tomildev.trakii.core.domain.repository.SessionRepository
-import com.tomildev.trakii.core.domain.repository.SessionState
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.core.domain.util.formatDate
 import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountUseCasesWrapper
@@ -22,39 +21,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountSettingsViewModel @Inject constructor(
-    private val sessionRepository: SessionRepository,
+    sessionRepository: SessionRepository,
     private val accountUseCasesWrapper: AccountUseCasesWrapper,
 ) : ViewModel() {
 
 
-    private val _uiState = MutableStateFlow(AccountSettingsUiState())
+    private val _uiState = MutableStateFlow(
+        sessionRepository.getCachedUser().let { user ->
+            AccountSettingsUiState(
+                name = user?.displayName.orEmpty(),
+                email = user?.email.orEmpty(),
+                accountCreationDate = formatDate(user?.createdAt.toString())
+            )
+        }
+    )
     val uiState: StateFlow<AccountSettingsUiState> = _uiState.asStateFlow()
 
     private val _eventChannel =
         Channel<AccountSettingsUiEvent>()
     val events = _eventChannel.receiveAsFlow()
-
-
-    init {
-        fetchCurrentUser()
-    }
-
-    fun fetchCurrentUser() {
-        viewModelScope.launch {
-            sessionRepository.observeSession().collect { sessionState ->
-                if (sessionState is SessionState.Authenticated) {
-                    _uiState.update { settingsUiState ->
-                        settingsUiState.copy(
-                            name = sessionState.user.displayName,
-                            editedName = sessionState.user.displayName,
-                            email = sessionState.user.email,
-                            accountCreationDate = formatDate(sessionState.user.createdAt.toString()),
-                        )
-                    }
-                }
-            }
-        }
-    }
 
     fun logout() {
         viewModelScope.launch {

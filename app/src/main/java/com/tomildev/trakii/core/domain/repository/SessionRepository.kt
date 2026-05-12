@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface SessionRepository {
     fun observeSession(): Flow<SessionState>
+    fun getCachedUser(): User?
     suspend fun getCurrentUser(): User?
     suspend fun refreshSession(): Result<Unit, DataError.Network>
     suspend fun logOut()
