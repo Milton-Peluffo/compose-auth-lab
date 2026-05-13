@@ -1,11 +1,11 @@
 package com.tomildev.trakii.core.di
 
-import com.tomildev.trakii.features.settings.subsettings.account.data.AccountSettingsRepositoryImpl
-import com.tomildev.trakii.features.settings.subsettings.account.domain.AccountSettingsRepository
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountUseCasesWrapper
+import com.tomildev.trakii.features.settings.sub_settings.account.data.AccountSettingsRepositoryImpl
+import com.tomildev.trakii.features.settings.sub_settings.account.domain.AccountSettingsRepository
+import com.tomildev.trakii.features.settings.sub_settings.account.domain.use_case.AccountUseCasesWrapper
 import com.tomildev.trakii.features.settings.main_settings.domain.use_case.LogoutUseCase
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.UpdateDisplayNameUseCase
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.ValidateNameUseCase
+import com.tomildev.trakii.features.settings.sub_settings.account.domain.use_case.UpdateDisplayNameUseCase
+import com.tomildev.trakii.features.settings.sub_settings.account.domain.use_case.ValidateNameUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

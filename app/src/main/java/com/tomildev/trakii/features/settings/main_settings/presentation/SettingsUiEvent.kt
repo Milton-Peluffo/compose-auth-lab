@@ -4,7 +4,7 @@ sealed class SettingsUiEvent {
     data object NavigateToSignIn : SettingsUiEvent()
     data object NavigateToHabitList : SettingsUiEvent()
     data object NavigateToAccount : SettingsUiEvent()
-    data object NavigateToTheme : SettingsUiEvent()
+    data object NavigateToAppearance : SettingsUiEvent()
     data object NavigateToNotifications : SettingsUiEvent()
     data object NavigateToLanguage : SettingsUiEvent()
     data object NavigateToDatacontrols : SettingsUiEvent()

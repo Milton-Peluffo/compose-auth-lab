@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options
+package com.tomildev.trakii.features.settings.common.presentation.components.setting_options
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
@@ -198,6 +198,61 @@ object SettingsItems {
                         uncheckedTrackColor = MaterialTheme.colorScheme.onPrimary,
                         uncheckedIconColor = MaterialTheme.colorScheme.outline,
                     )
+                )
+            }
+        )
+    }
+
+    @Composable
+    fun SettingsSelectionItem(
+        text: String,
+        leadingIcon: Int? = null,
+        selected: Boolean,
+        showDivider: Boolean = true,
+        onClick: () -> Unit
+    ) {
+        SettingsItemBase(
+            leadingIcon = leadingIcon,
+            text = text,
+            showDivider = showDivider,
+            onClick = onClick,
+            trailingContent = {
+                val icon =
+                    if (selected) R.drawable.ic_check_outlined else R.drawable.ic_circle_outlined
+                val iconTint = if (selected) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.Overlay)
+                }
+                Icon(
+                    painter = painterResource(icon),
+                    contentDescription = null,
+                    tint = iconTint,
+                    modifier = Modifier.size(Dimens.IconSizeNormal)
+                )
+            }
+        )
+    }
+
+    @Composable
+    fun SettingsTrailingIconItem(
+        text: String,
+        supportingText: String? = null,
+        trailingIcon: Int,
+        showDivider: Boolean = true,
+        onClick: (() -> Unit)? = null
+    ) {
+        SettingsItemBase(
+            text = text,
+            supportingText = supportingText,
+            showDivider = showDivider,
+            onClick = onClick,
+            trailingContent = { color ->
+                Icon(
+                    painter = painterResource(trailingIcon),
+                    contentDescription = null,
+                    tint = color.copy(alpha = Alpha.Overlay),
+                    modifier = Modifier.size(Dimens.IconSizeNormal)
                 )
             }
         )

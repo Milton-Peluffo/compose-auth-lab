@@ -6,7 +6,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.tomildev.trakii.features.settings.main_settings.presentation.SettingsScreen
 import com.tomildev.trakii.features.settings.main_settings.presentation.SettingsUiEvent
-import com.tomildev.trakii.features.settings.subsettings.account.presentation.AccountSettingsScreen
+import com.tomildev.trakii.features.settings.sub_settings.account.presentation.AccountSettingsScreen
+import com.tomildev.trakii.features.settings.sub_settings.appareance.presentation.AppearanceScreen
+import com.tomildev.trakii.features.settings.sub_settings.appareance.presentation.AppearanceUiEvent
 
 fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
     navigation<NavRoute.SettingsGraph>(startDestination = NavRoute.Settings.Main) {
@@ -17,7 +19,7 @@ fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
                     when (event) {
                         SettingsUiEvent.NavigateToHabitList -> navController.popBackStack()
                         SettingsUiEvent.NavigateToAccount -> navController.navigate(NavRoute.Settings.Account)
-                        SettingsUiEvent.NavigateToTheme -> navController.navigate(NavRoute.Settings.Appearance)
+                        SettingsUiEvent.NavigateToAppearance -> navController.navigate(NavRoute.Settings.Appearance)
                         SettingsUiEvent.NavigateToNotifications -> navController.navigate(NavRoute.Settings.Notifications)
                         SettingsUiEvent.NavigateToLanguage -> navController.navigate(NavRoute.Settings.Language)
                         SettingsUiEvent.NavigateToDatacontrols -> navController.navigate(NavRoute.Settings.DataControl)
@@ -33,6 +35,17 @@ fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
         composable<NavRoute.Settings.Account> {
             AccountSettingsScreen(
                 onNavigateBack = { navController.popBackStack() },
+            )
+        }
+
+        composable<NavRoute.Settings.Appearance> {
+            AppearanceScreen(
+                onNavigationEvent = { event ->
+                    when (event) {
+                        AppearanceUiEvent.NavigateToMainSettings -> navController.popBackStack()
+                        else -> {}
+                    }
+                }
             )
         }
     }

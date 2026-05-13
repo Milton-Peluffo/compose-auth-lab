@@ -1,9 +1,9 @@
-package com.tomildev.trakii.features.settings.subsettings.account.data
+package com.tomildev.trakii.features.settings.sub_settings.account.data
 
 import com.tomildev.trakii.core.common.util.mappers.mapSupabaseError
 import com.tomildev.trakii.core.domain.model.error.DataError
 import com.tomildev.trakii.core.domain.util.Result
-import com.tomildev.trakii.features.settings.subsettings.account.domain.AccountSettingsRepository
+import com.tomildev.trakii.features.settings.sub_settings.account.domain.AccountSettingsRepository
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import kotlinx.serialization.json.buildJsonObject

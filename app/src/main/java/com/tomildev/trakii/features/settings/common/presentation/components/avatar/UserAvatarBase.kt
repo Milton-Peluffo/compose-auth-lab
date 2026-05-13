@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.common.presentation.components
+package com.tomildev.trakii.features.settings.common.presentation.components.avatar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

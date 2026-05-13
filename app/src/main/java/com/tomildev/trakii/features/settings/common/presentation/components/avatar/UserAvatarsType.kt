@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.common.presentation.components
+package com.tomildev.trakii.features.settings.common.presentation.components.avatar
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme

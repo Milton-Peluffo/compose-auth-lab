@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.subsettings.account.presentation.components
+package com.tomildev.trakii.features.settings.sub_settings.account.presentation.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog

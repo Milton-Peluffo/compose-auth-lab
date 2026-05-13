@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.subsettings.account.presentation
+package com.tomildev.trakii.features.settings.sub_settings.account.presentation
 
 import com.tomildev.trakii.core.domain.model.error.DataError
 

@@ -2,7 +2,7 @@ package com.tomildev.trakii.user
 
 import com.tomildev.trakii.core.domain.model.user.UserValidationError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.ValidateNameUseCase
+import com.tomildev.trakii.features.settings.sub_settings.account.domain.use_case.ValidateNameUseCase
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

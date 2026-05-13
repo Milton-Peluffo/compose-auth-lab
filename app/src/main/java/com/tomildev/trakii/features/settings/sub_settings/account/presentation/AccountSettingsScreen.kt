@@ -1,8 +1,7 @@
-package com.tomildev.trakii.features.settings.subsettings.account.presentation
+package com.tomildev.trakii.features.settings.sub_settings.account.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
-import com.tomildev.trakii.core.common.presentation.components.buttons.PrimaryButton
 import com.tomildev.trakii.core.common.presentation.components.cards.HabitiiCard
 import com.tomildev.trakii.core.common.presentation.components.snackbars.AppSnackbarHost
 import com.tomildev.trakii.core.common.presentation.components.snackbars.SnackbarType
@@ -35,12 +33,11 @@ import com.tomildev.trakii.core.common.presentation.components.spacers.VerticalS
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.components.topbars.BackbuttonTitleTopBar
 import com.tomildev.trakii.core.common.util.mappers.toUiText
-import com.tomildev.trakii.features.settings.common.presentation.components.UserAvatarsType
+import com.tomildev.trakii.features.settings.common.presentation.components.avatar.UserAvatarsType
 import com.tomildev.trakii.features.settings.main_settings.presentation.components.habitstats.HabitInsightsSection
 import com.tomildev.trakii.features.settings.main_settings.presentation.components.habitstats.HabitStatsSection
-import com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options.SettingsItems
-import com.tomildev.trakii.features.settings.subsettings.account.presentation.components.AccountEditNameDialog
-import com.tomildev.trakii.features.settings.subsettings.account.presentation.components.AccountLogoutDialog
+import com.tomildev.trakii.features.settings.common.presentation.components.setting_options.SettingsItems
+import com.tomildev.trakii.features.settings.sub_settings.account.presentation.components.AccountEditNameDialog
 import com.tomildev.trakii.ui.theme.Dimens
 
 @Composable

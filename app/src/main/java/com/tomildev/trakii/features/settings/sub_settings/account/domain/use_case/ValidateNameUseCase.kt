@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.subsettings.account.domain.use_case
+package com.tomildev.trakii.features.settings.sub_settings.account.domain.use_case
 
 import com.tomildev.trakii.core.domain.model.user.UserValidationError
 import com.tomildev.trakii.core.domain.model.user.UserValidationResult

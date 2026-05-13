@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options
+package com.tomildev.trakii.features.settings.common.presentation.components.setting_options
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

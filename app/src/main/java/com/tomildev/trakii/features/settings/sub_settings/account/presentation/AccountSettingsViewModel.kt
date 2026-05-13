@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.subsettings.account.presentation
+package com.tomildev.trakii.features.settings.sub_settings.account.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,10 +7,9 @@ import com.tomildev.trakii.core.domain.model.user.UserValidationResult
 import com.tomildev.trakii.core.domain.repository.SessionRepository
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.core.domain.util.formatDate
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.AccountUseCasesWrapper
+import com.tomildev.trakii.features.settings.sub_settings.account.domain.use_case.AccountUseCasesWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

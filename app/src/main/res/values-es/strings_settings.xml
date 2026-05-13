@@ -30,4 +30,10 @@
     <string name="sub_settings_account_reauthenticate_required_message">Tu cuenta fue actualizada. Debes iniciar sesion nuevamente antes de continuar.</string>
     <string name="sub_settings_account_cancel_password_update_title">Cancelar actualizacion de contraseña?</string>
     <string name="sub_settings_account_cancel_password_update_message">Si vuelves atras, se cancelara la actualizacion de contraseña.</string>
+
+    <!-- ========================== APPEARANCE SUB SETTINGS SCREEN ========================== -->
+    <string name="sub_settings_appearance_title">Apariencia</string>
+    <string name="sub_settings_appearance_dark_mode">Modo oscuro</string>
+    <string name="sub_settings_appearance_light_mode">Modo claro</string>
+    <string name="sub_settings_appearance_system_mode">Sistema</string>
 </resources>

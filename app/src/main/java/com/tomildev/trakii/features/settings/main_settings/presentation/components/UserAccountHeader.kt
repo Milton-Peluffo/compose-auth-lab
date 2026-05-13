@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options
+package com.tomildev.trakii.features.settings.main_settings.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.tomildev.trakii.R
 import com.tomildev.trakii.core.common.presentation.components.spacers.HorizontalSpacer
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
-import com.tomildev.trakii.features.settings.common.presentation.components.UserAvatarsType
+import com.tomildev.trakii.features.settings.common.presentation.components.avatar.UserAvatarsType
 import com.tomildev.trakii.ui.theme.Alpha
 import com.tomildev.trakii.ui.theme.Dimens
 

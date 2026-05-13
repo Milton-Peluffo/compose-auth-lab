@@ -20,13 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
-import com.tomildev.trakii.core.common.presentation.components.buttons.OutlinedPrimaryButton
 import com.tomildev.trakii.core.common.presentation.components.cards.HabitiiCard
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.components.topbars.BackbuttonTitleTopBar
-import com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options.SettingsItems
-import com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options.UserAccountHeader
-import com.tomildev.trakii.features.settings.subsettings.account.presentation.components.AccountLogoutDialog
+import com.tomildev.trakii.features.settings.common.presentation.components.setting_options.SettingsItems
+import com.tomildev.trakii.features.settings.main_settings.presentation.components.UserAccountHeader
+import com.tomildev.trakii.features.settings.sub_settings.account.presentation.components.AccountLogoutDialog
 
 @Composable
 fun SettingsScreen(
@@ -70,7 +69,7 @@ fun SettingsScreen(
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_moon_outlined,
                     text = stringResource(R.string.settings_other_theme),
-                    onClick = { }
+                    onClick = { onNavigationEvent(SettingsUiEvent.NavigateToAppearance) }
                 )
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_bell_outlined,

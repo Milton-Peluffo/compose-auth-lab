@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
+import com.tomildev.trakii.core.data.preferences.AppPreferences
 import com.tomildev.trakii.core.data.preferences.UserPreferences
 import com.tomildev.trakii.core.domain.repository.SessionRepository
 import com.tomildev.trakii.core.domain.repository.SessionState
@@ -24,6 +25,8 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var userPreferences: UserPreferences
+    @Inject
+    lateinit var appPreferences: AppPreferences
 
     @Inject
     lateinit var sessionRepository: SessionRepository
@@ -34,13 +37,18 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            val systemTheme = isSystemInDarkTheme()
-            val isDarkTheme by userPreferences.isDarkMode.collectAsState(initial = systemTheme)
+            val appearance by appPreferences.appearance.collectAsState(initial = "system")
+
+            val useDarkTheme = when (appearance) {
+                "light" -> false
+                "dark" -> true
+                else -> isSystemInDarkTheme()
+            }
 
             val sessionState by sessionRepository.observeSession()
                 .collectAsState(initial = SessionState.Loading)
 
-            TrakiiTheme(darkTheme = true) {
+            TrakiiTheme(darkTheme = useDarkTheme) {
                 if (sessionState !is SessionState.Loading) {
                     val startRoute = when (val state = sessionState) {
                         is SessionState.Authenticated -> {

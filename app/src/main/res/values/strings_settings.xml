@@ -27,4 +27,10 @@
     <string name="sub_settings_account_reauthenticate_required_message">Your account was updated. You need to sign in again before continuing.</string>
     <string name="sub_settings_account_cancel_password_update_title">Cancel password update?</string>
     <string name="sub_settings_account_cancel_password_update_message">If you go back, the password update will be canceled.</string>
+
+    <!-- ========================== APPEARANCE SUB SETTINGS SCREEN ========================== -->
+    <string name="sub_settings_appearance_title">Appearance</string>
+    <string name="sub_settings_appearance_dark_mode">Dark Mode</string>
+    <string name="sub_settings_appearance_light_mode">Light Mode</string>
+    <string name="sub_settings_appearance_system_mode">System</string>
 </resources>
