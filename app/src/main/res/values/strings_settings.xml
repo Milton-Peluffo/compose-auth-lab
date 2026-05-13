@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- ========================== PRINCIPAL SETTINGS SCREEN ========================== -->
-    <string name="settings_title">Settings</string>
-    <string name="settings_app_preferences">My preferences</string>
-    <string name="settings_other_subtitle">Other</string>
-    <string name="settings_other_theme">Appearance</string>
-    <string name="settings_other_notifications">Notifications</string>
-    <string name="settings_other_language">Language</string>
-    <string name="settings_other_data_controls">Data Controls</string>
-    <string name="settings_other_privacy_policy">Privacy Policy</string>
+    <string name="main_settings_title">Settings</string>
+    <string name="main_settings_my_preferences_section">My preferences</string>
+    <string name="main_settings_other_section">Other</string>
+    <string name="main_settings_appearance">Appearance</string>
+    <string name="main_settings_notifications">Notifications</string>
+    <string name="main_settings_language">Language</string>
+    <string name="main_settings_data_controls">Data management</string>
+    <string name="main_settings_about_habitii">About Habitii</string>
+    <string name="main_settings_rate_app">Rate on Play Store</string>
+    <string name="main_settings_logout">Log out</string>
 
     <!-- ========================== ACCOUNT SUB SETTINGS SCREEN ========================== -->
     <string name="sub_settings_account_title">My Account</string>
@@ -17,7 +19,6 @@
     <string name="sub_settings_account_password">Password</string>
     <string name="sub_settings_account_member_since">Member since</string>
     <string name="sub_settings_account_actions_subtitle">Actions</string>
-    <string name="sub_settings_account_logout">Log Out</string>
     <string name="sub_settings_account_delete_account">Delete Account</string>
     <string name="sub_settings_account_edit_name">Edit name</string>
     <string name="sub_settings_account_update_password_dialog_title">Update password?</string>
@@ -30,7 +31,14 @@
 
     <!-- ========================== APPEARANCE SUB SETTINGS SCREEN ========================== -->
     <string name="sub_settings_appearance_title">Appearance</string>
+    <string name="sub_settings_appearance_subtitle">select the app theme</string>
     <string name="sub_settings_appearance_dark_mode">Dark Mode</string>
     <string name="sub_settings_appearance_light_mode">Light Mode</string>
-    <string name="sub_settings_appearance_system_mode">System</string>
+    <string name="sub_settings_appearance_system_mode">System default</string>
+
+    <!-- ========================== NOTIFICATIONS SUB SETTINGS SCREEN ========================== -->
+    <string name="sub_settings_notifications_title">Notifications</string>
+    <string name="sub_settings_notifications_subtitle">Select the notifications you want to receive</string>
+    <string name="sub_settings_notifications_all_notifications">All notifications</string>
+
 </resources>

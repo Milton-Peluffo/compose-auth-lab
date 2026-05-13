@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.tomildev.trakii.core.common.presentation.components.spacers.HorizontalSpacer
+import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.ui.theme.Alpha
 import com.tomildev.trakii.ui.theme.Dimens
 
@@ -87,20 +88,15 @@ fun SettingsItemBase(
                     .weight(1f)
                     .padding(vertical = 10.dp)
             ) {
-                Text(
+                Texts.Body(
                     text = text,
                     color = color,
-                    style = MaterialTheme.typography.titleSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
                 )
                 supportingText?.let {
-                    Text(
-                        text = it,
-                        color = supportingColor,
-                        style = MaterialTheme.typography.bodySmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                    Texts.LabelMedium(
+                        text = supportingText,
+                        color = color,
+                        isSecondary = true
                     )
                 }
             }

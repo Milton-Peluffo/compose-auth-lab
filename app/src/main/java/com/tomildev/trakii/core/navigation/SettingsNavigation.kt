@@ -9,6 +9,7 @@ import com.tomildev.trakii.features.settings.main_settings.presentation.Settings
 import com.tomildev.trakii.features.settings.sub_settings.account.presentation.AccountSettingsScreen
 import com.tomildev.trakii.features.settings.sub_settings.appareance.presentation.AppearanceScreen
 import com.tomildev.trakii.features.settings.sub_settings.appareance.presentation.AppearanceUiEvent
+import com.tomildev.trakii.features.settings.sub_settings.notifications.presentation.NotificationsScreen
 
 fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
     navigation<NavRoute.SettingsGraph>(startDestination = NavRoute.Settings.Main) {
@@ -22,7 +23,7 @@ fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
                         SettingsUiEvent.NavigateToAppearance -> navController.navigate(NavRoute.Settings.Appearance)
                         SettingsUiEvent.NavigateToNotifications -> navController.navigate(NavRoute.Settings.Notifications)
                         SettingsUiEvent.NavigateToLanguage -> navController.navigate(NavRoute.Settings.Language)
-                        SettingsUiEvent.NavigateToDatacontrols -> navController.navigate(NavRoute.Settings.DataControl)
+                        SettingsUiEvent.NavigateToDataManagement -> navController.navigate(NavRoute.Settings.DataControl)
                         SettingsUiEvent.NavigateToAboutApp -> navController.navigate(NavRoute.Settings.AboutApp)
                         SettingsUiEvent.NavigateToSignIn -> navController.navigate(NavRoute.Auth.SignIn) {
                             popUpTo(0) { inclusive = true }
@@ -40,6 +41,17 @@ fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
 
         composable<NavRoute.Settings.Appearance> {
             AppearanceScreen(
+                onNavigationEvent = { event ->
+                    when (event) {
+                        AppearanceUiEvent.NavigateToMainSettings -> navController.popBackStack()
+                        else -> {}
+                    }
+                }
+            )
+        }
+
+        composable<NavRoute.Settings.Notifications> {
+            NotificationsScreen(
                 onNavigationEvent = { event ->
                     when (event) {
                         AppearanceUiEvent.NavigateToMainSettings -> navController.popBackStack()

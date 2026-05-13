@@ -7,6 +7,6 @@ sealed class SettingsUiEvent {
     data object NavigateToAppearance : SettingsUiEvent()
     data object NavigateToNotifications : SettingsUiEvent()
     data object NavigateToLanguage : SettingsUiEvent()
-    data object NavigateToDatacontrols : SettingsUiEvent()
+    data object NavigateToDataManagement : SettingsUiEvent()
     data object NavigateToAboutApp : SettingsUiEvent()
 }

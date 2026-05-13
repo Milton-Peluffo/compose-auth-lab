@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
@@ -34,9 +33,9 @@ import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.components.topbars.BackbuttonTitleTopBar
 import com.tomildev.trakii.core.common.util.mappers.toUiText
 import com.tomildev.trakii.features.settings.common.presentation.components.avatar.UserAvatarsType
+import com.tomildev.trakii.features.settings.common.presentation.components.setting_options.SettingsItems
 import com.tomildev.trakii.features.settings.main_settings.presentation.components.habitstats.HabitInsightsSection
 import com.tomildev.trakii.features.settings.main_settings.presentation.components.habitstats.HabitStatsSection
-import com.tomildev.trakii.features.settings.common.presentation.components.setting_options.SettingsItems
 import com.tomildev.trakii.features.settings.sub_settings.account.presentation.components.AccountEditNameDialog
 import com.tomildev.trakii.ui.theme.Dimens
 
@@ -93,8 +92,8 @@ fun AccountSettingsScreen(
             modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
-                .padding(20.dp),
+                .padding(horizontal = Dimens.ScreenHorizontalPadding)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             UserAvatarsType.AccountSettingsUserAvatar(
@@ -106,7 +105,7 @@ fun AccountSettingsScreen(
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                Texts.Headline(
+                Texts.TitleLarge(
                     text = uiState.name
                 )
                 IconButton(
@@ -116,7 +115,7 @@ fun AccountSettingsScreen(
                     Icon(
                         painter = painterResource(R.drawable.ic_edit_outlined),
                         contentDescription = stringResource(R.string.sub_settings_account_edit_name),
-                        tint = MaterialTheme.colorScheme.onSurface
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }

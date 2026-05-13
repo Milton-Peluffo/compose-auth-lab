@@ -4,7 +4,7 @@ import androidx.compose.ui.unit.dp
 
 object Dimens {
     //================== PADDINGS ==================
-    val ScreenPaddingTop = 30.dp
+    val ScreenPaddingTop = 25.dp
     val ScreenHorizontalPadding = 20.dp
     val SpacingTiny = 4.dp
     val SpacingSmall = 13.dp

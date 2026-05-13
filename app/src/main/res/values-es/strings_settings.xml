@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- ========================== PRINCIPAL SETTINGS SCREEN ========================== -->
-    <string name="settings_title">Ajustes</string>
-    <string name="settings_app_preferences">Mis preferencias</string>
-    <string name="settings_other_subtitle">Otros</string>
-    <string name="settings_other_theme">Apariencia</string>
-    <string name="settings_other_notifications">Notificaciones</string>
-    <string name="settings_other_language">Idioma</string>
-    <string name="settings_other_data_controls">Controles de datos</string>
-    <string name="settings_other_privacy_policy">Política de privacidad</string>
+    <string name="main_settings_title">Ajustes</string>
+    <string name="main_settings_my_preferences_section">Mis preferencias</string>
+    <string name="main_settings_other_section">Otros</string>
+    <string name="main_settings_appearance">Apariencia</string>
+    <string name="main_settings_notifications">Notificaciones</string>
+    <string name="main_settings_language">Idioma</string>
+    <string name="main_settings_data_controls">Gestión de datos</string>
+    <string name="main_settings_about_habitii">Acerca de Habitii</string>
+    <string name="main_settings_rate_app">Valorar en Play Store</string>
+    <string name="main_settings_logout">Cerrar Sesión</string>
 
     <!-- ========================== ACCOUNT SUB SETTINGS SCREEN ========================== -->
     <string name="sub_settings_account_title">Mi cuenta</string>
@@ -17,7 +19,6 @@
     <string name="sub_settings_account_password">Password</string>
     <string name="sub_settings_account_member_since">Miembro desde</string>
     <string name="sub_settings_account_actions_subtitle">Acciones</string>
-    <string name="sub_settings_account_logout">Cerrar Sesión</string>
     <string name="sub_settings_account_delete_account">Eliminar Cuenta</string>
     <string name="sub_settings_account_edit_name">Editar nombre</string>
 
@@ -33,7 +34,13 @@
 
     <!-- ========================== APPEARANCE SUB SETTINGS SCREEN ========================== -->
     <string name="sub_settings_appearance_title">Apariencia</string>
+    <string name="sub_settings_appearance_subtitle">Selecciona el tema de la app</string>
     <string name="sub_settings_appearance_dark_mode">Modo oscuro</string>
     <string name="sub_settings_appearance_light_mode">Modo claro</string>
-    <string name="sub_settings_appearance_system_mode">Sistema</string>
+    <string name="sub_settings_appearance_system_mode">Predeterminado del sistema</string>
+
+    <!-- ========================== NOTIFICATIONS SUB SETTINGS SCREEN ========================== -->
+    <string name="sub_settings_notifications_title">Notificaciones</string>
+    <string name="sub_settings_notifications_subtitle">Selecciona las notificaciones que quieras recibir</string>
+    <string name="sub_settings_notifications_all_notifications">Todas las notificaciones</string>
 </resources>
