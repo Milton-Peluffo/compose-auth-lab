@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.main_settings.presentation.components
+package com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,9 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tomildev.trakii.R
+import com.tomildev.trakii.core.common.presentation.components.spacers.HorizontalSpacer
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
+import com.tomildev.trakii.features.settings.common.presentation.components.UserAvatarsType
 import com.tomildev.trakii.ui.theme.Alpha
 import com.tomildev.trakii.ui.theme.Dimens
 
@@ -29,14 +33,15 @@ import com.tomildev.trakii.ui.theme.Dimens
 fun UserAccountHeader(
     modifier: Modifier,
     userName: String,
+    avatarUrl: String,
     userEmail: String,
     onclick: () -> Unit,
 ) {
-
+    val accountHeaderHeight: Dp = 73.dp
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(70.dp)
+            .height(accountHeaderHeight)
             .clip(shape = MaterialTheme.shapes.medium)
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .border(
@@ -50,11 +55,15 @@ fun UserAccountHeader(
 
         Row(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(horizontal = Dimens.ScreenHorizontalPadding),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            UserAvatarsType.MainSettingsUserAvatar(
+                avatarUrl = avatarUrl
+            )
+            HorizontalSpacer(Dimens.SpacingMedium)
             Column(
                 modifier = modifier
                     .weight(1f)
@@ -63,14 +72,18 @@ fun UserAccountHeader(
             ) {
                 Texts.TitleMedium(
                     text = userName,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onBackground
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Texts.LabelMedium(
                     text = userEmail,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.onBackground,
-                    isSecondary = true
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    isSecondary = true,
                 )
             }
 

@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.main_settings.presentation.components
+package com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
@@ -95,6 +95,7 @@ object SettingsItems {
             trailingContent = null
         )
     }
+
     @Composable
     fun SettingStaticItem(
         leadingIcon: Int? = null,
@@ -137,12 +138,9 @@ object SettingsItems {
                         tint = it.copy(alpha = Alpha.Overlay)
                     )
                 }
-            } else {
-                null
-            }
+            } else null
         )
     }
-
 
     @Composable
     fun SettingsLoadingActionItem(
@@ -167,7 +165,6 @@ object SettingsItems {
                         modifier = Modifier.size(Dimens.IconSizeNormal),
                         color = color,
                         strokeWidth = Dimens.BorderNormal
-
                     )
                 }
             }
@@ -197,7 +194,6 @@ object SettingsItems {
                         checkedThumbColor = MaterialTheme.colorScheme.primary,
                         checkedTrackColor = MaterialTheme.colorScheme.onPrimary,
                         checkedBorderColor = MaterialTheme.colorScheme.outline,
-
                         uncheckedThumbColor = MaterialTheme.colorScheme.primary,
                         uncheckedTrackColor = MaterialTheme.colorScheme.onPrimary,
                         uncheckedIconColor = MaterialTheme.colorScheme.outline,

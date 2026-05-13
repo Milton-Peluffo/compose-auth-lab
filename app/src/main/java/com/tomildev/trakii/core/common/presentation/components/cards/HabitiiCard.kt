@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.main_settings.presentation.components
+package com.tomildev.trakii.core.common.presentation.components.cards
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,7 +12,7 @@ import com.tomildev.trakii.ui.theme.Alpha
 import com.tomildev.trakii.ui.theme.Dimens
 
 @Composable
-fun SettingsItemContainer(
+fun HabitiiCard(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {

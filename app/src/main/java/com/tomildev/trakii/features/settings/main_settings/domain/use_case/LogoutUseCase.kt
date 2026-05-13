@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.subsettings.account.domain.use_case
+package com.tomildev.trakii.features.settings.main_settings.domain.use_case
 
 import com.tomildev.trakii.core.data.preferences.UserPreferences
 import com.tomildev.trakii.core.domain.repository.SessionRepository

@@ -4,7 +4,7 @@ import android.content.Context
 import com.tomildev.trakii.core.data.preferences.UserPreferences
 import com.tomildev.trakii.core.data.repository.SessionRepositoryImpl
 import com.tomildev.trakii.core.domain.repository.SessionRepository
-import com.tomildev.trakii.features.settings.subsettings.account.domain.use_case.LogoutUseCase
+import com.tomildev.trakii.features.settings.main_settings.domain.use_case.LogoutUseCase
 import com.tomildev.trakii.features.auth.signin.data.OAuthRepositoryImpl
 import com.tomildev.trakii.features.auth.signin.domain.OAuthRepository
 import com.tomildev.trakii.features.auth.signin.util.GoogleAuthClient

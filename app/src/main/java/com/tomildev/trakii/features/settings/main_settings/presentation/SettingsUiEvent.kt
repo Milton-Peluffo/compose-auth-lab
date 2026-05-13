@@ -1,6 +1,7 @@
 package com.tomildev.trakii.features.settings.main_settings.presentation
 
 sealed class SettingsUiEvent {
+    data object NavigateToSignIn : SettingsUiEvent()
     data object NavigateToHabitList : SettingsUiEvent()
     data object NavigateToAccount : SettingsUiEvent()
     data object NavigateToTheme : SettingsUiEvent()

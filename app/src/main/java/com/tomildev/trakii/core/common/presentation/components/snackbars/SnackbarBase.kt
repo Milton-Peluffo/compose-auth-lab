@@ -46,9 +46,10 @@ fun SnackbarBase(
         .copy(alpha = Alpha.Divider)
         .compositeOver(MaterialTheme.colorScheme.surfaceVariant)
 
+    val SnackbarHeight = 65.dp
     Snackbar(
         modifier = modifier
-            .height(Dimens.SnackbarHeight)
+            .height(SnackbarHeight)
             .padding(horizontal = 8.dp)
             .border(
                 width = Dimens.BorderNormal,

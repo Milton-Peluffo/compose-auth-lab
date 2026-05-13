@@ -4,7 +4,7 @@
     <string name="settings_title">Settings</string>
     <string name="settings_app_preferences">My preferences</string>
     <string name="settings_other_subtitle">Other</string>
-    <string name="settings_other_theme">Theme</string>
+    <string name="settings_other_theme">Appearance</string>
     <string name="settings_other_notifications">Notifications</string>
     <string name="settings_other_language">Language</string>
     <string name="settings_other_data_controls">Data Controls</string>
@@ -12,15 +12,13 @@
 
     <!-- ========================== ACCOUNT SUB SETTINGS SCREEN ========================== -->
     <string name="sub_settings_account_title">My Account</string>
-    <string name="sub_settings_account_greeting">Hello,</string>
-    <string name="sub_settings_account_description">Manage your account and preferences</string>
     <string name="sub_settings_account_section">Account</string>
     <string name="sub_settings_account_email">Email</string>
     <string name="sub_settings_account_password">Password</string>
     <string name="sub_settings_account_member_since">Member since</string>
     <string name="sub_settings_account_actions_subtitle">Actions</string>
     <string name="sub_settings_account_logout">Log Out</string>
-    <string name="sub_settings_account_danger_zone">Danger Zone</string>
+    <string name="sub_settings_account_delete_account">Delete Account</string>
     <string name="sub_settings_account_edit_name">Edit name</string>
     <string name="sub_settings_account_update_password_dialog_title">Update password?</string>
     <string name="sub_settings_account_update_password_dialog_message">We will send a confirmation code to your email before you can create a new password.</string>

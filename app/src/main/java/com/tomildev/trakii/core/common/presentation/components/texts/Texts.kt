@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import com.tomildev.trakii.ui.theme.Alpha
 
 object Texts {
@@ -29,8 +30,8 @@ object Texts {
         modifier: Modifier = Modifier,
         text: String,
         color: Color = Color.Unspecified,
+        textAlign: TextAlign = TextAlign.Start,
         isSecondary: Boolean = false,
-        textAlign: TextAlign = TextAlign.Start
     ) {
         AppText(
             modifier = modifier,
@@ -48,15 +49,19 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         isSecondary: Boolean = false,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Clip
     ) {
         AppText(
             modifier = modifier,
             text = text,
             color = color,
             style = MaterialTheme.typography.titleMedium,
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow,
             alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
-            textAlign = textAlign
         )
     }
 
@@ -73,8 +78,8 @@ object Texts {
             text = text,
             color = color,
             style = MaterialTheme.typography.titleSmall,
+            textAlign = textAlign,
             alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
-            textAlign = textAlign
         )
     }
 
@@ -91,8 +96,8 @@ object Texts {
             text = text,
             color = color,
             style = MaterialTheme.typography.bodyMedium,
+            textAlign = textAlign,
             alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
-            textAlign = textAlign
         )
     }
 
@@ -109,8 +114,8 @@ object Texts {
             text = text,
             color = color,
             style = MaterialTheme.typography.bodySmall,
+            textAlign = textAlign,
             alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
-            textAlign = textAlign
         )
     }
 
@@ -136,15 +141,19 @@ object Texts {
         text: String,
         color: Color = Color.Unspecified,
         isSecondary: Boolean = false,
-        textAlign: TextAlign = TextAlign.Center
+        textAlign: TextAlign = TextAlign.Center,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Clip
     ) {
         AppText(
             modifier = modifier,
             text = text,
             color = color,
             style = MaterialTheme.typography.labelMedium,
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow,
             alpha = if (isSecondary) Alpha.Secondary else Alpha.Full,
-            textAlign = textAlign
         )
     }
 }

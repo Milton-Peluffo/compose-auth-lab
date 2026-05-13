@@ -71,7 +71,8 @@ class SessionRepositoryImpl @Inject constructor(
                                             .update({ set("onboarding_completed", true) }) {
                                                 filter { eq("id", authUser.id) }
                                             }
-                                    } catch (_: Exception) {}
+                                    } catch (_: Exception) {
+                                    }
                                 }
 
                                 domainUser.copy(
@@ -154,9 +155,15 @@ class SessionRepositoryImpl @Inject constructor(
             ?.jsonPrimitive
             ?.contentOrNull
 
+        val avatarUrl = userMetadata
+            ?.get("avatar_url")
+            ?.jsonPrimitive
+            ?.contentOrNull
+
         return User(
             id = id,
             displayName = displayName.orEmpty(),
+            avatarUrl = avatarUrl.orEmpty(),
             email = email.orEmpty(),
             onBoardingCompleted = false,
             createdAt = createdAt?.toString()

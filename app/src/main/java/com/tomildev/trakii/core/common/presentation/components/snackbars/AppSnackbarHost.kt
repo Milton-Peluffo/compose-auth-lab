@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalAccessibilityManager
 import androidx.compose.ui.unit.IntOffset
-import com.tomildev.trakii.ui.theme.Dimens
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -90,9 +90,11 @@ fun AppSnackbarHost(
         dismissWithAnimation(data)
     }
 
+
+    val snackbarBottomPadding = 20.dp
     Box(
         modifier = modifier
-            .padding(vertical = Dimens.SnackbarBottomPadding)
+            .padding(vertical = snackbarBottomPadding)
             .onSizeChanged { width = it.width }
             .offset {
                 IntOffset(

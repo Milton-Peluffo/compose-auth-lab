@@ -20,11 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
+import com.tomildev.trakii.core.common.presentation.components.buttons.OutlinedPrimaryButton
+import com.tomildev.trakii.core.common.presentation.components.cards.HabitiiCard
 import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.core.common.presentation.components.topbars.BackbuttonTitleTopBar
-import com.tomildev.trakii.features.settings.main_settings.presentation.components.SettingsItemContainer
-import com.tomildev.trakii.features.settings.main_settings.presentation.components.SettingsItems
-import com.tomildev.trakii.features.settings.main_settings.presentation.components.UserAccountHeader
+import com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options.SettingsItems
+import com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options.UserAccountHeader
+import com.tomildev.trakii.features.settings.subsettings.account.presentation.components.AccountLogoutDialog
 
 @Composable
 fun SettingsScreen(
@@ -52,6 +54,7 @@ fun SettingsScreen(
             UserAccountHeader(
                 modifier = Modifier.fillMaxWidth(),
                 userName = uiState.name,
+                avatarUrl = uiState.avatarUrl,
                 userEmail = uiState.email,
                 onclick = { onNavigationEvent(SettingsUiEvent.NavigateToAccount) }
             )
@@ -63,7 +66,7 @@ fun SettingsScreen(
                 isSecondary = true
             )
             Spacer(modifier = Modifier.height(12.dp))
-            SettingsItemContainer {
+            HabitiiCard {
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_moon_outlined,
                     text = stringResource(R.string.settings_other_theme),
@@ -87,7 +90,12 @@ fun SettingsScreen(
                 isSecondary = true
             )
             Spacer(modifier = Modifier.height(12.dp))
-            SettingsItemContainer {
+            HabitiiCard {
+                SettingsItems.SettingsNavigationItem(
+                    leadingIcon = R.drawable.ic_lock_outlined,
+                    text = "Seguridad",
+                    onClick = {}
+                )
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_database_outlined,
                     text = stringResource(R.string.settings_other_data_controls),
@@ -101,10 +109,25 @@ fun SettingsScreen(
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_star_outlined,
                     text = "Rate Trakii",
-                    showDivider = false,
                     onClick = { }
                 )
+                SettingsItems.SettingsLoadingActionItem(
+                    leadingIcon = R.drawable.ic_logout_outlined,
+                    text = stringResource(R.string.sub_settings_account_logout),
+                    isLoading = uiState.loadingState == LoadingState.LoggingOut,
+                    showDivider = false,
+                    isWarning = true,
+                    onClick = {
+                        settingsViewModel.onLogoutClick()
+                    }
+                )
             }
+        }
+        if (uiState.showLogoutDialog) {
+            AccountLogoutDialog(
+                onConfirm = { settingsViewModel.onConfirmLogoutDialog() },
+                onDismiss = { settingsViewModel.onDismissLogoutDialog() }
+            )
         }
     }
 }

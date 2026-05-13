@@ -22,6 +22,9 @@ fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
                         SettingsUiEvent.NavigateToLanguage -> navController.navigate(NavRoute.Settings.Language)
                         SettingsUiEvent.NavigateToDatacontrols -> navController.navigate(NavRoute.Settings.DataControl)
                         SettingsUiEvent.NavigateToAboutApp -> navController.navigate(NavRoute.Settings.AboutApp)
+                        SettingsUiEvent.NavigateToSignIn -> navController.navigate(NavRoute.Auth.SignIn) {
+                            popUpTo(0) { inclusive = true }
+                        }
                     }
                 }
             )
@@ -30,11 +33,6 @@ fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
         composable<NavRoute.Settings.Account> {
             AccountSettingsScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToSignIn = {
-                    navController.navigate(NavRoute.Auth.SignIn) {
-                        popUpTo(0) { inclusive = true }
-                    }
-                }
             )
         }
     }

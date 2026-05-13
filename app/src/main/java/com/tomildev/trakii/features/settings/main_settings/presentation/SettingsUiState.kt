@@ -2,6 +2,7 @@ package com.tomildev.trakii.features.settings.main_settings.presentation
 
 data class SettingsUiState(
     val name: String = "",
+    val avatarUrl: String = "",
     val email: String = "",
     val loadingState: LoadingState = LoadingState.None,
     val showLogoutDialog: Boolean = false,
@@ -11,5 +12,4 @@ data class SettingsUiState(
 sealed class LoadingState {
     object None : LoadingState()
     object LoggingOut : LoadingState()
-    object DeletingAccount : LoadingState()
 }

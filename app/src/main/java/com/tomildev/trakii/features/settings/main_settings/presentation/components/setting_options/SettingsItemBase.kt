@@ -1,6 +1,5 @@
-package com.tomildev.trakii.features.settings.main_settings.presentation.components
+package com.tomildev.trakii.features.settings.main_settings.presentation.components.setting_options
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,39 +37,37 @@ fun SettingsItemBase(
     onClick: (() -> Unit)? = null,
     trailingContent: @Composable ((color: Color) -> Unit)? = null
 ) {
-    val color =
-        if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
-    val supportingColor =
-        if (isWarning) MaterialTheme.colorScheme.error.copy(alpha = Alpha.Secondary)
-        else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.Secondary)
-    val rippleColor =
-        if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
-    val rowShape = MaterialTheme.shapes.small
-    val warningModifier = if (isWarning) {
-        Modifier
-            .padding(8.dp)
-            .clip(rowShape)
-            .border(
-                width = Dimens.BorderSmall,
-                color = MaterialTheme.colorScheme.error.copy(alpha = Alpha.Secondary),
-                shape = rowShape
-            )
+    val color = if (isWarning) {
+        MaterialTheme.colorScheme.error
     } else {
-        Modifier
+        MaterialTheme.colorScheme.onSurface
+    }
+
+    val supportingColor = if (isWarning) {
+        MaterialTheme.colorScheme.error.copy(alpha = Alpha.Secondary)
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.Secondary)
+    }
+
+    val rippleColor = if (isWarning) {
+        MaterialTheme.colorScheme.error
+    } else {
+        MaterialTheme.colorScheme.primary
     }
 
     Column {
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .then(warningModifier)
                 .defaultMinSize(minHeight = if (supportingText == null) 56.dp else 64.dp)
                 .let {
-                    if (onClick != null) it.clickable(
-                        onClick = onClick,
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = ripple(color = rippleColor)
-                    ) else it
+                    if (onClick != null) {
+                        it.clickable(
+                            onClick = onClick,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(color = rippleColor)
+                        )
+                    } else it
                 }
                 .padding(horizontal = Dimens.SpacingMedium),
             verticalAlignment = Alignment.CenterVertically
@@ -110,7 +106,8 @@ fun SettingsItemBase(
             }
             trailingContent?.invoke(color)
         }
-        if (showDivider && !isWarning) {
+
+        if (showDivider) {
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(),
                 thickness = Dimens.BorderTiny,

@@ -5,6 +5,7 @@ import com.tomildev.trakii.core.domain.model.user.UserValidationError
 data class AccountSettingsUiState(
     val name: String = "",
     val email: String = "",
+    val avatarUrl: String = "",
     val editedName: String = "",
     val accountType: String = "",
     val accountCreationDate: String = "",
@@ -17,7 +18,5 @@ data class AccountSettingsUiState(
 
 sealed class LoadingState {
     object None : LoadingState()
-    object LoggingOut : LoadingState()
-    object DeletingAccount : LoadingState()
     object UpdatingName : LoadingState()
 }

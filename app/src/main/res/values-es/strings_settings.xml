@@ -4,7 +4,7 @@
     <string name="settings_title">Ajustes</string>
     <string name="settings_app_preferences">Mis preferencias</string>
     <string name="settings_other_subtitle">Otros</string>
-    <string name="settings_other_theme">Tema</string>
+    <string name="settings_other_theme">Apariencia</string>
     <string name="settings_other_notifications">Notificaciones</string>
     <string name="settings_other_language">Idioma</string>
     <string name="settings_other_data_controls">Controles de datos</string>
@@ -12,15 +12,13 @@
 
     <!-- ========================== ACCOUNT SUB SETTINGS SCREEN ========================== -->
     <string name="sub_settings_account_title">Mi cuenta</string>
-    <string name="sub_settings_account_greeting">Hola,</string>
-    <string name="sub_settings_account_description">Administra tu cuenta y preferencias</string>
     <string name="sub_settings_account_section">Cuenta</string>
     <string name="sub_settings_account_email">Correo electronico</string>
     <string name="sub_settings_account_password">Password</string>
     <string name="sub_settings_account_member_since">Miembro desde</string>
     <string name="sub_settings_account_actions_subtitle">Acciones</string>
     <string name="sub_settings_account_logout">Cerrar Sesión</string>
-    <string name="sub_settings_account_danger_zone">Zona roja</string>
+    <string name="sub_settings_account_delete_account">Eliminar Cuenta</string>
     <string name="sub_settings_account_edit_name">Editar nombre</string>
 
     <!-- _________________ ACCOUNT SUB SETTINGS DIALOGS _________________ -->

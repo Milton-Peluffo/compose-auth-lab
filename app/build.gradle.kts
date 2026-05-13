@@ -84,6 +84,9 @@ dependencies {
 
     implementation(libs.google.material)
 
+    //COIL COMPOSE
+    implementation(libs.coil.compose)
+
     //SPLASH SCREEN
     implementation(libs.androidx.core.splashscreen)
 

@@ -30,6 +30,7 @@ class AccountSettingsViewModel @Inject constructor(
         sessionRepository.getCachedUser().let { user ->
             AccountSettingsUiState(
                 name = user?.displayName.orEmpty(),
+                avatarUrl = user?.avatarUrl.orEmpty(),
                 email = user?.email.orEmpty(),
                 accountCreationDate = formatDate(user?.createdAt.toString())
             )
@@ -40,34 +41,6 @@ class AccountSettingsViewModel @Inject constructor(
     private val _eventChannel =
         Channel<AccountSettingsUiEvent>()
     val events = _eventChannel.receiveAsFlow()
-
-    fun logout() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(loadingState = LoadingState.LoggingOut) }
-            delay(1500)
-            try {
-                accountUseCasesWrapper.logout()
-                _eventChannel.send(AccountSettingsUiEvent.NavigateToSignIn)
-
-            } catch (e: Exception) {
-            } finally {
-                _uiState.update { it.copy(loadingState = LoadingState.None) }
-            }
-        }
-    }
-
-    fun onLogoutClick() {
-        _uiState.update { it.copy(showLogoutDialog = true) }
-    }
-
-    fun onConfirmLogoutDialog() {
-        _uiState.update { it.copy(showLogoutDialog = false) }
-        logout()
-    }
-
-    fun onDismissLogoutDialog() {
-        _uiState.update { it.copy(showLogoutDialog = false) }
-    }
 
     fun onEditNameClick() {
         _uiState.update {
