@@ -1,4 +1,4 @@
-package com.tomildev.trakii.features.settings.sub_settings.notifications.presentation
+package com.tomildev.trakii.features.settings.sub_settings.language.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,25 +21,22 @@ import com.tomildev.trakii.features.settings.common.presentation.components.sett
 import com.tomildev.trakii.ui.theme.Dimens
 
 @Composable
-fun NotificationsScreen(
+fun LanguageScreen(
     modifier: Modifier = Modifier,
-    notificationsViewModel: NotificationsViewModel = hiltViewModel(),
+    languageViewModel: LanguageViewModel = hiltViewModel(),
     onNavigateToMainSettings: () -> Unit,
 ) {
-    val uiState by notificationsViewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by languageViewModel.uiState.collectAsStateWithLifecycle()
 
-    val notificationsOptions = listOf(
-        Triple(
-            "all",
-            R.string.sub_settings_notifications_all_notifications,
-            R.drawable.ic_bell_outlined,
-        )
+    val languageOptions = listOf(
+        "es" to R.string.sub_settings_language_spanish,
+        "en" to R.string.sub_settings_language_english
     )
 
     Scaffold(
         topBar = {
             BackbuttonTitleTopBar(
-                title = stringResource(R.string.sub_settings_notifications_title),
+                title = stringResource(R.string.sub_settings_language_title),
                 backButton = { onNavigateToMainSettings() }
             )
         }
@@ -55,18 +52,20 @@ fun NotificationsScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             Texts.TitleSmall(
-                text = stringResource(R.string.sub_settings_notifications_subtitle),
+                text = stringResource(R.string.sub_settings_language_subtitle),
                 isSecondary = true
             )
             VerticalSpacer(Dimens.SpacingMedium)
+
             HabitiiCard {
-                notificationsOptions.forEachIndexed { index, (notificationKey, stringRes, iconRes) ->
-                    SettingsItems.SettingsToggleItem(
-                        leadingIcon = iconRes,
+                languageOptions.forEachIndexed { index, (langKey, stringRes) ->
+                    SettingsItems.SettingsSelectionItem(
                         text = stringResource(stringRes),
-                        checked = uiState.activeNotifications == notificationKey,
-                        showDivider = index != notificationsOptions.lastIndex,
-                        onCheckedChange = { }
+                        selected = uiState.selectedLanguage == langKey,
+                        showDivider = index != languageOptions.lastIndex,
+                        onClick = {
+                            languageViewModel.onEvent(LanguageUiEvent.SelectLanguage(langKey))
+                        }
                     )
                 }
             }

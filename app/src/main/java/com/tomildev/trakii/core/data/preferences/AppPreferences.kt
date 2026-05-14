@@ -47,12 +47,12 @@ class AppPreferences @Inject constructor(@ApplicationContext private val context
     val selectedLanguage: Flow<String> = context.dataStore.data
         .handleErrors()
         .map { preferences ->
-            preferences[AppPreferences.PreferencesKeys.LANGUAGE] ?: systemLanguage
+            preferences[PreferencesKeys.LANGUAGE] ?: systemLanguage
         }
 
     suspend fun saveLanguage(langCode: String) {
         context.dataStore.edit { preferences ->
-            preferences[AppPreferences.PreferencesKeys.LANGUAGE] = langCode
+            preferences[PreferencesKeys.LANGUAGE] = langCode
         }
     }
 

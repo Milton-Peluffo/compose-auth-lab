@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tomildev.trakii.R
@@ -25,14 +24,15 @@ import com.tomildev.trakii.ui.theme.Dimens
 fun AppearanceScreen(
     modifier: Modifier = Modifier,
     appearanceViewModel: AppearanceViewModel = hiltViewModel(),
-    onNavigationEvent: (AppearanceUiEvent) -> Unit
+    onNavigateToMainSettings: () -> Unit,
 ) {
     val uiState by appearanceViewModel.uiState.collectAsStateWithLifecycle()
 
     val themeOptions = listOf(
         Triple("dark", R.string.sub_settings_appearance_dark_mode, R.drawable.ic_moon_outlined),
         Triple("light", R.string.sub_settings_appearance_light_mode, R.drawable.ic_sun_outlined),
-        Triple("system", R.string.sub_settings_appearance_system_mode,
+        Triple(
+            "system", R.string.sub_settings_appearance_system_mode,
             R.drawable.ic_settings_outlined
         )
     )
@@ -41,7 +41,7 @@ fun AppearanceScreen(
         topBar = {
             BackbuttonTitleTopBar(
                 title = stringResource(R.string.sub_settings_appearance_title),
-                backButton = { onNavigationEvent(AppearanceUiEvent.NavigateToMainSettings) }
+                backButton = { onNavigateToMainSettings() }
             )
         }
     ) { innerPadding ->

@@ -79,7 +79,7 @@ fun SettingsScreen(
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_language_outlined,
                     text = stringResource(R.string.main_settings_language),
-                    onClick = { },
+                    onClick = { onNavigationEvent(SettingsUiEvent.NavigateToLanguage) },
                     showDivider = false
                 )
             }

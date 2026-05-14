@@ -41,4 +41,9 @@
     <string name="sub_settings_notifications_subtitle">Select the notifications you want to receive</string>
     <string name="sub_settings_notifications_all_notifications">All notifications</string>
 
+    <!-- ========================== LANGUAGE SUB SETTINGS SCREEN ========================== -->
+    <string name="sub_settings_language_title">Language</string>
+    <string name="sub_settings_language_subtitle">Select a language</string>
+    <string name="sub_settings_language_spanish">Spanish</string>
+    <string name="sub_settings_language_english">English</string>
 </resources>

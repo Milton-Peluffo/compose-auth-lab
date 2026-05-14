@@ -8,7 +8,7 @@ import com.tomildev.trakii.features.settings.main_settings.presentation.Settings
 import com.tomildev.trakii.features.settings.main_settings.presentation.SettingsUiEvent
 import com.tomildev.trakii.features.settings.sub_settings.account.presentation.AccountSettingsScreen
 import com.tomildev.trakii.features.settings.sub_settings.appareance.presentation.AppearanceScreen
-import com.tomildev.trakii.features.settings.sub_settings.appareance.presentation.AppearanceUiEvent
+import com.tomildev.trakii.features.settings.sub_settings.language.presentation.LanguageScreen
 import com.tomildev.trakii.features.settings.sub_settings.notifications.presentation.NotificationsScreen
 
 fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
@@ -41,23 +41,19 @@ fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
 
         composable<NavRoute.Settings.Appearance> {
             AppearanceScreen(
-                onNavigationEvent = { event ->
-                    when (event) {
-                        AppearanceUiEvent.NavigateToMainSettings -> navController.popBackStack()
-                        else -> {}
-                    }
-                }
+                onNavigateToMainSettings = { navController.popBackStack() }
             )
         }
 
         composable<NavRoute.Settings.Notifications> {
             NotificationsScreen(
-                onNavigationEvent = { event ->
-                    when (event) {
-                        AppearanceUiEvent.NavigateToMainSettings -> navController.popBackStack()
-                        else -> {}
-                    }
-                }
+                onNavigateToMainSettings = { navController.popBackStack() }
+            )
+        }
+
+        composable<NavRoute.Settings.Language> {
+            LanguageScreen(
+                onNavigateToMainSettings = { navController.popBackStack() }
             )
         }
     }

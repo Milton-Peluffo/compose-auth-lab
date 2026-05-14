@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var userPreferences: UserPreferences
+
     @Inject
     lateinit var appPreferences: AppPreferences
 
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
                             if (state.user.onBoardingCompleted) NavRoute.HabitList
                             else NavRoute.OnBoarding
                         }
+
                         else -> NavRoute.Auth.SignIn
                     }
 
