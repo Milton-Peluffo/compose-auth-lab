@@ -1,36 +1,40 @@
 package com.tomildev.trakii.features.settings.sub_settings.language.presentation
 
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.tomildev.trakii.core.data.preferences.AppPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class LanguageViewModel @Inject constructor(
-    private val appPreferences: AppPreferences
-) : ViewModel() {
+class LanguageViewModel @Inject constructor() : ViewModel() {
 
-    val uiState = appPreferences.selectedLanguage.map {
-        LanguageUiState(selectedLanguage = it)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = LanguageUiState()
-    )
+    private val _uiState = MutableStateFlow(LanguageUiState())
+    val uiState = _uiState.asStateFlow()
 
+    init {
+        val currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+        val langCode = currentLang.ifEmpty {
+            java.util.Locale.getDefault().language
+        }
+        
+        _uiState.update { it.copy(selectedLanguage = langCode) }
+    }
     fun onEvent(event: LanguageUiEvent) {
         when (event) {
             is LanguageUiEvent.SelectLanguage -> {
-                viewModelScope.launch {
-                    appPreferences.saveLanguage(event.langCode)
-                }
+                selectLanguage(event.langCode)
             }
             else -> Unit
         }
+    }
+
+    private fun selectLanguage(langCode: String) {
+        val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(langCode)
+        AppCompatDelegate.setApplicationLocales(appLocale)
+        _uiState.update { it.copy(selectedLanguage = langCode) }
     }
 }

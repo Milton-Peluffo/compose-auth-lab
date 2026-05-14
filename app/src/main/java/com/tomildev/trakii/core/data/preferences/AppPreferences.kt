@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app_preferences")
 
 @Singleton
@@ -23,8 +22,6 @@ class AppPreferences @Inject constructor(@ApplicationContext private val context
 
     private object PreferencesKeys {
         val APP_APPEARANCE = stringPreferencesKey("app_appearance")
-        val LANGUAGE = stringPreferencesKey("language")
-
     }
 
     //-------- APP APPEARANCE --------
@@ -37,22 +34,6 @@ class AppPreferences @Inject constructor(@ApplicationContext private val context
     suspend fun setAppearance(appearance: String) {
         context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.APP_APPEARANCE] = appearance
-        }
-    }
-
-    //-------- LANGUAGE --------
-    private val systemLanguage: String
-        get() = java.util.Locale.getDefault().language
-
-    val selectedLanguage: Flow<String> = context.dataStore.data
-        .handleErrors()
-        .map { preferences ->
-            preferences[PreferencesKeys.LANGUAGE] ?: systemLanguage
-        }
-
-    suspend fun saveLanguage(langCode: String) {
-        context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.LANGUAGE] = langCode
         }
     }
 
