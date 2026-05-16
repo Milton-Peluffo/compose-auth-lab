@@ -19,7 +19,7 @@ sealed interface NavRoute {
         @Serializable data object Notifications : Settings
         @Serializable data object Appearance : Settings
         @Serializable data object Language : Settings
-        @Serializable data object DataControl : Settings
+        @Serializable data object DataManagement : Settings
         @Serializable data object AboutApp : Settings
     }
 }

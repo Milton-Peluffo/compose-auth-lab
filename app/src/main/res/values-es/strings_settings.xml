@@ -8,7 +8,7 @@
     <string name="main_settings_notifications">Notificaciones</string>
     <string name="main_settings_language">Idioma</string>
     <string name="main_settings_data_controls">Gestión de datos</string>
-    <string name="main_settings_about_habitii">Acerca de Habitii</string>
+    <string name="main_settings_about_habitii">Acerca de Trakii</string>
     <string name="main_settings_rate_app">Valorar en Play Store</string>
     <string name="main_settings_logout">Cerrar Sesión</string>
 
@@ -49,4 +49,23 @@
     <string name="sub_settings_language_subtitle">Selecciona un lenguaje</string>
     <string name="sub_settings_language_spanish">Español</string>
     <string name="sub_settings_language_english">Inglés</string>
+
+    <!-- ========================== DATA MANAGEMENT SUB SETTINGS SCREEN ========================== -->
+    <string name="sub_settings_data_management_title">Gestión de datos</string>
+    <string name="sub_settings_data_management_subtitle">Gestiona tu información</string>
+    <string name="sub_settings_data_management_sync_status">Estado de sincronización</string>
+    <string name="sub_settings_data_management_download_cloud">Descargar datos de la nube</string>
+    <string name="sub_settings_data_management_sync_cloud">Sincronizar datos en la nube</string>
+    <string name="sub_settings_data_management_danger_zone">Zona de peligro</string>
+    <string name="sub_settings_data_management_clear_habits">Borrar todos mis hábitos</string>
+    <string name="sub_settings_data_management_delete_account">Borrar cuenta</string>
+
+    <!-- ========================== ABOUT SUB SETTINGS SCREEN ========================== -->
+    <string name="sub_settings_about_title">Sobre Trakii</string>
+    <string name="sub_settings_about_subtitle">Conoce más sobre la app</string>
+    <string name="sub_settings_about_terms">Términos de servicio</string>
+    <string name="sub_settings_about_privacy">Política de privacidad</string>
+    <string name="sub_settings_about_report_bug">Reportar un error</string>
+    <string name="sub_settings_about_version">Versión de la app</string>
+    <string name="sub_settings_about_made_with_love">Hecho con amor y mucho café por TomilDev, desarrollador independiente.</string>
 </resources>

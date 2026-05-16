@@ -56,7 +56,7 @@ fun AppearanceScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             Texts.TitleSmall(
-                text = "Selecciona el tema de la app",
+                text = stringResource(R.string.sub_settings_appearance_subtitle),
                 isSecondary = true
             )
             VerticalSpacer(Dimens.SpacingMedium)

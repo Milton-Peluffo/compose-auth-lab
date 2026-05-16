@@ -16,23 +16,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
+class MainSettingsViewModel @Inject constructor(
     sessionRepository: SessionRepository,
     private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
         sessionRepository.getCachedUser().let { user ->
-            SettingsUiState(
+            MainSettingsUiState(
                 name = user?.displayName.orEmpty(),
                 avatarUrl = user?.avatarUrl.orEmpty(),
                 email = user?.email.orEmpty()
             )
         }
     )
-    val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<MainSettingsUiState> = _uiState.asStateFlow()
 
-    private val _eventChannel = Channel<SettingsUiEvent>()
+    private val _eventChannel = Channel<MainSettingsUiEvent>()
     val events = _eventChannel.receiveAsFlow()
 
     fun logout() {
@@ -41,7 +41,7 @@ class SettingsViewModel @Inject constructor(
             delay(1500)
             try {
                 logoutUseCase()
-                _eventChannel.send(SettingsUiEvent.NavigateToSignIn)
+                _eventChannel.send(MainSettingsUiEvent.NavigateToSignIn)
 
             } catch (e: Exception) {
             } finally {

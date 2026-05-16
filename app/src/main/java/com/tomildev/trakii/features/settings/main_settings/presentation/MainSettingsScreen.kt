@@ -27,18 +27,18 @@ import com.tomildev.trakii.features.settings.sub_settings.account.presentation.c
 import com.tomildev.trakii.ui.theme.Dimens
 
 @Composable
-fun SettingsScreen(
+fun MainSettingsScreen(
     modifier: Modifier = Modifier,
-    settingsViewModel: SettingsViewModel = hiltViewModel(),
-    onNavigationEvent: (SettingsUiEvent) -> Unit
+    mainSettingsViewModel: MainSettingsViewModel = hiltViewModel(),
+    onNavigationEvent: (MainSettingsUiEvent) -> Unit
 ) {
-    val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by mainSettingsViewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
             BackbuttonTitleTopBar(
                 title = stringResource(R.string.main_settings_title),
-                backButton = { onNavigationEvent(SettingsUiEvent.NavigateToHabitList) }
+                backButton = { onNavigationEvent(MainSettingsUiEvent.NavigateToHabitList) }
             )
         }
     ) { innerPadding ->
@@ -57,7 +57,7 @@ fun SettingsScreen(
                 userName = uiState.name,
                 avatarUrl = uiState.avatarUrl,
                 userEmail = uiState.email,
-                onclick = { onNavigationEvent(SettingsUiEvent.NavigateToAccount) }
+                onclick = { onNavigationEvent(MainSettingsUiEvent.NavigateToAccount) }
             )
             VerticalSpacer(Dimens.SpacingExtraLarge)
             Texts.TitleSmall(
@@ -69,17 +69,17 @@ fun SettingsScreen(
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_moon_outlined,
                     text = stringResource(R.string.main_settings_appearance),
-                    onClick = { onNavigationEvent(SettingsUiEvent.NavigateToAppearance) }
+                    onClick = { onNavigationEvent(MainSettingsUiEvent.NavigateToAppearance) }
                 )
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_bell_outlined,
                     text = stringResource(R.string.main_settings_notifications),
-                    onClick = { onNavigationEvent(SettingsUiEvent.NavigateToNotifications) }
+                    onClick = { onNavigationEvent(MainSettingsUiEvent.NavigateToNotifications) }
                 )
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_language_outlined,
                     text = stringResource(R.string.main_settings_language),
-                    onClick = { onNavigationEvent(SettingsUiEvent.NavigateToLanguage) },
+                    onClick = { onNavigationEvent(MainSettingsUiEvent.NavigateToLanguage) },
                     showDivider = false
                 )
             }
@@ -93,12 +93,12 @@ fun SettingsScreen(
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_database_outlined,
                     text = stringResource(R.string.main_settings_data_controls),
-                    onClick = {}
+                    onClick = { onNavigationEvent(MainSettingsUiEvent.NavigateToDataManagement) }
                 )
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_info_outlined,
                     text = stringResource(R.string.main_settings_about_habitii),
-                    onClick = {}
+                    onClick = { onNavigationEvent(MainSettingsUiEvent.NavigateToAboutApp) }
                 )
                 SettingsItems.SettingsNavigationItem(
                     leadingIcon = R.drawable.ic_star_outlined,
@@ -112,15 +112,15 @@ fun SettingsScreen(
                     showDivider = false,
                     isWarning = true,
                     onClick = {
-                        settingsViewModel.onLogoutClick()
+                        mainSettingsViewModel.onLogoutClick()
                     }
                 )
             }
         }
         if (uiState.showLogoutDialog) {
             AccountLogoutDialog(
-                onConfirm = { settingsViewModel.onConfirmLogoutDialog() },
-                onDismiss = { settingsViewModel.onDismissLogoutDialog() }
+                onConfirm = { mainSettingsViewModel.onConfirmLogoutDialog() },
+                onDismiss = { mainSettingsViewModel.onDismissLogoutDialog() }
             )
         }
     }

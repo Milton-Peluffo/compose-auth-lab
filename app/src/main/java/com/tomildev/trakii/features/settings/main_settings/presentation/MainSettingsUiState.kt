@@ -1,6 +1,6 @@
 package com.tomildev.trakii.features.settings.main_settings.presentation
 
-data class SettingsUiState(
+data class MainSettingsUiState(
     val name: String = "",
     val avatarUrl: String = "",
     val email: String = "",

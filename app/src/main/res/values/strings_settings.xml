@@ -8,7 +8,7 @@
     <string name="main_settings_notifications">Notifications</string>
     <string name="main_settings_language">Language</string>
     <string name="main_settings_data_controls">Data management</string>
-    <string name="main_settings_about_habitii">About Habitii</string>
+    <string name="main_settings_about_habitii">About Trakii</string>
     <string name="main_settings_rate_app">Rate on Play Store</string>
     <string name="main_settings_logout">Log out</string>
 
@@ -46,4 +46,23 @@
     <string name="sub_settings_language_subtitle">Select a language</string>
     <string name="sub_settings_language_spanish">Spanish</string>
     <string name="sub_settings_language_english">English</string>
+
+    <!-- ========================== DATA MANAGEMENT SUB SETTINGS SCREEN ========================== -->
+    <string name="sub_settings_data_management_title">Data management</string>
+    <string name="sub_settings_data_management_subtitle">Manage your information</string>
+    <string name="sub_settings_data_management_sync_status">Sync status</string>
+    <string name="sub_settings_data_management_download_cloud">Download data from cloud</string>
+    <string name="sub_settings_data_management_sync_cloud">Sync data to cloud</string>
+    <string name="sub_settings_data_management_danger_zone">Danger zone</string>
+    <string name="sub_settings_data_management_clear_habits">Clear all my habits</string>
+    <string name="sub_settings_data_management_delete_account">Delete account</string>
+
+    <!-- ========================== ABOUT SUB SETTINGS SCREEN ========================== -->
+    <string name="sub_settings_about_title">About Trakii</string>
+    <string name="sub_settings_about_subtitle">App information</string>
+    <string name="sub_settings_about_terms">Terms of Service</string>
+    <string name="sub_settings_about_privacy">Privacy Policy</string>
+    <string name="sub_settings_about_report_bug">Report a bug</string>
+    <string name="sub_settings_about_version">App Version</string>
+    <string name="sub_settings_about_made_with_love">Hecho con amor y mucho café por TomilDev, desarollador independiente.</string>
 </resources>
