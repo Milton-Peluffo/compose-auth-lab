@@ -3,6 +3,7 @@ package com.tomildev.trakii.features.auth.signin.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomildev.trakii.core.domain.model.error.DataError
+import com.tomildev.trakii.core.domain.repository.SessionRepository
 import com.tomildev.trakii.core.domain.util.Result
 import com.tomildev.trakii.features.auth.signin.domain.use_case.AuthWithGoogleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val authWithGoogleUseCase: AuthWithGoogleUseCase
+    private val authWithGoogleUseCase: AuthWithGoogleUseCase,
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignInUiState())
@@ -62,7 +64,12 @@ class SignInViewModel @Inject constructor(
 
             when (result) {
                 is Result.Success -> {
-                    _uiEvents.send(SignInUiEvent.NavigateToHabitList)
+                    val user = sessionRepository.getCurrentUser()
+                    if (user?.onBoardingCompleted == true) {
+                        _uiEvents.send(SignInUiEvent.NavigateToHabitList)
+                    } else {
+                        _uiEvents.send(SignInUiEvent.NavigateToOnBoarding)
+                    }
                 }
 
                 is Result.Error -> {

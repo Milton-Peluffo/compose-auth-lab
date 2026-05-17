@@ -12,6 +12,11 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
                 navController.navigate(NavRoute.HabitList) {
                     popUpTo(NavRoute.Auth.SignIn) { inclusive = true }
                 }
+            },
+            onNavigateToOnBoarding = {
+                navController.navigate(NavRoute.OnBoarding) {
+                    popUpTo(NavRoute.Auth.SignIn) { inclusive = true }
+                }
             }
         )
     }

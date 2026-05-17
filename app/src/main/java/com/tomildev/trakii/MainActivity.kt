@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.tomildev.trakii.core.data.preferences.AppPreferences
-import com.tomildev.trakii.core.data.preferences.UserPreferences
 import com.tomildev.trakii.core.domain.repository.SessionRepository
 import com.tomildev.trakii.core.domain.repository.SessionState
 import com.tomildev.trakii.core.navigation.NavRoute
@@ -21,9 +21,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var userPreferences: UserPreferences
 
     @Inject
     lateinit var appPreferences: AppPreferences
@@ -59,11 +56,13 @@ class MainActivity : AppCompatActivity() {
                         else -> NavRoute.Auth.SignIn
                     }
 
-                    val navController = rememberNavController()
-                    NavigationRoot(
-                        navController = navController,
-                        startDestination = startRoute
-                    )
+                    key(startRoute) {
+                        val navController = rememberNavController()
+                        NavigationRoot(
+                            navController = navController,
+                            startDestination = startRoute
+                        )
+                    }
                 }
             }
         }

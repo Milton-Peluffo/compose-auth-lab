@@ -34,7 +34,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignInScreen(
     signInViewModel: SignInViewModel = hiltViewModel(),
-    onNavigateToHabitList: () -> Unit
+    onNavigateToHabitList: () -> Unit,
+    onNavigateToOnBoarding: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val uiState by signInViewModel.uiState.collectAsStateWithLifecycle()
@@ -46,11 +47,13 @@ fun SignInScreen(
         signInViewModel.uiEvents.collect { uiEvent ->
             when (uiEvent) {
                 SignInUiEvent.NavigateToHabitList -> onNavigateToHabitList()
+                SignInUiEvent.NavigateToOnBoarding -> onNavigateToOnBoarding()
 
                 is SignInUiEvent.Error, is SignInUiEvent.Warning -> {
-                    val (errorData, snackbarType) = when (uiEvent) {
-                        is SignInUiEvent.Error -> uiEvent.error to SnackbarType.Error
-                        is SignInUiEvent.Warning -> uiEvent.error to SnackbarType.Warning
+                    val (errorData, snackbarType) = if (uiEvent is SignInUiEvent.Error) {
+                        uiEvent.error to SnackbarType.Error
+                    } else {
+                        (uiEvent as SignInUiEvent.Warning).error to SnackbarType.Warning
                     }
 
                     val errorUiText = errorData.toUiText()

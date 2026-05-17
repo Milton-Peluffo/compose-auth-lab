@@ -4,6 +4,7 @@ import com.tomildev.trakii.core.domain.model.error.DataError
 
 sealed interface SignInUiEvent {
     data object NavigateToHabitList : SignInUiEvent
+    data object NavigateToOnBoarding : SignInUiEvent
     data class Error(val error: DataError) : SignInUiEvent
     data class Warning(val error: DataError) : SignInUiEvent
 }

@@ -1,6 +1,7 @@
 package com.tomildev.trakii.core.di
 
 import android.content.Context
+import com.tomildev.trakii.core.data.local.dao.ProfileDao
 import com.tomildev.trakii.core.data.preferences.UserPreferences
 import com.tomildev.trakii.core.data.repository.SessionRepositoryImpl
 import com.tomildev.trakii.core.domain.repository.SessionRepository
@@ -32,9 +33,10 @@ object AuthModule {
     @Singleton
     fun provideOnboardingRepository(
         supabaseClient: SupabaseClient,
-        userPreferences: UserPreferences
+        userPreferences: UserPreferences,
+        profileDao: ProfileDao
     ): OnboardingRepository {
-        return OnBoardingRepositoryImpl(supabaseClient, userPreferences)
+        return OnBoardingRepositoryImpl(supabaseClient, userPreferences, profileDao)
     }
 
     @Provides
@@ -47,8 +49,9 @@ object AuthModule {
     @Singleton
     fun provideSessionRepository(
         supabaseClient: SupabaseClient,
-        userPreferences: UserPreferences
+        userPreferences: UserPreferences,
+        profileDao: ProfileDao
     ): SessionRepository {
-        return SessionRepositoryImpl(supabaseClient, userPreferences)
+        return SessionRepositoryImpl(supabaseClient, userPreferences, profileDao)
     }
 }

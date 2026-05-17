@@ -1,6 +1,10 @@
 package com.tomildev.trakii.core.data.repository
 
+import com.tomildev.trakii.core.common.util.mappers.nowTimestamp
+import com.tomildev.trakii.core.common.util.mappers.toDomainUser
+import com.tomildev.trakii.core.common.util.mappers.toLocalProfileEntity
 import com.tomildev.trakii.core.common.util.mappers.mapSupabaseError
+import com.tomildev.trakii.core.data.local.dao.ProfileDao
 import com.tomildev.trakii.core.data.preferences.UserPreferences
 import com.tomildev.trakii.core.data.remote.dto.ProfileDto
 import com.tomildev.trakii.core.domain.model.error.DataError
@@ -17,7 +21,6 @@ import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.contentOrNull
@@ -28,12 +31,17 @@ import javax.inject.Singleton
 @Singleton
 class SessionRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient,
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val profileDao: ProfileDao
 ) : SessionRepository {
 
     private var cachedUser: User? = null
 
     override fun getCachedUser(): User? = cachedUser
+
+    override fun observeCurrentUserId(): Flow<String?> = userPreferences.currentUserId
+
+    override suspend fun getCurrentUserId(): String? = userPreferences.getCurrentUserId()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun observeSession(): Flow<SessionState> {
@@ -56,82 +64,145 @@ class SessionRepositoryImpl @Inject constructor(
                             }
 
                             val domainUser = authUser.toDomainUser()
+                            val existingLocalUser = getLocalUser(authUser.id)
+                            val localOnboarding = existingLocalUser?.onBoardingCompleted
+                                ?: userPreferences.isOnboardingCompleted(authUser.id)
+                            val localUser =
+                                existingLocalUser ?: domainUser.copy(onBoardingCompleted = localOnboarding)
 
-                            val finalUser = try {
+                            userPreferences.setCurrentUserId(localUser.id)
+                            profileDao.upsertProfile(localUser.toLocalProfileEntity())
+                            cachedUser = localUser
+                            emit(SessionState.Authenticated(localUser))
+
+                            try {
                                 val profile = supabaseClient
                                     .from("profiles")
                                     .select { filter { eq("id", authUser.id) } }
                                     .decodeSingle<ProfileDto>()
 
-                                val localOnboarding = userPreferences.onboardingCompleted.first()
-
-                                if (localOnboarding && !profile.onboarding_completed) {
+                                if (profile.onboarding_completed) {
+                                    profileDao.updateOnboardingCompleted(
+                                        userId = authUser.id,
+                                        completed = true,
+                                        updatedAt = profile.updated_at ?: nowTimestamp()
+                                    )
+                                    userPreferences.setOnboardingCompleted(authUser.id, true)
+                                    userPreferences.setOnboardingSyncPending(authUser.id, false)
+                                } else if (localOnboarding) {
                                     try {
                                         supabaseClient.from("profiles")
                                             .update({ set("onboarding_completed", true) }) {
                                                 filter { eq("id", authUser.id) }
                                             }
+                                        userPreferences.setOnboardingSyncPending(authUser.id, false)
                                     } catch (_: Exception) {
+                                        userPreferences.setOnboardingSyncPending(authUser.id, true)
                                     }
                                 }
 
-                                domainUser.copy(
-                                    onBoardingCompleted = profile.onboarding_completed || localOnboarding
-                                )
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                val localOnboarding = userPreferences.onboardingCompleted.first()
-                                domainUser.copy(onBoardingCompleted = localOnboarding)
+                                val finalUser = profile
+                                    .toLocalProfileEntity(
+                                        fallback = domainUser.copy(
+                                            onBoardingCompleted = profile.onboarding_completed || localOnboarding
+                                        )
+                                    )
+                                    .toDomainUser()
+                                profileDao.upsertProfile(finalUser.toLocalProfileEntity())
+                                if (finalUser != localUser) {
+                                    cachedUser = finalUser
+                                    emit(SessionState.Authenticated(finalUser))
+                                }
+                            } catch (_: Exception) {
                             }
-
-                            cachedUser = finalUser
-                            emit(SessionState.Authenticated(finalUser))
                         }
                     }
 
                     is SessionStatus.NotAuthenticated -> {
                         flow {
-                            cachedUser = null
-                            emit(SessionState.Unauthenticated)
+                            val localUser = getLocalUser()
+                            if (localUser != null) {
+                                cachedUser = localUser
+                                emit(SessionState.Authenticated(localUser))
+                            } else {
+                                cachedUser = null
+                                emit(SessionState.Unauthenticated)
+                            }
                         }
                     }
 
                     is SessionStatus.RefreshFailure -> {
                         flow {
-                            emit(
-                                SessionState.Error(
-                                    message = "The session could not be refreshed"
+                            val localUser = getLocalUser()
+                            if (localUser != null) {
+                                cachedUser = localUser
+                                emit(SessionState.Authenticated(localUser))
+                            } else {
+                                emit(
+                                    SessionState.Error(
+                                        message = "The session could not be refreshed"
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
             }
             .catch {
-                emit(
-                    SessionState.Error(
-                        it.message ?: "Session Error"
+                val localUser = getLocalUser()
+                if (localUser != null) {
+                    cachedUser = localUser
+                    emit(SessionState.Authenticated(localUser))
+                } else {
+                    emit(
+                        SessionState.Error(
+                            it.message ?: "Session Error"
+                        )
                     )
-                )
+                }
             }
     }
 
     override suspend fun getCurrentUser(): User? {
         supabaseClient.auth.awaitInitialization()
         val authUser = supabaseClient.auth.currentUserOrNull()
-            ?: return null
+            ?: return getLocalUser()
         val domainUser = authUser.toDomainUser()
         return try {
+            val localOnboarding = getLocalUser(authUser.id)?.onBoardingCompleted
+                ?: userPreferences.isOnboardingCompleted(authUser.id)
             val profile = supabaseClient
                 .from("profiles")
                 .select { filter { eq("id", authUser.id) } }
                 .decodeSingle<ProfileDto>()
-            domainUser.copy(
-                onBoardingCompleted = profile.onboarding_completed
+
+            if (profile.onboarding_completed) {
+                profileDao.updateOnboardingCompleted(
+                    userId = authUser.id,
+                    completed = true,
+                    updatedAt = profile.updated_at ?: nowTimestamp()
+                )
+                userPreferences.setOnboardingCompleted(authUser.id, true)
+                userPreferences.setOnboardingSyncPending(authUser.id, false)
+            }
+
+            val finalUser = profile
+                .toLocalProfileEntity(
+                    fallback = domainUser.copy(
+                        onBoardingCompleted = profile.onboarding_completed || localOnboarding
+                    )
+                )
+                .toDomainUser()
+            userPreferences.setCurrentUserId(finalUser.id)
+            profileDao.upsertProfile(finalUser.toLocalProfileEntity())
+            finalUser
+        } catch (_: Exception) {
+            val localUser = domainUser.copy(
+                onBoardingCompleted = userPreferences.isOnboardingCompleted(authUser.id)
             )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            domainUser
+            userPreferences.setCurrentUserId(localUser.id)
+            profileDao.upsertProfile(localUser.toLocalProfileEntity())
+            localUser
         }
     }
 
@@ -146,7 +217,13 @@ class SessionRepositoryImpl @Inject constructor(
 
     override suspend fun logOut() {
         cachedUser = null
+        userPreferences.clearLocalSession()
         supabaseClient.auth.signOut(SignOutScope.LOCAL)
+    }
+
+    private suspend fun getLocalUser(userId: String? = null): User? {
+        val resolvedUserId = userId ?: userPreferences.getCurrentUserId() ?: return null
+        return profileDao.getProfile(resolvedUserId)?.toDomainUser()
     }
 
     private fun UserInfo.toDomainUser(): User {
@@ -166,7 +243,11 @@ class SessionRepositoryImpl @Inject constructor(
             avatarUrl = avatarUrl.orEmpty(),
             email = email.orEmpty(),
             onBoardingCompleted = false,
-            createdAt = createdAt?.toString()
+            createdAt = createdAt?.toString(),
+            provider = "google",
+            isEarlyUser = true,
+            accountType = "free",
+            updatedAt = nowTimestamp()
         )
     }
 }
