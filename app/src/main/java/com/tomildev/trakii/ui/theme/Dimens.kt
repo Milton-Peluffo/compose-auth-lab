@@ -8,6 +8,7 @@ object Dimens {
     val ScreenHorizontalPadding = 20.dp
     val SpacingTiny = 4.dp
     val SpacingSmall = 13.dp
+    val SpacingExtraSmall = 10.dp
     val SpacingMedium = 16.dp
     val SpacingLarge = 24.dp
     val SpacingExtraLarge = 32.dp

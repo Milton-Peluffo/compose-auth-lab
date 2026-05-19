@@ -1,4 +1,4 @@
-package com.tomildev.trakii.core.data.local
+package com.tomildev.trakii.core.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

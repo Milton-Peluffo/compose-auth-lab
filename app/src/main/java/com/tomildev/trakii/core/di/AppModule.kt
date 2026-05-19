@@ -3,7 +3,7 @@ package com.tomildev.trakii.core.di
 import com.tomildev.trakii.features.settings.sub_settings.account.data.AccountSettingsRepositoryImpl
 import android.content.Context
 import androidx.room.Room
-import com.tomildev.trakii.core.data.local.HabitiiDatabase
+import com.tomildev.trakii.core.data.local.database.HabitiiDatabase
 import com.tomildev.trakii.core.data.local.dao.ProfileDao
 import com.tomildev.trakii.features.settings.sub_settings.account.domain.AccountSettingsRepository
 import com.tomildev.trakii.features.settings.sub_settings.account.domain.use_case.AccountUseCasesWrapper

@@ -18,3 +18,5 @@ val Gray100 = Color(0xFF878787)
 val SuccessGreen = Color(0xFF4CAF50)
 val WarningOrange = Color(0xFFFF9800)
 val InfoBlue = Color(0xFF2196F3)
+
+//------ HABIT COLORS ------
