@@ -34,17 +34,20 @@ import com.tomildev.trakii.core.common.presentation.components.texts.Texts
 import com.tomildev.trakii.ui.theme.Alpha
 import com.tomildev.trakii.ui.theme.Dimens
 import com.tomildev.trakii.ui.theme.ExtendedTheme
+import com.tomildev.trakii.ui.theme.HabitColor
 
 @Composable
 fun HabitListItem(
     modifier: Modifier = Modifier,
-    habitColor: Color,
+    colorId: String,
     icon: Int,
     title: String,
     repetitionDays: List<Int>,
     completionPercentage: Int,
     isCompleted: Boolean
 ) {
+
+    val habitColor = HabitColor.fromId(id = colorId).getColor(ExtendedTheme.colors)
 
     HabitiiCard(modifier = modifier) {
         Row(
@@ -127,12 +130,15 @@ fun HabitListItem(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(id = R.drawable.ic_check_outlined),
                     contentDescription = null,
-                    tint = if (isCompleted) Color.White else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                    tint = if (isCompleted) Color.White else MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = 0.5f
+                    )
                 )
             }
         }
     }
 }
+
 @Composable
 fun HabitDaysResume(
     selectedDays: List<Int>,
@@ -150,7 +156,9 @@ fun HabitDaysResume(
                     text = name,
                     fontSize = 11.sp,
                     fontWeight = if (isSelected) FontWeight.Black else FontWeight.Normal,
-                    color = if (isSelected) accentColor else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+                    color = if (isSelected) accentColor else MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = 0.2f
+                    )
                 )
             }
         }

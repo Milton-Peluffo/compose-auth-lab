@@ -42,12 +42,24 @@ private val ExtendedLightColors = ExtendedColors(
     success = SuccessGreen,
     warning = WarningOrange,
     info = InfoBlue,
+    habitSage = HabitSage,
+    habitRose = HabitRose,
+    habitMutedBlue = HabitMutedBlue,
+    habitLavender = HabitLavender,
+    habitSand = HabitSand,
+    habitSlate = HabitSlate,
 )
 
 private val ExtendedDarkColors = ExtendedColors(
     success = SuccessGreen,
     warning = WarningOrange,
     info = InfoBlue,
+    habitSage = HabitSage,
+    habitRose = HabitRose,
+    habitMutedBlue = HabitMutedBlue,
+    habitLavender = HabitLavender,
+    habitSand = HabitSand,
+    habitSlate = HabitSlate,
 )
 
 object ExtendedTheme {

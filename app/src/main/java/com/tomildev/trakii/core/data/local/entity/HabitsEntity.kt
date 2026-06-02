@@ -11,7 +11,7 @@ data class HabitEntity(
     val title: String,
     val description: String?,
     @ColumnInfo(name = "icon_name") val iconName: String,
-    @ColumnInfo(name = "color_hex") val colorHex: String,
+    @ColumnInfo(name = "color_id") val colorId: String,
     @ColumnInfo(name = "times_per_day") val timesPerDay: Int = 1,
     @ColumnInfo(name = "is_synced") val isSynced: Boolean = false,
     @ColumnInfo(name = "current_streak") val currentStreak: Int = 0,

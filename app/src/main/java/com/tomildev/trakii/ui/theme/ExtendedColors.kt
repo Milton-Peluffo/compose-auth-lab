@@ -3,24 +3,18 @@ package com.tomildev.trakii.ui.theme
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-/**
- * A data class that defines a set of custom semantic colors extending the standard Material Design
- * color palette for the application theme.
- *
- * @property success The color used to indicate a successful operation or state.
- * @property warning The color used to indicate a warning or a state that requires caution.
- * @property info The color used to indicate neutral informational messages or states.
- */
 data class ExtendedColors(
     val success: Color,
     val warning: Color,
     val info: Color,
+    val habitSage: Color,
+    val habitRose: Color,
+    val habitMutedBlue: Color,
+    val habitLavender: Color,
+    val habitSand: Color,
+    val habitSlate: Color,
 )
 
-val localExtendedColors = staticCompositionLocalOf {
-    ExtendedColors(
-        success = Color.Unspecified,
-        warning = Color.Unspecified,
-        info = Color.Unspecified,
-    )
+val localExtendedColors = staticCompositionLocalOf<ExtendedColors> {
+    error("No ExtendedColors provided")
 }

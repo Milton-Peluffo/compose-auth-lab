@@ -19,4 +19,10 @@ val SuccessGreen = Color(0xFF4CAF50)
 val WarningOrange = Color(0xFFFF9800)
 val InfoBlue = Color(0xFF2196F3)
 
-//------ HABIT COLORS ------
+//------ HABIT COLORS (Soft/Low Dopamine) ------
+val HabitSage = Color(0xFFA8B5A2)
+val HabitRose = Color(0xFFD9B8B8)
+val HabitMutedBlue = Color(0xFF9BB8CD)
+val HabitLavender = Color(0xFFB8B8D9)
+val HabitSand = Color(0xFFE5D3B3)
+val HabitSlate = Color(0xFF94A3B8)
